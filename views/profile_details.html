@@ -1,0 +1,233 @@
+<!doctype html>
+<html>
+<head>
+	<title><%= role %>/Trade Dashboard</title>
+	<link rel="stylesheet" href="../styles/sheets/bootstrap.css">
+	<link rel="stylesheet" href="../styles/sheets/font-awesome.css">
+	<style>
+        @font-face{
+
+	font-family: "panton-bold";
+	src: url("/fonts/Panton-BlackCaps.otf");
+
+}
+@font-face {
+   	font-family: "montserrat-regular";
+    	src: url("/fonts/Montserrat-Regular.otf");
+}
+@font-face {
+   	font-family: "montserrat-light";
+    	src: url("/fonts/Montserrat-Light.otf");
+}
+@font-face {
+   	font-family: "panton-light";
+    	src: url("/fonts/Panton-LightCaps.otf");
+}
+	.navbar{
+
+	width: 100%;
+	border-radius:0px;
+	margin-bottom:0px;
+	background-color: transparent;
+  border-color: transparent;
+
+}
+
+.navbar-brand{
+
+	font-family: "panton-bold";
+	font-size:20px;
+	padding-left:50px;
+
+}
+.navbar-right{
+
+	font-family: "montserrat-regular";
+	margin-right:30px;
+	font-size:10px;
+	font-weight:bold;
+	color:black;
+	letter-spacing:1px;
+}
+.logo
+{
+
+    width: 150px;
+    margin-top: -6px;
+		margin-left: -30px;
+}
+
+.navbar-right>li>a::after{
+
+	<!--content:"•";-->
+	position:relative;
+	left:15px;
+	top:-1px;
+
+}
+.role_byer{
+   border:1px solid;
+   text-align:center;
+   height:180px;
+   padding-top:30px;
+   border-right:0px;
+}
+.fa{
+   font-size:60px;
+   margin-bottom:20px;
+
+}
+.chain{
+  font-size: 53px;
+    margin-top: 8px;
+
+}
+.role_byer > p{
+   line-height:5px;
+   font-size:13px;
+}
+.col-sm-2{
+  padding-right: 0px;
+    padding-left: 0px;
+
+}
+.col-sm-4{
+  padding-right: 0px;
+    padding-left: 0px;
+
+}
+.name_change{
+   font-weight:bold;
+
+}
+.container{
+  margin-top:110px;
+  margin-left: 140px;
+
+}
+.serber_chain{
+  border-right:1px solid;
+}
+.server_btn{
+   border:2px solid;
+   border-radius: 100px;
+    display: block;
+    margin: 15px;
+    text-align: left;
+    width: 130px;
+    font-weight:bold;
+}
+.fa-download{
+   position:absolute;
+   font-size:14px;
+   margin-left: 15px;
+    margin-top: 3px;
+}
+.change_fafa{
+   margin-left:45px;
+}
+.change_sha{
+  font-size:13px;
+  line-height:10px;
+}
+.popover.bottom {
+    width: 300px;
+    margin-left: -30px;
+    margin-top: 45px;
+    font-size:12px;
+    line-height:13px;
+}
+.fixedchain{
+      margin-left: -15px;
+
+}
+
+
+
+    </style>
+</head>
+<body window.onload="onload()">
+   <nav class="navbar navbar-default">
+       <div class="container-fluid">
+           <div class="navbar-header">
+	           <a class="navbar-brand" href="#"><img src ="../styles/images/zeonlab_logo.png" alt="Zeonlab-Blockchain" class="logo"></a>
+	       </div>
+            <ul class="nav navbar-nav navbar-right navhide">
+                    <li><a href="/profiledetails">PROFILE DETAILS</a></li>
+                    <li><a href="/profile">TRADE DASHBOARD</a></li>
+            <li><a href="/logout" class="footerscrl rdot">LOGOUT</a></li>
+            </ul>
+       </div>
+   </nav>
+
+
+   <div class="text-center">
+			<h1 class="head1">Profile Details</h1>
+		</div>
+
+
+      <div class="container">
+          <div class="row">
+              <div class="col-sm-2">
+                  <div class="role_byer">
+                      <i class="fa fa-user" aria-hidden="true"></i>
+                      <p class="name_change">Role</p>
+                      <p>Buyer</p>
+                  </div>
+              </div>
+              <div class="col-sm-2">
+                  <div class="role_byer">
+                      <i class="fa fa-user" aria-hidden="true"></i>
+                      <p class="name_change">User Name</p>
+                      <p>Financer@Zeonlab.com</p>
+                  </div>
+              </div>
+              <div class="col-sm-2">
+                  <div class="role_byer">
+                      <i class="fa fa-link chain" aria-hidden="true"></i>
+                      <p class="name_change">Blockchain Address:</p>
+                      <p>0xca2995b06cbda040c54</p>
+                      <p>8b2bcba52d6d53960c186</p>
+                  </div>
+              </div>
+              <div class="col-sm-2">
+                  <div class="role_byer">
+                      <i class="fa fa-money" aria-hidden="true"></i>
+                      <p class="name_change">Balance</p>
+                      <p>eugeiuheffhehiuehue wei</p>
+                  </div>
+              </div>
+
+              <div class="col-sm-3 role_byer serber_chain ">
+
+                  <div class=" col-sm-6 fixedchain ">
+                      <i class="fa fa-id-card-o" aria-hidden="true"></i>
+                      <p class="name_change change_sha">SHA 256 Hash <br></p>
+                      <p class="name_change change_sha">of KYC Docs</p>
+                  </div>
+
+                  <div class=" col-sm-6 fixedchain">
+                      <button class="btn btn-default server_btn" data-toggle="modal" data-target="#">Server <i class="fa fa-download change_fafa" aria-hidden="true"></i></button>
+                      <a href='#' id='example' rel='popover' data-placement='bottom' data-content='The hash of KYC doc has been stored in the blockchain. Once the hash is stored, it can not be changed or deleted and the hash itself idnetifies the file from which it was computed it is very easy to compute the hash from a file but very difficult (almost impossible) to craft a similar file which will produce exactly the same hash. Every transaction in the blockchain has a timestamp so having the transaction we know when exactly was it done' >
+                      <button class="btn btn-default server_btn" data-toggle="modal" data-target="#">Blockchain <i class="fa fa-download" aria-hidden="true"></i></button>
+                      </a>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+
+   <div>
+    </div>
+
+
+
+</body>
+<script type="text/javascript" src="../styles/js/jquery.1.11.1.js"></script>
+<script type="text/javascript" src="../styles/js/bootstrap.js"></script>
+<script>
+$(document).ready(function(){
+     $("#example").popover('show');
+});
+</script>
+</html>
