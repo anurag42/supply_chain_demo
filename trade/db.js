@@ -12,24 +12,37 @@ module.exports = {
     // set the user's local credentials
     tradeID = newTrade._id;
     newTrade.trade_id = newTrade._id;
-    newTrade.contract_id = "None";
-    newTrade.bank_id = req.body.bank_id;
-    newTrade.seller_id = req.body.seller_id;
-    newTrade.buyer_id = req.body.buyer_id;
-    newTrade.sellerbank_id = req.body.sellerbank_id;
+    if (req.body.bank_id)
+      newTrade.bank_id = req.body.bank_id;
+    if (req.body.supplier_id)
+      newTrade.supplier_id = req.body.supplier_id;
+    if (req.body.dealer_id)
+      newTrade.dealer_id = req.body.dealer_id;
+    newTrade.manufacturer_id = req.body.manufacturer_id;
     newTrade.shipper_id = req.body.shipper_id;
-    newTrade.quotation.hash = "No quotation till now";
-    newTrade.quotation.txnID = "None";
-    newTrade.po.hash = "No Purchase Order till now";
-    newTrade.po.txnID = "None";
-    newTrade.invoice.hash = "No Invoice till now";
-    newTrade.invoice.txnID = "None";
-    newTrade.letterofcredit.No_of_days = 0;
-    newTrade.letterofcredit.contract_id = "None";
-    newTrade.letterofcredit.Credit_Amount = 0;
-    newTrade.billoflading.hash = "No Bill of lading till now";
-    newTrade.billoflading.txnID = "None";
-    newTrade.status = "Ethereum Transaction Pending!!! Check after 2 mins!!!";
+    newTrade.status = "No quotation till now";
+    newTrade.save(callback);
+    newTrade.doc.push({
+      doctype: 'quotation',
+      hash: 'No Quotation till now',
+      txnID: 'None'
+    });
+    newTrade.doc.push({
+      doctype: 'po',
+      hash: 'No Purchase Order till now',
+      txnID: 'None'
+    });
+    newTrade.doc.push({
+      doctype: 'invoice',
+      hash: 'No Invoice till now',
+      txnID: 'None'
+    });
+    newTrade.doc.push({
+      doctype: 'billoflading',
+      hash: 'No Bill of Lading till now',
+      txnID: 'None'
+    });
+    newTrade.status = "Quotation Not Uploaded";
     newTrade.save(callback);
   },
 
@@ -44,7 +57,7 @@ module.exports = {
     };
     Trade.update(query, update, options, function(err, num) {
       console.error(err);
-      if(!err && callback) callback();
+      if (!err && callback) callback();
     });
   }
 

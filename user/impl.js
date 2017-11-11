@@ -167,7 +167,7 @@ function onFindUserProfile(err, user) {
     return err;
   var req = this.req;
   var res = this.res;
-  req.session.userAddress = user.ethereumaddress;
+  req.session.userAddress = user.ethereumAddress;
   var Trade = require('../trade/model');
   switch (user.role) {
     case "Bank":
@@ -215,8 +215,8 @@ function onFindUserProfileDetails(err, user) {
   var res = this.res;
   res.render('profiledetails.ejs', {
     role: user.role,
-    ethAddress: user.ethereumaddress,
-    ethBalance: web3.eth.getBalance(user.ethereumaddress),
+    ethAddress: user.ethereumAddress,
+    ethBalance: web3.eth.getBalance(user.ethereumAddress),
     username: user.username,
     kychash: user.kychash,
     user: user._id
@@ -248,8 +248,8 @@ function getListofTrades1(err, tradeList) {
   res.render('profile1.ejs', {
     message: req.session.message,
     role: user.role,
-    ethAddress: user.ethereumaddress,
-    ethBalance: web3.eth.getBalance(user.ethereumaddress),
+    ethAddress: user.ethereumAddress,
+    ethBalance: web3.eth.getBalance(user.ethereumAddress),
     username: user.username,
     kychash: user.kychash,
     user: user._id,
@@ -282,8 +282,8 @@ function getListofTrades2(err, tradeList) {
   res.render('profile2.ejs', {
     message: req.session.message,
     role: user.role,
-    ethAddress: user.ethereumaddress,
-    ethBalance: web3.eth.getBalance(user.ethereumaddress),
+    ethAddress: user.ethereumAddress,
+    ethBalance: web3.eth.getBalance(user.ethereumAddress),
     username: user.username,
     kychash: user.kychash,
     user: user._id,
@@ -299,11 +299,11 @@ function ifUserFound(err, user) {
   res = this.res;
   if (err)
     throw err;
-  else if (user)
+  else if (user) {
     res.redirect('/signup', {
       message: "User Already Exists!!!"
-    })
-  else {
+    });
+  } else {
     console.log()
     file.fileupload(req, res, onKYCUpload.bind({
       'req': req,

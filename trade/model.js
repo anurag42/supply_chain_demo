@@ -10,7 +10,7 @@ var tradeSchema = mongoose.Schema({
   shipper_id: String,
   customer_id: String,
   doc: [{
-    type: String,
+    doctype: String,
     hash: String,
     txnID: String
   }],

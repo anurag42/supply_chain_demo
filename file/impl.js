@@ -22,21 +22,21 @@ var registrydb = require('../registry/db.js');
 var config = require('../config.js');
 
 //Fixed
-var registryFunctions = require('../contract/registry.js');
-var orderFunctions = require('../contract/order.js');
-var letterOfCreditFunctions = require('../contract/letterOfCredit.js');
+// var registryFunctions = require('../contract/registry.js');
+// var orderFunctions = require('../contract/order.js');
+// var letterOfCreditFunctions = require('../contract/letterOfCredit.js');
 
 web3.setProvider(new web3.providers.HttpProvider(config.web3Provider));
 
 var userHashReturned, index, completedDocs;
-require('../build/ABI/registry.js');
-require('../build/Binary\ Code/registry.js');
-var registryContract = web3.eth.contract(registryABI);
-require('../build/ABI/order.js');
-var orderContract = web3.eth.contract(orderABI);
-require('../build/ABI/letterOfCredit.js');
-require('../build/Binary\ Code/letterOfCredit.js');
-var letterOfCreditContract = web3.eth.contract(letterOfCreditABI);
+// require('../build/ABI/registry.js');
+// require('../build/Binary\ Code/registry.js');
+// var registryContract = web3.eth.contract(registryABI);
+// require('../build/ABI/order.js');
+// var orderContract = web3.eth.contract(orderABI);
+// require('../build/ABI/letterOfCredit.js');
+// require('../build/Binary\ Code/letterOfCredit.js');
+// var letterOfCreditContract = web3.eth.contract(letterOfCreditABI);
 
 registryAddress = config.registryAddress;
 checkIfRegistryDeployed(registryAddress);
@@ -195,14 +195,7 @@ function deployRegistry() {
   })
 }
 
-function uploadDoc(req, res, address, username, docName, docHash, tradeID) {
-  var orderInstance = orderContract.at(address);
-  var hashArr = str2bytearr(docHash);
-  userdb.findUserByUsername(username, req, res, function(err, user) {
-    sender = user.local.userHash;
-    orderFunctions.sendDocUploadTxn(req, res, orderInstance, sender, docName, hashArr);
-  });
-}
+
 
 function str2bytearr(str) {
   var data = [];
@@ -226,68 +219,25 @@ function hexToString(hex) {
   return result;
 }
 
-
-
-function onFindTradeQuotationUpdate(err, trade) {
-  if (err)
-    return done(err);
-  req = this.req;
-  res = this.res;
-  hash = this.hash;
-  uploadDoc(req, res, trade.contract_id, trade.seller_id, 'Quotation', hash[0].hash);
-}
-
-function onFindTradePOUpdate(err, trade) {
-  // if there are any errs, return the err
-  if (err)
-    return done(err);
-  req = this.req;
-  res = this.res;
-  hash = this.hash;
-  uploadDoc(req, res, trade.contract_id, trade.buyer_id, 'PurchaseOrder', hash[0].hash);
-}
-
-function onFindTradeInvoiceUpdate(err, trade) {
-  console.log("Here");
-  // if there are any errs, return the err
-  if (err)
-    return done(err);
-  req = this.req;
-  res = this.res;
-  hash = this.hash;
-  uploadDoc(req, res, trade.contract_id, trade.seller_id, 'Invoice', hash[0].hash);
-}
-
-function onFindTradeBOLUpdate(err, trade) {
-  // if there are any errs, return the err
-  if (err)
-    return done(err);
-  req = this.req;
-  res = this.res;
-  hash = this.hash;
-  uploadDoc(req, res, trade.contract_id, trade.shipper_id, 'BillOfLading', hash[0].hash);
-  //eventEmitter.emit('ConnectionuploadDoc');
-  //new changes
-}
-
 function onFindTradeDocDownload(err, trade) {
   // if there are any errs, return the err
   if (err)
     return done(err);
   req = this.req;
   res = this.res;
+  console.log(trade.doc[0].doctype);
   switch (req.body.docname) {
     case "Quotation":
-      docHash = trade.quotation.hash;
+      docHash = trade.doc[0].hash;
       break;
     case "PurchaseOrder":
-      docHash = trade.po.hash;
+      docHash = trade.doc[1].hash;
       break;
     case "Invoice":
-      docHash = trade.invoice.hash;
+      docHash = trade.doc[2].hash;
       break;
     case "BillOfLading":
-      docHash = trade.billoflading.hash;
+      docHash = trade.doc[3].hash;
       break;
   }
   console.log('Hash of ', req.body.docname, ': ', docHash);
@@ -305,77 +255,6 @@ function onFindTradeDocDownload2(err, trade) {
   orderFunctions.download(req, res, orderInstance, req.body.docname);
 }
 
-function onFileUpload(err, hash) {
-  if (err)
-    throw err;
-  req = this.req;
-  res = this.res;
-  id = this.id;
-  var query = {
-    trade_id: id
-  };
-  if (req.body.senderpage == "quotation") {
-    var update = {
-      quotation: {
-        hash: hash[0].hash,
-        txnID: "None"
-      },
-      status: "Quotation Uploaded; Ethereum Txn Pending;"
-    }
-    tradedb.updateTrade(query, update, redirectOnUpdation.bind({
-      'tradeID': id,
-      'req': req,
-      'res': res
-    }));
-    tradedb.findTradeByTradeID(id, req, res, onFindTradeQuotationUpdate.bind({
-      'req': req,
-      'res': res,
-      'hash': hash
-    }));
-  } else if (req.body.senderpage == "po") {
-    var update = {
-      po: {
-        hash: hash[0].hash,
-        txnID: "None"
-      },
-      "status": "Purchase Order Uploaded; Ethereum Txn Pending;"
-    }
-    tradedb.updateTrade(query, update);
-    tradedb.findTradeByTradeID(id, req, res, onFindTradePOUpdate.bind({
-      'req': req,
-      'res': res,
-      'hash': hash
-    }));
-  } else if (req.body.senderpage == "invoice") {
-    var update = {
-      invoice: {
-        hash: hash[0].hash,
-        txnID: "None"
-      },
-      "status": "Invoice Uploaded; Ethereum Txn Pending;"
-    }
-    tradedb.updateTrade(query, update);
-    tradedb.findTradeByTradeID(id, req, res, onFindTradeInvoiceUpdate.bind({
-      'req': req,
-      'res': res,
-      'hash': hash
-    }));
-  } else if (req.body.senderpage == "bol") {
-    var update = {
-      billoflading: {
-        hash: hash[0].hash,
-        txnID: "None"
-      },
-      "status": "Bill Of Lading Uploaded; Ethereum Txn Pending;"
-    }
-    tradedb.updateTrade(query, update);
-    tradedb.findTradeByTradeID(id, req, res, onFindTradeBOLUpdate.bind({
-      'req': req,
-      'res': res,
-      'hash': hash
-    }));
-  }
-}
 
 function uploadCallback(err, hash) {
   var req = this.req;

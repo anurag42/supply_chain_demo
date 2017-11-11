@@ -10,7 +10,7 @@ var userSchema = mongoose.Schema({
   userid: String,
   kycStatus: String,
   role: String,
-  ethereumaddress: String
+  ethereumAddress: String
 });
 
 
