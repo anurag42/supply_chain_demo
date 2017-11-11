@@ -1,0 +1,201 @@
+@font-face {
+    font-family: "montserrat-regular";
+    src: url("../fonts/Montserrat-Regular.otf");
+}
+.tradeheading{
+
+    text-align:center;
+    font-weight:bold;
+
+}
+.modal-header {
+
+    border-bottom: 1px solid white;
+
+}
+.navbar{
+
+    width: 100%;
+    border-radius:0px;
+    margin-bottom:0px;
+    background-color: transparent;
+    border-color: transparent;
+
+}
+.navbar-right{
+
+    font-family: "montserrat-regular";
+    margin-right:30px;
+    font-size:10px;
+    font-weight:bold;
+    color:black;
+    letter-spacing:1px;
+}
+.logo
+{
+    width: 150px;
+}
+
+.navbar-right>li>a::after{
+
+    content:"•";
+    position:relative;
+    left:15px;
+    top:-1px;
+
+}
+
+.rdot::after{
+
+    display:none;
+
+}
+.usrinfo{
+
+    background-color:#4554ad;
+    padding:10px;
+    padding-bottom:30px;
+    text-align:center;
+    border-radius:15px 15px 0px 0px;
+}
+.infoitem{
+
+    display:inline-block;
+
+}
+.infoitem img{
+
+    width:35px;
+
+}
+.infoitem span{
+
+    color:white;
+    font-size:12px;
+
+}
+.tradecontainer{
+
+    border-radius:15px;
+    padding:30px;
+    background:white;
+    margin-top:-20px;
+    box-shadow: 0px -20px 40px -20px;
+
+}
+.tradelist .tradeitem{
+
+    border:1px solid rgba(13, 92, 198, 0.2);
+    border-radius:15px;
+    width:800px;
+    height:150px;
+    margin:0px auto;
+    margin-bottom:10px;
+    /*opacity:0.4;*/
+}
+.tradelist .trading{
+
+    transform: scale(1.2);
+    margin-top:25px;
+    margin-bottom:25px;
+    opacity:1;
+    box-shadow: 0px 65px 65px -40px;
+    position: relative;
+    z-index: 1;
+
+}
+.tradeitem .tradeleft{
+
+    padding:10px;
+    opacity:0.2;
+
+}
+.tradeitem .tradeleft img{
+
+    width: 80px;
+    margin-top: 10px;
+
+}
+.tradeitem .status{
+
+    font-weight:bold;
+    margin-top:10px;
+    margin-bottom:5px;
+
+}
+.tradeitem .traderight{
+
+    padding:20px;
+    /*background:url('/images/tradeopbg.jpg');*/
+    background-image: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url("../images/tradeopbg.jpg");
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center;
+    border-radius:0px 14px 14px 0px;
+    float:right;
+    color:white;
+    height:100%;
+
+}
+.tradeitem .traderight .fa{
+
+    float: right;
+    margin-top: 3px;
+
+}
+.tradedate{
+
+    font-size:13px;
+    margin-bottom:15px;
+    margin-top:5px;
+
+}
+.tradehead{
+
+    font-weight:bold;
+    font-size:18px;
+
+}
+.tradeoptions{
+
+    text-align:right;
+    padding-top:15px;
+    padding-right:0px;
+
+}
+.tradeoptions .tradebtn{
+
+    background:rgb(13, 92, 198);
+    border:2px solid rgb(13, 92, 198);
+    font-weight:bold;
+    color:white;
+    border-radius:50px;
+    padding:5px 15px;
+    width:120px;
+    margin-right:10px;
+    text-align:left;
+    margin-bottom:10px;
+    opacity:0.1;
+
+}
+.downloadbtn .tradebtn{
+
+  border:0px solid white;
+
+}
+.uploadbtn, .viewbtn1, .viewbtn2{
+
+    width:254px !important;
+    text-align:center !important;
+
+}
+.viewbtn2{
+
+    display:none;
+
+}
+.optionbtn{
+
+    display:none;
+
+}

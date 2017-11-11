@@ -1,0 +1,175 @@
+<!-- views/login.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="../styles/sheets/bootstrap.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="../styles/sheets/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body{
+            padding-top:80px;
+            background:url("../styles/images/loginbg.jpg");
+            background-size:cover;
+            height:100%;
+            width:100%;
+        }
+        @font-face{
+
+            font-family: "panton-bold";
+            src: url("../styles/fonts/Panton-BlackCaps.otf");
+
+        }
+        .container{
+
+            text-align:center;
+
+        }
+        .zlogo{
+
+            display:block;
+            margin:0px auto;
+            width:260px;
+            margin-top:8%;
+            margin-bottom:20px;
+
+        }
+        .loginh1{
+
+            font-size:18px;
+            text-align:center;
+            font-family: "panton-bold";
+            margin-top:50px;
+            margin-bottom:30px;
+
+        }
+        .loginh5{
+
+            text-align:center;
+            font-weight:bold;
+
+        }
+        .loginerror, .loginerror2{
+
+            display:none;
+
+        }
+        .aadhar, .otp{
+
+            text-align:center;
+
+        }
+        .otp{
+
+            width: 35px;
+            margin: 5px;
+            display:inline-block;
+
+        }
+        .nextbtn, .continuebtn{
+
+            color:black;
+            padding:5px 10px;
+            border-radius:3px;
+            font-size:14px;
+            font-weight:bold;
+
+        }
+        .loginverify{
+
+            display:none;
+
+        }
+        .icon{
+
+            color: gray;
+            float: right;
+            margin-top: -25px;
+            margin-right: 13px;
+            font-size:18px;
+        }
+        .alert {
+            padding: 7px 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<div class="col-sm-4 col-sm-offset-4">
+    <img src="../styles/images/zeonlab_logo.png" class="zlogo">
+    <h1 class="loginh1">Login</h1>
+    <!-- LOGIN FORM -->
+    <div class="loginnext">
+    <form action="/login" method="post">
+        <div class="alert alert-danger loginerror">Please enter proper aadhar number</div>
+        <h5 class="loginh5">Verify your Aadhar number</h5>
+        <div class="form-group">
+            <input type="text" class="form-control aadhar" name="Aadhar Number" placeholder="Aadhar Number">
+        </div>
+        <p>We will text a verification code to this number</p>
+    </form>
+        <button class="btn btn-warning nextbtn">Next</button>
+    </div>
+    <div class="loginverify">
+    <form action="/login" method="post">
+        <div class="alert alert-danger loginerror2">Please enter proper aadhar number</div>
+        <h5 class="loginh5">Please enter verification code</h5>
+        <div class="form-group">
+            <input class="form-control otp o1" type="text" maxlength="1" />
+            <input class="form-control otp o2" type="text" maxlength="1" />
+            <input class="form-control otp o3" type="text" maxlength="1" />
+            <input class="form-control otp o4" type="text" maxlength="1" />
+        </div>
+        <p>Your OTP is on the way <span class="aadharshow"></span></p>
+    </form>
+        <button class="btn btn-warning continuebtn">Continue</button>
+    </div>
+</div>
+
+</div>
+<script type="text/javascript" src="../styles/js/jquery.1.11.1.js"></script>
+<script type="text/javascript" src="../styles/js/bootstrap.js"></script>
+<script>
+    $('.nextbtn').click(function(){
+
+        var aadhar = $('.aadhar').val();
+        if (aadhar == "" || aadhar.length != 12 || isNaN(aadhar)){
+
+            $('.loginerror').show();
+            return false;
+
+        }
+        else{
+
+            $('.loginnext').hide();
+            $('.loginverify').show();
+            $('.aadharshow').html(aadhar);
+
+
+        }
+
+    });
+
+    $(".otp").keyup(function () {
+        if (this.value.length == this.maxLength) {
+              $(this).next('.otp').focus();
+        }
+    });
+
+    $('.continuebtn').click(function(){
+
+        var o1 = $('.o1').val();
+        var o2 = $('.o2').val();
+        var o3 = $('.o3').val();
+        var o4 = $('.o4').val();
+        var res = o1+o2+o3+o4;
+        if(res.length != 4){
+
+            $('.loginerror2').show();
+
+        }
+
+    });
+</script>
+</body>
+</html>
