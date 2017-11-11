@@ -19,7 +19,7 @@ module.exports = {
     newUser.email = req.body.email;
     newUser.password = newUser.generateHash(req.body.password);
     newUser.role = req.body.role;
-    newUser.kychash = hash[0].hash;
+    newUser.kychash = hash;
     newUser.ethereumAddress = account;
     newUser.save(callback);
   },

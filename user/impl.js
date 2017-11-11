@@ -8,7 +8,12 @@ var userdb = require('./db');
 var file = require('../file/impl');
 var Registry = require('../registry/model.js');
 var registrydb = require('../registry/db.js');
-var manufacturerIdList, tradeIdArr, dealerIdList, supplierIdList, statusList;
+var registryFunctions = require('../contracts/registry/registry.js');
+var manufacturerIdList, tradeIdArr, dealerIdList, supplierIdList, statusList, registryAddress;
+
+checkIfRegistryDeployed(registryAddress);
+registryAddress = config.registryAddress;
+
 module.exports = {
 
   getIndex: function(req, res) {
@@ -60,7 +65,6 @@ module.exports = {
 
   postRoleSelection: function(req, res) {
     user = req.session.user;
-    console.log(user.role);
     switch (user.role) {
       case 'Shipper':
         if (req.body.role == 'Supplier') {
@@ -126,13 +130,10 @@ module.exports = {
 };
 
 function getArrFromTradeObject(tradeList, type) {
-  console.log(type);
   var arr = new Array();
   for (var i = 0; i < tradeList.length; ++i) {
     var trade = tradeList[i];
-    console.log(trade);
     arr[i] = trade[type];
-    console.log(arr[i]);
   }
   return arr;
 }
@@ -229,22 +230,17 @@ function getListofTrades1(err, tradeList) {
   req = this.req;
   res = this.res;
   user = this.user;
-  console.log(tradeList.length);
   if (tradeList.length > 0) {
-    console.log("IF");
     tradeIdArr = getArrFromTradeObject(tradeList, 'trade_id');
     supplierIdList = getArrFromTradeObject(tradeList, 'supplier_id');
     manufacturerIdList = getArrFromTradeObject(tradeList, 'manufacturer_id');
     statusList = getArrFromTradeObject(tradeList, 'status');
   } else {
-    console.log("ELSE");
     tradeIdArr = ['No Trades Yet'];
-    console.log()
     supplierIdList = [];
     manufacturerIdList = [];
     statusList = [];
   }
-  console.log(tradeIdArr);
   res.render('profile1.ejs', {
     message: req.session.message,
     role: user.role,
@@ -299,12 +295,12 @@ function ifUserFound(err, user) {
   res = this.res;
   if (err)
     throw err;
-  else if (user) {
+  else if (user){
     res.redirect('/signup', {
       message: "User Already Exists!!!"
-    });
-  } else {
-    console.log()
+    })
+  }
+  else {
     file.fileupload(req, res, onKYCUpload.bind({
       'req': req,
       'res': res
@@ -316,15 +312,41 @@ function onKYCUpload(err, hash) {
   req = this.req;
   res = this.res;
   //Create New Ethereum Account for User and store in DB
-  userdb.createNewUser(web3.personal.newAccount(req.body.password), hash, req, res, onCreateNewUserCallback.bind({
+  userdb.createNewUser(web3.personal.newAccount(req.body.password), hash[0].hash, req, res, onCreateNewUserCallback.bind({
     'req': req,
-    'res': res
+    'res': res,
+    'hash': hash
   }));
 }
 
 function onCreateNewUserCallback(err, user) {
   req = this.req;
   res = this.res;
+  hash = this.hash;
+  registryFunctions.submitKYC(req, res, registryAddress, "656979695441", user.ethereumAddress, hash[0].hash, redirectOnUpload.bind({'req': req, 'res': res, 'user': user}));
+}
+
+function checkIfRegistryDeployed(registryAddress) {
+  Registry.findOne({
+    'deployed': 'Yes'
+  }, function(err, Registry) {
+    if (err)
+      return err;
+    if (Registry) {
+      console.log('Registry Contract Already Deployed; Fetching from MONGO DB...');
+      registryAddress = Registry.contract_id;
+      console.log('Address of registry contract deployed:', registryAddress);
+    } else {
+      console.log('Deploying Registry Contract....');
+      registryFunctions.deployRegistry();
+    }
+  });
+}
+
+function redirectOnUpload(err, user) {
+  var req = this.req;
+  var res = this.res;
+  var user = this.user;
   req.session.userId = user._id;
   res.redirect('/profile');
 }

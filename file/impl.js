@@ -10,7 +10,7 @@ var urlencodedParser = bodyParser.urlencoded({
 var Trade = require('../trade/model');
 var tradedb = require('../trade/db');
 var Web3 = require('web3');
-var buyerHash, sellerHash, buyerBankHash, sellerBankHash, shipperHash, docHash, dwnldDoc, dwnldDocHash, contractAddress, registryAddress, locAddress;
+var buyerHash, sellerHash, buyerBankHash, sellerBankHash, shipperHash, docHash, dwnldDoc, dwnldDocHash, tradeRegistryAddress;
 var User = require('../user/model');
 var userdb = require('../user/db');
 var eventEmitter = new events.EventEmitter();
@@ -22,24 +22,21 @@ var registrydb = require('../registry/db.js');
 var config = require('../config.js');
 
 //Fixed
-// var registryFunctions = require('../contract/registry.js');
-// var orderFunctions = require('../contract/order.js');
-// var letterOfCreditFunctions = require('../contract/letterOfCredit.js');
+var registryFunctions = require('../contracts/registry/registry.js');
+var tradeFunctions = require('../contracts/trade/tradeRegistry.js');
+
+//tradeFunctions.deployTradeRegistry();
+tradeRegistryAddress = config.tradeAddress;
 
 web3.setProvider(new web3.providers.HttpProvider(config.web3Provider));
 
 var userHashReturned, index, completedDocs;
-// require('../build/ABI/registry.js');
-// require('../build/Binary\ Code/registry.js');
-// var registryContract = web3.eth.contract(registryABI);
-// require('../build/ABI/order.js');
-// var orderContract = web3.eth.contract(orderABI);
-// require('../build/ABI/letterOfCredit.js');
-// require('../build/Binary\ Code/letterOfCredit.js');
-// var letterOfCreditContract = web3.eth.contract(letterOfCreditABI);
+require('../build/ABI/registry.js');
+require('../build/Binary\ Code/registry.js');
+var registryContract = web3.eth.contract(registryABI);
 
 registryAddress = config.registryAddress;
-checkIfRegistryDeployed(registryAddress);
+//checkIfRegistryDeployed(registryAddress);
 
 module.exports = {
   fileupload: function(req, res, callback) {
@@ -67,7 +64,8 @@ module.exports = {
 
   getKYChash: function(req, res) {
     var usrHash = req.body.usrHash;
-    var registryInstance = registryContract.at(registryAddress);
+    registryFunctions.getKYChash(req, res, registryAddress, usrHash);
+    /*var registryInstance = registryContract.at(registryAddress);
     gasUsage = (registryInstance.getKYChash.estimateGas(usrHash) < config.gasUsage) ? registryInstance.getKYChash.estimateGas(usrHash) : config.gasUsage;
     var params = {
       gas: gasUsage,
@@ -79,7 +77,7 @@ module.exports = {
       'registryInstance': registryInstance,
       'req': req,
       'res': res
-    }));
+    }));*/
   },
 
   letterOfCredit: function(req, res) {
@@ -251,8 +249,8 @@ function onFindTradeDocDownload2(err, trade) {
   var req = this.req;
   var res = this.res;
   contractAddress = trade.contract_id;
-  var orderInstance = orderContract.at(contractAddress);
-  orderFunctions.download(req, res, orderInstance, req.body.docname);
+  var tradeInstance = orderContract.at(contractAddress);
+  orderFunctions.download(req, res, tradeInstance, req.body.docname);
 }
 
 
@@ -345,7 +343,7 @@ function onSendTxnGetKYC(err, result) {
     this.res.send(err);
     return;
   }
-  registryFunctions.getKYChash(registryInstance, this.req.body.indx, retrievedHash.bind({
+  registryFunctions.getKYChash(registryInstance, retrievedHash.bind({
     'res': this.res
   }));
 }

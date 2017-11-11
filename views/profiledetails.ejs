@@ -237,10 +237,7 @@
         });
 
 		var hashbody = document.getElementById('KYChash');
-		var hashList = "<%=kychash%>".split(',');
+		var hash = "<%=kychash%>";
 		var ethAddress = '<%= ethAddress %>';
-		for (i = 0; i < hashList.length; ++i) {
-			hashbody.innerHTML += '<tr><td><span class="pitxt">' + '&emsp;&emsp;&emsp;&emsp;Doc'+(i+1)+': '+CryptoJS.SHA256(hashList[i]).toString(CryptoJS.enc.Base64) + '</span></td><td><form action="/filedownload" method="post" enctype = "application/x-www-form-urlencoded"><input type="hidden" name="kychash" value='+ hashList[i] + '></input><button type="submit" class="btn btn-default kycdnld"><img src="/images/Download.png" class="dnldimg">Server</button></form></td><td><form action="/getKYChash" method="post" enctype = "application/x-www-form-urlencoded"><input type="hidden" name="usrHash" value='+ ethAddress + '></input><input type="hidden" name="indx" value=' + (i+1) + '></input><button type="submit" data-toggle="modal" data-target="#bcdnldmodal" class="btn btn-default kycdnld"><img src="/images/Download.png" class="dnldimg">Blockchain</button></form></td></tr>';
-
-		}
+			hashbody.innerHTML += '<tr><td><span class="pitxt">' + '&emsp;&emsp;&emsp;&emsp;Doc'+': '+CryptoJS.SHA256(hash).toString(CryptoJS.enc.Base64) + '</span></td><td><form action="/filedownload" method="post" enctype = "application/x-www-form-urlencoded"><input type="hidden" name="kychash" value='+ hash + '></input><button type="submit" class="btn btn-default kycdnld"><img src="/images/Download.png" class="dnldimg">Server</button></form></td><td><form action="/getKYChash" method="post" enctype = "application/x-www-form-urlencoded"><input type="hidden" name="usrHash" value='+ ethAddress + '></input><button type="submit" data-toggle="modal" data-target="#bcdnldmodal" class="btn btn-default kycdnld"><img src="/images/Download.png" class="dnldimg">Blockchain</button></form></td></tr>';
 </script>

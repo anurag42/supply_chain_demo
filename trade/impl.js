@@ -15,22 +15,17 @@ var scheduler = new Scheduler("mongodb://localhost/db_name", {
   doNotFire: false
 });
 
-var buyerHash, sellerHash, buyerBankHash, sellerBankHash, shipperHash, tradeID;
+var manufacturerHash, supplierHash, bankHash, shipperHash, tradeID, tradeRegistryAddress;
 var userHash, gasUsage;
 var config = require('../config.js');
 var file = require('../file/impl.js');
 var Web3 = require('web3');
 var web3 = new Web3();
 web3.setProvider(new web3.providers.HttpProvider(config.web3Provider));
-//
-// require('../build/ABI/order.js');
-// require('../build/Binary\ Code/order.js');
-// var orderFunctions = require('../contract/order.js');
-// require('../build/ABI/letterOfCredit.js');
-//
-// var orderContract = web3.eth.contract(orderABI);
-// var letterOfCreditContract = web3.eth.contract(letterOfCreditABI);
-// var letterOfCreditFunctions = require('../contract/letterOfCredit.js');
+
+var orderContract;
+var letterOfCreditContract;
+tradeRegistryAddress = config.tradeAddress;
 
 eventEmitter.on('paymentSuccess', function(status, id) {
   tradedb.findTradeByTradeID(id, req, res, onFindTradePaymentSuccess);
@@ -38,12 +33,6 @@ eventEmitter.on('paymentSuccess', function(status, id) {
 
 
 module.exports = {
-  triggertradenew: function(req, res) {
-    tradedb.createNewTrade(req, res, onTriggerTrade.bind({
-      'req': req,
-      'res': res
-    }));
-  },
   getTradeSession: function(req, res) {
     if (!req.session.sender) {
       res.redirect('/login');
@@ -56,67 +45,62 @@ module.exports = {
   },
 
   middleware1: function(req, res, next) {
-    if (req.body.senderpage != "Bank") {
+    if (req.body.senderpage != "Manufacturer") {
       res.redirect('/profile');
+      return;
     }
-    var pendingTasks = [GetBuyerHash, GetSellerHash, GetBuyerBankHash, GetSellerBankHash, GetShipperHash, SaveTrade];
+    else{
+      var pendingTasks = [GetManufacturerHash, GetSupplierHash, GetBankHash, GetShipperHash, SaveTrade];
 
-    function next() {
-      var currentTask = pendingTasks.shift();
-      if (currentTask) currentTask();
-    }
-    next();
+      function next() {
+        var currentTask = pendingTasks.shift();
+        if (currentTask) currentTask();
+      }
+      next();
 
-    function SaveTrade() {
-      tradedb.createNewTrade(req, res, onNewTradeSession.bind({
-        'req': req,
-        'res': res
-      }));
-    }
-    //Write A Single Callback function for these
-    function GetShipperHash() {
-      userdb.findUserByUsername(req.body.shipper_id, req, res, function(err, user) {
-        if (err) return;
-        shipperHash = user.local.userHash;
-        next();
-      });
-    }
+      function SaveTrade() {
+        tradedb.createNewTrade(req, res, onNewTradeSession.bind({
+          'req': req,
+          'res': res
+        }));
+      }
+      //Write A Single Callback function for these
+      function GetShipperHash() {
+        userdb.findUserByUsername(req.body.shipper_id, req, res, function(err, user) {
+          if (err) return;
+          shipperHash = user.ethereumAddress;
+          next();
+        });
+      }
 
-    function GetSellerBankHash() {
-      userdb.findUserByUsername(req.body.sellerbank_id, req, res, function(err, user) {
-        if (err) return;
-        sellerBankHash = user.local.userHash;
-        next();
-      });
-    }
+      function GetBankHash() {
+        userdb.findUserByUsername(req.body.bank_id, req, res, function(err, user) {
+          if (err) return;
+          bankHash = user.ethereumAddress;
+          next();
+        });
+      }
 
-    function GetBuyerBankHash() {
-      userdb.findUserByUsername(req.body.bank_id, req, res, function(err, user) {
-        if (err) return;
-        buyerBankHash = user.local.userHash;
-        next();
-      });
-    }
+      function GetSupplierHash() {
+        userdb.findUserByUsername(req.body.supplier_id, req, res, function(err, user) {
+          if (err) return;
+          supplierHash = user.ethereumAddress;
+          next();
+        });
+      }
 
-    function GetSellerHash() {
-      userdb.findUserByUsername(req.body.supplier_id, req, res, function(err, user) {
-        if (err) return;
-        sellerHash = user.local.userHash;
-        next();
-      });
-    }
-
-    function GetBuyerHash() {
-      userdb.findUserByUsername(req.body.manufacturer_id, req, res, function(err, user) {
-        if (err) return;
-        buyerHash = user.local.userHash;
-        next();
-      });
+      function GetManufacturerHash() {
+        userdb.findUserByUsername(req.body.manufacturer_id, req, res, function(err, user) {
+          if (err) return;
+          manufacturerHash = user.ethereumAddress;
+          next();
+        });
+      }
     }
   },
 
   middleware2: function(req, res, next) {
-    var pendingTasks = [deployOrder, saveContractId, setupTradeParties, updateTradeStatus];
+    var pendingTasks = [setupTradeParties, updateTradeStatus];
 
     function next(result) {
       var currentTask = pendingTasks.shift();
@@ -124,19 +108,6 @@ module.exports = {
     }
 
     next();
-
-    function deployOrder() {
-      var order = orderContract.new({
-        from: config.ethAddress,
-        data: orderContractCode,
-        gas: '1000000',
-        gasPrice: '4000000000'
-      }, function(e, contract) {
-        if (typeof contract.address !== 'undefined') {
-          next(contract.address);
-        }
-      });
-    }
 
     function saveContractId(result) {
       console.log(req.body.tradeID);
@@ -150,9 +121,8 @@ module.exports = {
       next(result);
     }
 
-    function setupTradeParties(result) {
-      var orderInstance = orderContract.at(result);
-      orderFunctions.setup(orderInstance, req.body.buyerHash, req.body.sellerHash, req.body.buyerBankHash, req.body.sellerBankHash, req.body.shipperHash, next);
+    function setupTradeParties() {
+      tradeFunctions.setup(tradeRegistryAddress, req.body.manufacturerHash, req.body.supplierHash, req.body.bankHash, req.body.shipperHash, next);
     }
 
     function updateTradeStatus() {
@@ -293,7 +263,7 @@ function approve(req, res, address, username, docName) {
   var orderInstance = orderContract.at(address);
   userdb.findUserByUsername(username, req, res, function(err, user) {
     sender = user.local.userHash;
-    orderFunctions.sendApproveTxn(req, res, orderInstance, sender, docName);
+    tradeFunctions.sendApproveTxn(req, res, orderInstance, sender, docName);
   });
 }
 
@@ -301,7 +271,7 @@ function reject(req, res, address, username, docName, reason) {
   var orderInstance = orderContract.at(address);
   userdb.findUserByUsername(username, req, res, function(err, user) {
     sender = user.local.userHash;
-    orderFunctions.sendRejectTxn(req, res, orderInstance, sender, docName, reason);
+    tradeFunctions.sendRejectTxn(req, res, orderInstance, sender, docName, reason);
   });
 }
 
@@ -349,13 +319,12 @@ function onNewTradeSession(err, trade) {
   var res = this.res;
   res.send({
     tradeID: trade._id,
-    buyer: trade.manufacturer_id,
-    seller: trade.supplier_id,
+    buyer_id: trade.manufacturer_id,
+    seller_id: trade.supplier_id,
     status: trade.status,
-    buyerHash: buyerHash,
-    sellerHash: sellerHash,
-    buyerBankHash: buyerBankHash,
-    sellerBankHash: sellerBankHash,
+    manufacturerHash: manufacturerHash,
+    supplierHash: supplierHash,
+    bankHash: bankHash,
     shipperHash: shipperHash
   });
 }
@@ -667,6 +636,6 @@ function uploadDoc(req, res, address, username, docName, docHash, tradeID) {
   var hashArr = str2bytearr(docHash);
   userdb.findUserByUsername(username, req, res, function(err, user) {
     sender = user.local.userHash;
-    orderFunctions.sendDocUploadTxn(req, res, orderInstance, sender, docName, hashArr);
+    tradeFunctions.sendDocUploadTxn(req, res, orderInstance, sender, docName, hashArr);
   });
 }
