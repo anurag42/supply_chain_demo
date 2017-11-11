@@ -1,0 +1,207 @@
+<!-- views/signup.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Signup</title>
+    <link rel="stylesheet" href="/sheets/bootstrap.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="/sheets/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body{
+            padding-top:80px;
+            background:url("/images/loginbg.jpg");
+            background-size:cover;
+            height:100%;
+            width:100%;
+            position:fixed;
+        }
+        @font-face{
+
+            font-family: "panton-bold";
+            src: url("/fonts/Panton-BlackCaps.otf");
+
+        }
+        .zlogo{
+
+            display:block;
+            margin:0px auto;
+            width:260px;
+            margin-bottom:20px;
+
+        }
+        .loginh1{
+
+            font-size:18px;
+            text-align:center;
+            font-family: "panton-bold";
+            margin-top:50px;
+            margin-bottom:30px;
+
+        }
+        .alert {
+            padding: 7px 14px;
+        }
+        .icon{
+
+            color: gray;
+            float: right;
+            margin-top: -25px;
+            margin-right: 13px;
+            font-size:18px;
+        }
+        .loginbtn{
+
+            float:right;
+            color:black;
+            padding:5px 10px;
+            border-radius:3px;
+            font-size:14px;
+            font-weight:bold;
+
+        }
+        input[type=file]::-webkit-file-upload-button {
+
+            color:white;
+            background:#666666;
+            border:1px solid #666666;
+            border-radius:3px;
+
+        }
+
+        .rdbx>input[type="radio"]{
+            display:none;
+        }
+        .rdbx>input[type="radio"]:checked+label:after{
+
+            font-family: FontAwesome;
+            display: inline-block;
+            content: "\f058";
+            font-size:30px;
+            margin-left: -40px;
+            position: relative;
+            top: -23px;
+            right: -15px;
+            color:orange;
+
+        }
+        .rdbx>input[type="radio"]:checked+label+.rcont{
+
+            background:#002776;
+            color:white;
+
+        }
+        .rdbx>input[type="radio"]:checked+label{
+
+            background:#002776;
+            color:white;
+            border-radius:5px;
+
+        }
+        .rdbx{
+
+            display:inline-block;
+            margin-left:7px;
+            margin-right:7px;
+
+        }
+        label>.rimg{
+            width:70px;
+            height:80px;
+            cursor:pointer;
+            background-size:contain;
+            background-repeat:no-repeat;
+            display:inline-block;
+            background:transparent;
+            border:1px solid #ccc;
+            border-radius:3px;
+        }
+        .rcont{
+            margin:0;
+            text-align:center;
+            font-size:10px;
+            line-height:12px;
+            margin-top: -25px;
+            margin-bottom:20px;
+            cursor:pointer;
+        }
+        .rdbx .fa{
+
+            font-size:35px;
+            text-align:center;
+            padding-top:12px;
+            color:#6666666;
+
+        }
+        #plus{
+            border: none;
+            padding: 0;
+            background: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="col-sm-4 col-sm-offset-4">
+            <img src="/images/zeonlab_logo.png" class="zlogo">
+            <h1 class="loginh1">Signup</h1>
+            <% if (message) { %>
+            <div class="alert alert-danger"><%= message %></div>
+            <% } %>
+            <!-- SIGNUP FORM -->
+            <form action="/signup" method="post" enctype = "multipart/form-data" >
+                <div class="form-group">
+                    <input type="email" class="form-control" name="username" placeholder="Email ID" required>
+                    <span class="fa fa-user icon"></span>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                    <span class="fa fa-lock icon"></span>
+                </div>
+                <label>Upload KYC Doc:</label>
+
+                <div class="form-group">
+                    <input type="file" class="form-control" name="file" required>
+                </div>
+                <div class="form-group">
+                    <label>Role (Select any one):</label><br>
+                    <div class="rdbx">
+                        <input type="radio" name="role" value="Manufacturer" id="Manufacturer" />
+                        <label for="Manufacturer"><span class="fa fa-user rimg"></span></label>
+                        <p class="rcont">Manufacturer</p>
+                    </div>
+                    <div class="rdbx">
+                        <input type="radio" name="role" value="Supplier" id="Supplier" />
+                        <label for="Supplier"><span class="fa fa-handshake-o rimg"></span></label>
+                        <p class="rcont">Supplier</p>
+                    </div>
+                    <div class="rdbx">
+                        <input type="radio" name="role" value="Dealer" id="Dealer" />
+                        <label for="Dealer"><span class="fa fa-handshake-o rimg"></span></label>
+                        <p class="rcont">Dealer</p>
+                    </div>
+                    <div class="rdbx">
+                        <input type="radio" name="role" value="Bank" id="Bank" checked=checked />
+                        <label for="Bank"><span class="fa fa-university rimg"></span></label>
+                        <p class="rcont">Bank</p>
+                    </div>
+                    <div class="rdbx">
+                        <input type="radio" name="role" value="Shipper" id="Shipper" />
+                        <label for="Shipper"><span class="fa fa-shopping-cart rimg"></span></label>
+                        <p class="rcont">Shipper</p>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-warning btn-lg loginbtn">Signup</button>
+            </form>
+
+            <hr style="margin-top: 60px;">
+
+            <p>Already have an account? <a href="/login">Login</a></p>
+            <p>Or go <a href="/">home</a>.</p>
+
+        </div>
+
+    </div>
+</body>
+<script>
+</script>
+</html>

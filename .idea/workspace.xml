@@ -2,271 +2,37 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a72cf48-ff85-48a4-a40c-90bd704992bb" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/fonts/FontAwesome.otf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/fonts/Montserrat-Light.otf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/fonts/Montserrat-Regular.otf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/fonts/Montserrat-SemiBold.otf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/fonts/MontserratAlternates-SemiBold.otf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/fonts/Panton-BlackCaps.otf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/fonts/Panton-LightCaps.otf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/fonts/fontawesome-webfont.eot" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/fonts/fontawesome-webfont.woff" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/fonts/fontawesome-webfont.woff2" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/Address.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/Agreement.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/Approve.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/Bank.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/Download.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/Invoice.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/KYC.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/Logistic.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/Money.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/Note.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/PO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/QUO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/Reject.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/Tip.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/Tip_2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/Upload.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/User.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/View.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/agr_icon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/bank_icon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/bill_icon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/inv_icon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/loader.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/loginbg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/logistic_icon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/pay_icon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/pur_icon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/quo_icon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/tradeopbg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/user_icon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/images/zeonlab_logo.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/supply_chain.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/ABI/letterOfCredit.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/ABI/order.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/ABI/order1.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/ABI/registry.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/fonts/fontawesome-webfont.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/fonts/fontawesome-webfont.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/js/api.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/js/bootstrap.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/js/jquery-ui.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/js/jquery.1.11.1.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/js/sha256.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/js/timer.jquery.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/js/tweenlite.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/sheets/bootstrap.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/sheets/bootstrap.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/sheets/font-awesome.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/sheets/font-awesome.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/sheets/font.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/sheets/trade.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/Readme.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/.bowerrc" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/.editorconfig" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/.jshintrc" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/.npmignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/.travis.yml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/.versions" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/LICENSE" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/README.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/bower.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/circle.yml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/dist/web3-light.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/dist/web3-light.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/dist/web3.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/dist/web3.js.map" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/dist/web3.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/example/balance.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/example/basic1.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/example/basic2.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/example/basic23.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/example/contract.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/example/contract_array.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/example/event_inc.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/example/icap.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/example/namereg.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/example/node-app.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/gulpfile.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/contracts/GlobalRegistrar.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/contracts/ICAPRegistrar.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/contracts/SmartExchange.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/solidity/address.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/solidity/bool.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/solidity/bytes.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/solidity/coder.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/solidity/dynamicbytes.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/solidity/formatters.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/solidity/int.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/solidity/param.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/solidity/real.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/solidity/string.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/solidity/type.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/solidity/uint.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/solidity/ureal.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/utils/bloom.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/utils/browser-bn.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/utils/browser-xhr.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/utils/config.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/utils/sha3.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/utils/utils.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/version.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/allevents.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/batch.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/contract.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/errors.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/event.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/extend.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/filter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/formatters.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/function.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/httpprovider.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/iban.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/ipcprovider.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/jsonrpc.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/method.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/methods/db.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/methods/eth.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/methods/net.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/methods/personal.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/methods/shh.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/methods/swarm.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/methods/watches.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/namereg.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/property.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/requestmanager.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/settings.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/syncing.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/lib/web3/transfer.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/package-init.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/package.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/package.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/styleguide.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/async.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/batch.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/bloom.testAddress.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/bloom.testTopic.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/coder.decodeParam.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/coder.encodeParam.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/contract.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/errors.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/event.decode.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/event.encode.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/formatters.inputAddressFormatter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/formatters.inputDefaultBlockFormatter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/formatters.inputPostFormatter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/formatters.inputTransactionFormatter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/formatters.outputBlockFormatter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/formatters.outputLogFormatter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/formatters.outputPostFormatter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/formatters.outputTransactionFormatter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/helpers/FakeHttpProvider.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/helpers/FakeHttpProvider2.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/helpers/FakeIpcRequest.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/helpers/FakeQtNavigator.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/helpers/FakeXHR2.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/helpers/FakeXMLHttpRequest.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/helpers/test.method.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/helpers/test.utils.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/httpprovider.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/iban.createIndirect.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/iban.fromAddress.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/iban.isValid.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/iban.toAddress.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/ipcprovider.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/jsonrpc.id.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/jsonrpc.isValidResponse.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/jsonrpc.toBatchPayload.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/jsonrpc.toPayload.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/method.extractCallback.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/method.formatInput.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/method.formatOutput.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/method.getCall.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/method.validateArgs.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/mocha.opts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/node/app.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/node/package.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/polling.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/requestmanager.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/sha3.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/soldity.formatters.formatInputInt.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.extractDisplayName.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.extractTypeName.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.fromAscii.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.fromDecimal.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.fromUtf8.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.fromWei.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.isAddress.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.isBigNumber.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.isChecksumAddress.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.isFunction.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.isJson.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.isStrictAddress.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.isString.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.toAscii.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.toBigNumber.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.toDecimal.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.toHex.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.toUtf8.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/utils.toWei.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.db.getHex.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.db.getString.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.db.methods.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.db.putHex.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.db.putString.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.accounts.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.blockNumber.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.call.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.coinbase.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.contract.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.defaultBlock.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.estimateGas.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.filter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.gasPrice.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.getBalance.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.getBlock.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.getBlockTransactionCount.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.getBlockUncleCount.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.getCode.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.getCompilers.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.getStorageAt.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.getSyncing.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.getTransaction.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.getTransactionFromBlock.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.getTransactionReceipt.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.getUncle.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.getWork.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.hashRate.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.isSyncing.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.methods.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.mining.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.protocolVersion.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.sendIBANTransaction.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.eth.submitWork.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.extend.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.fromICAP.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.methods.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.net.listening.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.net.methods.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.net.peerCount.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.personal.listAccounts.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.personal.methods.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.personal.newAccount.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.personal.unlockAccount.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.sha3.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.shh.filter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.shh.methods.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/web3.js/web3.js-develop/test/web3.shh.post.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/buyerlogin.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/tradepage.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/events/events.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/file/impl.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/file/ipfs.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/file/routes.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/package-lock.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/registry/db.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/registry/model.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/sheets/tradepage.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/trade/db.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/trade/impl.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/trade/model.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/trade/routes.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/user/db.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/user/impl.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/user/model.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/user/routes.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/index.ejs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/login.ejs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/profile1.ejs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/profile2.ejs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/profiledetails.ejs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/roleselection.ejs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/signup.ejs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/tradepage.ejs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/tradepage1.ejs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/styles/sheets/trade.css" afterPath="$PROJECT_DIR$/styles/sheets/trade.css" />
     </list>
     <ignored path="supply_chain.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -294,6 +60,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/views/tradepage.html" />
+        <option value="$PROJECT_DIR$/styles/sheets/trade.css" />
       </list>
     </option>
   </component>
@@ -343,6 +110,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="supply_chain" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="supply_chain" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="supply_chain" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="registry" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -559,6 +340,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-11214">
           <caret line="58" column="45" selection-start-line="58" selection-start-column="45" selection-end-line="58" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/styles/sheets/trade.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="46" selection-start-line="2" selection-start-column="46" selection-end-line="2" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/registry/model.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>

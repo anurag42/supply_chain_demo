@@ -1,0 +1,186 @@
+<! DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Employee Contract</title>
+    <style>
+        td {
+            width: 100 px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h3>Register name</h3>
+    </div>
+
+    <div>
+        <text>Add Employee Name:</text>
+
+        <input type="text" id="registerEmployee" placeholder="Name" style="text-align:center">
+	<br>
+        <text id='registerStatus'></text>
+    </div>
+    <div>
+        <button onClick="registerEmployee()">Register!</button>
+    </div>
+    <div>
+        <h3>Update Attendance</h3>
+    </div>
+    <div>
+        <text> Enter Employee ID:</text>
+
+        <input type="number" id="EmployeeAttendance" placeholder="ID Number" style="text-align:center">
+	<br>
+        <text id='attendance'></text>
+    </div>
+    <div>
+        <button onClick="Update()">Update</button>
+    </div>
+    <div>
+        <h3>Search Employee by ID</h3>
+    </div>
+    <div>
+        <text> Enter Employee ID:</text>
+        <input type="number" id="EmployeeId" placeholder="ID Number" style="text-align:center">
+        <text id='IdSearch'></text>
+    </div>
+    <div>
+        <button onClick="searchEmployee()">Register!</button>
+    </div>
+</body>
+
+<script type="text/javascript" src="../dist/web3.js"></script>
+<script type="text/javascript">
+    var Web3 = require('web3');
+    var web3 = new Web3();
+    web3.setProvider(new web3.providers.HttpProvider("http://localhost:8545"));
+
+    var employeeContract = web3.eth.contract([{"constant":false,"inputs":[{"name":"name","type":"string"}],"name":"addEmployee","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"dir","outputs":[{"name":"name","type":"string"},{"name":"days_present","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"id","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"emp_id","type":"uint256"}],"name":"attendance","outputs":[],"payable":false,"type":"function"},{"inputs":[{"name":"name","type":"string"}],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"id","type":"uint256"}],"name":"add_emp","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"data","type":"string"}],"name":"no_access","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"data","type":"string"},{"indexed":false,"name":"emp_name","type":"string"}],"name":"is_present","type":"event"}]);
+    var employee = employeeContract.at("0x644574ca04ee56dc5e56262697a4c28c37963a9a");
+
+    var check_attendance = 0;
+    var check_addEmployee = 0;
+
+    function registerEmployee() {
+        var name = document.getElementById('registerEmployee').value;
+        var txhash;
+
+	var myEvent = employee.add_emp();
+        myEvent.watch(function(err, result) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            console.log(result.args.name);
+	    myEvent.stopWatching();
+	    check_addEmployee = 1;
+        });
+
+        employee.addEmployee.sendTransaction(name, {from: web3.eth.accounts[0]}, 
+              function(error, result) {
+
+		//Callback function starts
+                document.getElementById('registerStatus').innerText = ' Registering name in progress, please wait...';
+
+		if (error) {
+                    document.getElementById('registerStatus').innerText = '';
+		    alert("Error!!! Name registration unsuccessful");
+		    console.error(error);
+                    return;
+                }
+
+		//No Error
+		//Check if Transaction is mined or not using Txreceipt
+                txhash = result;
+                console.log(txhash);
+                var filter = web3.eth.filter('latest');
+
+		//Start Watching latest txns
+		//Check if your reqd Txn is mined
+		//Stop Watching txns
+                filter.watch(function(error, result) {
+                        var receipt = web3.eth.getTransactionReceipt(txhash);
+			//If TxReceipt is not "Null", Tx is mined successfully
+                        if (receipt) {
+                            filter.stopWatching();//End watching txns
+
+			    //Check if the Txn is successful or not
+			    if(check_addEmployee == 1){
+			       document.getElementById('registerStatus').innerText = name + " is added to the directory.";
+			       alert("Success!!!");
+			       check_addEmployee = 0;
+			       return;
+			    }
+			    document.getElementById('registerStatus').innerText = "Failed!!!";
+			    alert("Failed.....Try again!!!");
+                        }
+                    });
+
+                });//Callback function ends
+        }
+
+        function Update() {
+            var id = document.getElementById('EmployeeAttendance').value;
+	    var txhash;
+
+	    var anotherEvent = employee.is_present();
+            anotherEvent.watch(function(err, result) {
+                              if (err) {
+                                 console.error(err);
+                                 return;
+                              }
+                              console.log(result);
+	                      anotherEvent.stopWatching();
+	                      check_attendance = 1;
+            })
+
+            employee.attendance.sendTransaction(id, {
+                from: web3.eth.accounts[0]
+            }, function(error, result) {
+
+		document.getElementById('attendance').innerText = 'Registering attendance in progress, please wait...';
+                if (error) {
+		    document.getElementById('attendance').innerText = ' ';
+                    console.error(error);
+		    return;
+                } 
+                txhash = result;
+                console.log(txhash);
+                var filter = web3.eth.filter('latest');
+
+                filter.watch(function(error, result) {
+                        var receipt = web3.eth.getTransactionReceipt(txhash);
+                        if (receipt) {
+                            document.getElementById('attendance').innerText = 'Mined!';
+                            filter.stopWatching();
+			    if(check_attendance == 1){
+			       document.getElementById('attendance').innerText = "";
+			       alert("Thank You!!! Attendance registered.");
+			       check_attendance = 0;
+			       return;
+			    }
+			    document.getElementById('attendance').innerText = "Failed!!!";
+			    alert("Failed.....Try again!!!");
+                        }
+                    });
+            });
+        }
+
+        function searchEmployee(id) {
+            var id = document.getElementById('EmployeeId').value;
+	    var name = employee.dir(id)[0];
+	  
+            if (name != "") {
+                document.getElementById('IdSearch').innerText = '\nFound!!!' + "\nEmployee Name: " + name;
+		return 0;
+            } else {
+		document.getElementById('IdSearch').innerText = '';
+                alert("Error!!! No such Id registered");
+		return 1;
+            }
+        }
+</script>
+
+</html>

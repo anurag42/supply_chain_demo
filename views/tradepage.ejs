@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%=senderpage%>/Trade Tracker</title>
+    <link rel="stylesheet" href="/sheets/bootstrap.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="/sheets/font-awesome.min.css"> <!-- load fontawesome -->
+    <link rel="stylesheet" href="/sheets/trade.css">
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+	    <div class="navbar-header">
+	        <a class="navbar-brand" href="http://demo.zeonlabs.com/login">
+                <img src ="/images/zeonlab_logo.png" alt="Zeonlab-Blockchain" class="logo">
+            </a>
+	    </div>
+	    <ul class="nav navbar-nav navbar-right navhide">
+		    <li><a href="/profiledetails">PROFILE DETAILS</a></li>
+		    <li><a href="/profile">TRADE DASHBOARD</a></li>
+            <li><a href="/logout" class="footerscrl rdot">LOGOUT</a></li>
+	    </ul>
+    </div>
+</nav>
+
+<form id="approval_form" action = "/approvetrade" method = "POST">
+		<input type="hidden" name="trade_id" value=<%= id %>>
+		<input type="hidden" class="approvaltype" name="approvaltype" value=''>
+		<input type="hidden" name="senderpage" value=<%= senderpage %>>
+	</form>
+	<form id="dwnld_form" action = "/docdownload" method = "POST">
+		<input type="hidden" name="trade_id" value=<%= id %>>
+		<input type="hidden" id="docname" name="docname" value=''>
+	</form>
+	<form id="dwnld_form2" action = "/docdownloadbc" method = "POST">
+		<input type="hidden" name="trade_id" value=<%= id %>>
+		<input type="hidden" id="docname2" name="docname" value=''>
+</form>
+
+    <h3 class="tradeheading">TRADE TRACKER</h3>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="usrinfo">
+                    <div class="infoitem">
+                        <img src="/images/bank_icon.png">
+                        <span><strong>Seller Bank:</strong> <%= sellerbank_id %> </span>
+                    </div>
+                    <div class="infoitem">
+                        <img src="/images/bank_icon.png">
+                        <span><strong>Buyer Bank:</strong> <%= bank_id %> </span>
+                    </div>
+                    <div class="infoitem">
+                        <img src="/images/user_icon.png">
+                        <span><strong>Seller:</strong> <%= seller_id %> </span>
+                    </div>
+                    <div class="infoitem">
+                        <img src="/images/user_icon.png">
+                        <span><strong>Buyer:</strong> <%= buyer_id %> </span>
+                    </div>
+                    <div class="infoitem">
+                        <img src="/images/logistic_icon.png">
+                        <span><strong>Shipper:</strong> <%= shipper_id %> </span>
+                    </div>
+                    <input type="hidden" id="senderpage" value="<%= senderpage %>">
+                    <input type="hidden" id="quote" value="<%=quotation%>">
+                    <input type="hidden" id="status" value="<%=status%>">
+                    <input type="hidden" id="po" value="<%=po%>">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="tradecontainer">
+                    <h4 class="text-center"><strong>Pending Action:</strong> <span class="pendingstatus">Purchase Order Uploaded Seller to Approve</span></h4><br>
+                    <div class="tradelist">
+                        <div class="row tradeitem quotation_row">
+                            <div class="col-sm-2 tradeleft text-center">
+                                <img src="/images/quo_icon.png">
+                                <p class="status">IN PROGRESS</p>
+                            </div>
+                            <div class="col-sm-10 traderight">
+                                <div class="col-sm-6">
+                                    <p class="tradedate">2.10.2107</p>
+                                    <p class="tradehead">Quotation</p>
+                                    <p class="tradetxt">Received Quotation from Seller</p>
+                                </div>
+                                <div class="col-sm-6 tradeoptions">
+                                    <% if(senderpage == 'Seller') {%> <button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('quotation'); setTitle('Quotation')">Upload Quotation
+                                        <i class="fa fa-upload" aria-hidden="true"></i>
+                                    </button><br/><%}%>
+                                    <% if(senderpage == 'Buyer') {%><div class="optionbtn">
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('Q')" form="approval_form">Accept
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('Q')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div><%}%>
+                                    <div class="downloadbtn">
+                                        <button class="tradebtn dnldbcbtn" onclick="dwnldForm('Quotation')" data-toggle="modal" data-target="#bcdnldmodal" form="dwnld_form2">Download
+                                            <i class="fa fa-link" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn dnldsvbtn" onclick="dwnldForm('Quotation')" form="dwnld_form">Download
+                                            <i class="fa fa-server" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row purchase_row tradeitem">
+                            <div class="col-sm-2 tradeleft text-center">
+                                <img src="/images/pur_icon.png">
+                                <p class="status">IN PROGRESS</p>
+                            </div>
+                            <div class="col-sm-10 traderight">
+                                <div class="col-sm-6">
+                                    <p class="tradedate">2.10.2107</p>
+                                    <p class="tradehead">Purchase Order</p>
+                                    <p class="tradetxt">Purchase Order Uploaded Seller to Approve</p>
+                                </div>
+                                <div class="col-sm-6 tradeoptions">
+                                    <% if(senderpage == 'Buyer') {%> <button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('po'); setTitle('Purchase Order')">Upload Purchase Order
+                                        <i class="fa fa-upload" aria-hidden="true"></i>
+                                    </button><br/><%}%>
+                                    <% if(senderpage == 'Seller') {%> <div class="optionbtn">
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('P')" form="approval_form">Accept
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('P')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div><%}%>
+                                    <div class="downloadbtn">
+                                        <button class="tradebtn dnldbcbtn" onclick="dwnldForm('PurchaseOrder')" data-toggle="modal" data-target="#bcdnldmodal" form="dwnld_form2">Download
+                                            <i class="fa fa-link" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn dnldsvbtn" onclick="dwnldForm('PurchaseOrder')" form="dwnld_form">Download
+                                            <i class="fa fa-server" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row invoice_row tradeitem">
+                            <div class="col-sm-2 tradeleft text-center">
+                                <img src="/images/inv_icon.png">
+                                <p class="status">IN PROGRESS</p>
+                            </div>
+                            <div class="col-sm-10 traderight">
+                                <div class="col-sm-6">
+                                    <p class="tradedate">2.10.2107</p>
+                                    <p class="tradehead">Invoice</p>
+                                    <p class="tradetxt">Invoice Received from Seller</p>
+                                </div>
+                                <div class="col-sm-6 tradeoptions">
+                                    <% if(senderpage == 'Seller') {%><button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('invoice'); setTitle('Invoice')">Upload Invoice
+                                        <i class="fa fa-upload" aria-hidden="true"></i>
+                                    </button><br/><%}%>
+                                    <% if(senderpage == 'Buyer') {%> <div class="optionbtn">
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('I')" form="approval_form">Accept
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('I')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div><%}%>
+                                    <% if(senderpage == 'Bank') {%> <div class="optionbtn">
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('IA')" form="approval_form">Accept
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('IA')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div><%}%>
+                                    <div class="downloadbtn">
+                                        <button class="tradebtn dnldbcbtn" onclick="dwnldForm('Invoice')" data-toggle="modal" data-target="#bcdnldmodal" form="dwnld_form2">Download
+                                            <i class="fa fa-link" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn dnldsvbtn" onclick="dwnldForm('Invoice')" form="dwnld_form">Download
+                                            <i class="fa fa-server" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row agreement_row tradeitem">
+                            <div class="col-sm-2 tradeleft text-center">
+                                <img src="/images/agr_icon.png">
+                                <p class="status">IN PROGRESS</p>
+                            </div>
+                            <div class="col-sm-10 traderight">
+                                <div class="col-sm-6">
+                                    <p class="tradedate">2.10.2107</p>
+                                    <p class="tradehead">Financial Agreement</p>
+                                    <p class="tradetxt">Received Agreement from Bank</p>
+                                </div>
+                                <div class="col-sm-6 tradeoptions">
+                                    <% if(senderpage == 'Bank') {%> <button class="tradebtn uploadbtn" data-toggle="modal" data-target="#Agreementmodal">Update Agreement
+                                        <i class="fa fa-upload" aria-hidden="true"></i>
+                                    </button><br/><%}%>
+                                    <% if(senderpage == 'Buyer' || senderpage == 'Seller') {%><div class="optionbtn">
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('L')" form="approval_form">Accept
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('L')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div><%}%>
+                                    <div class="downloadbtn">
+                                    <button class="tradebtn viewbtn1" data-toggle="modal" data-target="#Agreementviewmodal">View Agreement
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </button><br/>
+                                    <button class="tradebtn viewbtn2" data-toggle="modal" data-target="#Agreementviewmodal">View Agreement
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row bill_row tradeitem">
+                            <div class="col-sm-2 tradeleft text-center">
+                                <img src="/images/bill_icon.png">
+                                <p class="status">IN PROGRESS</p>
+                            </div>
+                            <div class="col-sm-10 traderight">
+                                <div class="col-sm-6">
+                                    <p class="tradedate">2.10.2107</p>
+                                    <p class="tradehead">Bill of Lading</p>
+                                    <p class="tradetxt">Shipper yet to Upload Bill Of Lading</p>
+                                </div>
+                                <div class="col-sm-6 tradeoptions">
+                                    <% if(senderpage == 'Shipper') {%><button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('bol'); setTitle('Bill Of Lading')">Upload Bill Of Lading
+                                        <i class="fa fa-upload" aria-hidden="true"></i>
+                                    </button><br/><%}%>
+                                    <% if(senderpage == 'Buyer' || senderpage == "Bank") {%><div class="optionbtn">
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('B')" form="approval_form">Accept
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('B')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div><%}%>
+                                    <div class="downloadbtn">
+                                        <button class="tradebtn dnldbcbtn" onclick="dwnldForm('BillOfLading')" form="dwnld_form2" data-toggle="modal" data-target="#bcdnldmodal">Download
+                                            <i class="fa fa-link" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn dnldsvbtn" onclick="dwnldForm('BillOfLading')" form="dwnld_form">Download
+                                            <i class="fa fa-server" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row payment_row tradeitem">
+                            <div class="col-sm-2 tradeleft text-center">
+                                <img src="/images/pay_icon.png">
+                                <p class="status">IN PROGRESS</p>
+                            </div>
+                            <div class="col-sm-10 traderight">
+                                <div class="col-sm-6">
+                                    <p class="tradedate">2.10.2107</p>
+                                    <p class="tradehead">Payment</p>
+                                    <p class="tradetxt">Payment Scheduled</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Upload Modal -->
+<div id="uploadmodal" class="modal fade" role="dialog">
+	<div class="modal-dialog" style="width:400px;">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>Upload <span id="title" class="modal-title"></span></h4>
+			</div>
+			<div class="modal-body">
+				<div id="uplshow">
+					<img src="/images/loader.gif" class="loadergif">
+					<p>Please hang on while we upload this document<br/>
+						on to blockchain. This document will then<br/>
+						be immutable and permanent.<br/>
+						This may take few minutes. </p>
+						<p style="font-weight:bold;">You can close this window now</p>
+					</div>
+					<div id="uplhide">
+						<form id="uploadform" action = "/fileupload" method = "POST" enctype = "multipart/form-data">
+							<div class="form-group">
+								<input type="hidden" id="docName" name="senderpage">
+								<p id="uperror" style="display:none;color:red;">Please Select File</p>
+								<input type="file" class="form-control" id="docfile" name="file" required>
+								<input type="hidden" name="id" value=<%= id %>>
+								<input type="hidden" id="hash" name="sha256hash">
+							</div>
+						</form>
+						<div class="form-group">
+							<button class="btn mupbtn" onclick = "computeHash()"><img src="/images/Upload.png" class="upimg">Upload</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+
+
+<!-- Reject Modal -->
+<div id="rejectmodal" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width:400px;">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="title" class="modal-title">Reason for Rejection</h4>
+            </div>
+            <div class="modal-body" style="padding-top:5px;">
+                <form id="rejection_form" action = "/rejecttrade" method = "POST">
+                    <input type="hidden" name="trade_id" value=<%= id %>>
+                    <input type="hidden" class="approvaltype" name="approvaltype" value=''>
+                    <input type="hidden" name="senderpage" value=<%= senderpage %>>
+                </form>
+                <textarea form="rejection_form" name="reason" placeholder="Reason" class="form-control" rows="4"></textarea>
+                <div style="margin-top:8px;text-align:right;">
+                        <button class="btn btn-link" data-dismiss="modal">Cancel</button>
+                        <button type="submit" form="rejection_form" class="btn btn-default">Submit</button>
+                    </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!-- BCdnld Modal -->
+<div id="bcdnldmodal" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width:400px;">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body" style="padding-top:30px;">
+                <p>Please hang on while we download this document from blockchain. This may take a while..</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<!--Agreement Modal -->
+<div id="Agreementmodal" class="modal fade" role="dialog">
+	<div class="modal-dialog" style="width:400px;">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 id="title" style="text-align:center" class="modal-title">Update Financial Agreement</h4>
+			</div>
+			<div class="modal-body">
+				<form action="/letterofcredit" method="post">
+					<div class="form-group">
+						<input type="hidden" name="trade_id" value=<%= id %>>
+					</div>
+					<div class="form-group">
+						<input type="hidden" class="form-control" name="buyer" value=<%= buyer_id %>>
+					</div>
+					<div class="form-group">
+						<input type="hidden" class="form-control" name="seller" value=<%= seller_id %>>
+					</div>
+					<div class="form-group">
+						<input type="hidden" class="form-control" name="buyerBank" value=<%= bank_id %>>
+					</div>
+					<div class="form-group">
+						<input type="hidden" class="form-control" name="sellerBank" value=<%= sellerbank_id %>>
+					</div>
+					<div class="form-group">
+						<input type="number" class="form-control" name="timePeriod" placeholder="Time Period in mins before expiry">
+					</div>
+					<div class="form-group">
+						<input type="number" class="form-control" name="creditAmount" placeholder="Credit Amount">
+					</div>
+					<button type="submit" class="btn btn-default" style="margin-left: 79.5%;">Submit</button>
+				</form>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+<!--Agreement view Modal -->
+<div id="Agreementviewmodal" class="modal fade" role="dialog">
+	<div class="modal-dialog" style="width:400px;">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title"></h4>
+			</div>
+			<div class="modal-body">
+				<form action="/letterofcredit" method="post">
+					<div class="form-group">
+						<input type="hidden" name="trade_id" value=<%= id %>>
+					</div>
+					<div class="form-group">
+						<input type="hidden" class="form-control" name="buyer" value=<%= buyer_id %>>
+					</div>
+					<div class="form-group">
+						<input type="hidden" class="form-control" name="seller" value=<%= seller_id %>>
+					</div>
+					<div class="form-group">
+						<input type="hidden" class="form-control" name="buyerBank" value=<%= bank_id %>>
+					</div>
+					<div class="form-group">
+						<input type="hidden" class="form-control" name="sellerBank" value=<%= sellerbank_id %>>
+					</div>
+					<div class="form-group">
+						<p>This agreement contains all textual
+							details of the agreement along with
+							payment-related terms that are in the form.<br/>
+							Summary of Payment Related terms</p>
+						</div>
+						<div class="form-group">
+							<label>Time Period in mins before expiry</label><input type="number" class="form-control" name="timePeriod" value='<%= timePeriod %>' readonly>
+						</div>
+						<div class="form-group">
+							<label>Credit Amount</label><input type="number" class="form-control" name="creditAmount" value='<%= creditAmount %>' readonly>
+						</div>
+						<button type="submit" class="btn btn-default" style="margin-left: 81.5%;" data-dismiss="modal">Close</button>
+                </form>
+			</div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="/js/jquery.1.11.1.js"></script>
+<script type="text/javascript" src="/js/bootstrap.js"></script>
+<script type="text/javascript" src="/js/sha256.js"></script>
+<script type="text/javascript" src="/web3.js/web3.js-develop/dist/web3.js"></script>
+<script type="text/javascript" src="/ABI/order.js"></script>
+<script>
+// $(".tradeitem button").prop('disabled', true);
+$(".trading button").prop('disabled', false);
+$(".tradeitem .status").html('YET TO START');
+var docNameStore;
+$(".dnldbcbtn").click(function(){
+
+	setTimeout(function(){
+         $("#bcdnldmodal").modal('hide');
+    }, 3000);
+
+});
+function str2bytearr(str) {
+	var data = [];
+	for (var i = 0; i < str.length; i++) {
+		data.push(str.charCodeAt(i));
+	}
+	return data;
+}
+
+$("#docfile").click(function(){
+
+    document.getElementById("uperror").style.display="none";
+
+});
+function computeHash(){
+
+    $('#uploadform').submit();
+    $('#uplhide').hide();
+    $('#uplshow').show();
+}
+
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();
+});
+
+function setTitle(title){
+    $("#title").html(title);
+}
+
+function fillName(name){
+switch(name){
+	case "quotation":
+	docNameStore = "Quotation";
+	break;
+	case "po":
+	docNameStore = "PurchaseOrder";
+	break;
+	case "invoice":
+	docNameStore = "Invoice";
+	break;
+	case "bol":
+	docNameStore = "BillOfLading";
+	break;
+    }
+    $("#docName").val(name);
+}
+
+function dwnldForm(name){
+	$("#docname").val(name);
+	$("#docname2").val(name);
+}
+
+function fillForm(approvalType){
+	var el = document.getElementsByClassName('approvaltype');
+	for(var i = 0; i < el.length; ++i){
+		el[i].value = approvalType;
+	}
+}
+
+$(".uploadbtn, .acceptbtn, .rejectbtn, .dnldsvbtn, .dnldbcbtn, .viewbtn1, .viewbtn2").prop('disabled', true);
+
+$(".quotation_row .tradetxt").html('Trade Process Yet to Start');
+$(".purchase_row .tradetxt").html('Yet to Upload Purchase Order');
+$(".invoice_row .tradetxt").html('Yet to Upload Invoice');
+$(".agreement_row .tradetxt").html('Yet to Upload Agreement');
+$(".bill_row .tradetxt").html('Yet to Upload Bill of Lading');
+$(".payment_row .tradetxt").html('Payment Not yet scheduled');
+
+if("<%= status %>".split(';')[1] ==  ' Ethereum Txn Pending' || "<%= status %>".split(' ')[0] ==  'Payment'){
+	setTimeout(function(){location.reload()}, 5000);
+}
+
+
+switch("<%= status %>".split(' ')[0]){
+	case "Quotation":
+	if("<%= status %>" != "Quotation Approved"){
+    $(".quotation_row").addClass("trading");
+    $(".quotation_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+    $(".quotation_row .tradeleft").css("cssText","opacity:1 !important");
+    $(".quotation_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+    $(".quotation_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
+    $(".quotation_row .status").html("IN PROGRESS");
+
+  }
+	break;
+	case "Purchase":
+	$(".quotation_row .tradetxt").html('Quotation Approved');
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
+	if("<%= status %>" != "Purchase Order Approved"){
+    $(".purchase_row").addClass("trading");
+    $(".purchase_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+    $(".purchase_row .tradeleft").css("cssText","opacity:1 !important");
+    $(".purchase_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+    $(".purchase_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
+    $(".purchase_row .status").html("IN PROGRESS");
+    $(".quotation_row .status").html("COMPLETED");
+  }
+	break;
+	case "Invoice":
+	$(".quotation_row .tradetxt").html('Quotation Approved');
+	$(".purchase_row .tradetxt").html('Purchase Order Approved');
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").prop('disabled', false);
+	if("<%= status %>" != "Invoice Approved"){
+    $(".invoice_row").addClass("trading");
+    $(".invoice_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+    $(".invoice_row .tradeleft").css("cssText","opacity:1 !important");
+    $(".invoice_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+    $(".invoice_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
+    $(".invoice_row .status").html("IN PROGRESS");
+    $(".quotation_row .status, .purchase_row .status").html("COMPLETED");
+
+  }
+	break;
+	case "Letter":
+	$(".quotation_row .tradetxt").html('Quotation Approved');
+	$(".purchase_row .tradetxt").html('Purchase Order Approved');
+	$(".invoice_row .tradetxt").html('Invoice Approved');
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").prop('disabled', false);
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
+	if("<%= status %>" != "Letter Of Credit Approved"){
+    $(".agreement_row").addClass("trading");
+    $(".agreement_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+    $(".agreement_row .tradeleft").css("cssText","opacity:1 !important");
+    $(".agreement_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+    $(".agreement_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
+    $(".agreement_row .status").html("IN PROGRESS");
+    $(".quotation_row .status, .purchase_row .status, .invoice_row .status").html("COMPLETED");
+  }
+	break;
+	case "Bill":
+	$(".quotation_row .tradetxt").html('Quotation Approved');
+	$(".purchase_row .tradetxt").html('Purchase Order Approved');
+	$(".invoice_row .tradetxt").html('Invoice Approved');
+	$('.payment_row .tradeleft').css("cssText","opacity:1 !important");
+	$(".payment_row .tradetxt").html('Payment Scheduled');
+	$(".agreement_row .tradetxt").html('Financial Agreement Approved');
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").prop('disabled', false);
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
+	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").css("cssText","opacity:1 !important");
+	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").prop('disabled', false);
+	if("<%= status %>" != "Bill Of Lading Approved"){
+    $(".bill_row").addClass("trading");
+    $(".bill_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+    $(".bill_row .tradeleft").css("cssText","opacity:1 !important");
+    $(".bill_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+    $(".bill_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
+    $(".bill_row .status").html("IN PROGRESS");
+    $(".quotation_row .status, .purchase_row .status, .invoice_row .status, .agreement_row .status").html("COMPLETED");
+  }
+	break;
+	case "Payment":
+	$(".quotation_row .tradetxt").html('Quotation Approved');
+	$(".purchase_row .tradetxt").html('Purchase Order Approved');
+	$(".invoice_row .tradetxt").html('Invoice Approved');
+	$(".agreement_row .tradetxt").html('Financial Agreement Approved');
+	$(".bill_row .tradetxt").html('Bill Of Lading Approved');
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").prop('disabled', false);
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
+	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").css("cssText","opacity:1 !important");
+	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").prop('disabled', false);
+  $(".payment_row").addClass("trading");
+  $(".payment_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+  $(".payment_row .tradeleft").css("cssText","opacity:1 !important");
+  $(".payment_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+  $(".payment_row .status").html("IN PROGRESS");
+  $(".quotation_row .status, .purchase_row .status, .invoice_row .status, .agreement_row .status, .bill_row .status").html("COMPLETED");
+	break;
+}
+
+
+switch("<%= status %>"){
+	case "Quotation Not Uploaded":
+	if("<%= senderpage %>" == "Seller"){
+		$(".quotation_row .uploadbtn").css("cssText","opacity:1 !important");
+		$(".quotation_row .uploadbtn").prop('disabled', false);
+		$(".pendingstatus, .quotation_row .tradetxt").html('Upload Quotation');
+	}
+	else $(".quotation_row .tradetxt").html('Seller to Upload Quotation');
+	break;
+	case "Quotation Rejected; Ethereum Txn Pending;":
+	$(".quotation_row .rejbtngif").show();
+	$(".pendingstatus, .quotation_row .tradetxt").html('Quotation Rejected, Updating on Blockchain');
+	break;
+	case "Quotation Rejected":
+	if("<%= senderpage %>" == "Seller"){
+		$(".quotation_row .uploadbtn").css("cssText","opacity:1 !important");
+		$(".quotation_row .uploadbtn").prop('disabled', false);
+		$(".pendingstatus, .quotation_row .tradetxt").html('Quotation Rejected. Re-upload Quotation');
+	}
+	else $(".quotation_row .tradetxt").html('Quotation Rejected. Seller to Upload Quotation');
+	break;
+	case "Quotation Uploaded; Ethereum Txn Pending;":
+	$(".quotation_row .dnldsvbtn").css("cssText","opacity:1 !important");
+	$(".quotation_row .dnldsvbtn").prop('disabled', false);
+	$(".quotation_row .uploadbtn .loaderbtngif").show();
+	$(".pendingstatus, .quotation_row .tradetxt").html('Uploading on Blockchain');
+	break;
+	case "Quotation Uploaded":
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
+	if("<%= senderpage %>" == "Buyer"){
+		$(".pendingstatus, .quotation_row .tradetxt").html('Review Quotation');
+		$(".quotation_row .acceptbtn, .quotation_row .rejectbtn").css("cssText","opacity:1 !important");
+		$(".quotation_row .acceptbtn, .quotation_row .rejectbtn").prop('disabled', false);
+	}
+	else $(".pendingstatus, .quotation_row .tradetxt").html('Buyer to Approve');
+	break;
+	case "Quotation Approved; Ethereum Txn Pending;":
+	$(".quotation_row .aprbtngif").show();
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .quotation_row .tradetxt").html('Quotation Approved, Updating on Blockchain');
+	break;
+	case "Quotation Approved":
+	$(".purchase_row .tradeleft").css("cssText","opacity:1 !important");
+	$(".purchase_row .uploadbtn").css("cssText","opacity:1 !important");
+	$(".purchase_row .uploadbtn").prop('disabled', false);
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .quotation_row .tradetxt").html('Quotation Approved');
+	if("<%= senderpage %>" == "Buyer"){
+		$(".pendingstatus, .purchase_row .tradetxt").html('Upload Purchase Order');
+		$(".quotation_row .uploadbtn").prop('disabled', false);
+	}
+	else $(".pendingstatus, .purchase_row .tradetxt").html('Buyer yet to Upload Purchase Order');
+	break;
+	case "Purchase Order Rejected; Ethereum Txn Pending;":
+	$(".purchase_row .rejbtngif").show();
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .purchase_row .tradetxt").html('Purchase Order Rejected, Updating on Blockchain');
+	break;
+	case "Purchase Order Rejected":
+	$(".purchase_row .uploadbtn").css("cssText","opacity:1 !important");
+	$(".purchase_row .uploadbtn").prop('disabled', false);
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .quotation_row .tradetxt").html('Quotation Approved');
+	if("<%= senderpage %>" == "Buyer"){
+		$(".pendingstatus, .purchase_row .tradetxt").html('Purchase Order Rejected. Re-upload Purchase Order');
+		$(".quotation_row .uploadbtn").prop('disabled', false);
+	}
+	else $(".pendingstatus, .purchase_row .tradetxt").html('Purchase Order Rejected. Buyer yet to Upload Purchase Order');
+	break;
+	case "Purchase Order Uploaded; Ethereum Txn Pending;":
+	$(".purchase_row .dnldsvbtn").css("cssText","opacity:1 !important");
+	$(".purchase_row .dnldsvbtn").prop('disabled', false);
+	$(".purchase_row .uploadbtn .loaderbtngif").show();
+	$(".pendingstatus, .purchase_row .tradetxt").html('Uploading on Blockchain');
+	break;
+	case "Purchase Order Uploaded":
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").prop('disabled', false);
+	if("<%= senderpage %>" == "Seller"){
+		$(".purchase_row .tradetxt").html('Review Purchase Order');
+		$(".purchase_row .acceptbtn, .purchase_row .rejectbtn").css("cssText","opacity:1 !important");
+		$(".purchase_row .acceptbtn, .purchase_row .rejectbtn").prop('disabled', false);
+	}
+	else $(".purchase_row .tradetxt").html('Seller to Approve');
+	break;
+	case "Purchase Order Approved; Ethereum Txn Pending;":
+	$(".purchase_row .aprbtngif").show();
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .purchase_row .tradetxt").html('Purchase Order Approved, Updating on Blockchain');
+	break;
+	case "Purchase Order Approved":
+	$(".invoice_row .tradeleft").css("cssText","opacity:1 !important");
+	$(".invoice_row .uploadbtn").css("cssText","opacity:1 !important");
+	$(".invoice_row .uploadbtn").prop('disabled', false);
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .purchase_row .tradetxt").html('Purchase Order Approved');
+	if("<%= senderpage %>" == "Seller"){
+		$(".invoice_row .uploadbtn").prop('disabled', false);
+		$(".invoice_row .tradetxt").html('Upload Invoice');
+	}
+
+	else $(".pendingstatus, .invoice_row .tradetxt").html('Seller yet to Upload Invoice');
+	break;
+	case "Invoice Rejected; Ethereum Txn Pending;":
+	$(".invoice_row .rejbtngif").show();
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .invoice_row .tradetxt").html('Invoice Rejected, Updating on Blockchain');
+	break;
+	case "Invoice Rejected":
+	$(".invoice_row .uploadbtn").css("cssText","opacity:1 !important");
+	$(".invoice_row .uploadbtn").prop('disabled', false);
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").prop('disabled', false);
+	if("<%= senderpage %>" == "Seller"){
+		$(".invoice_row .uploadbtn").prop('disabled', false);
+		$(".pendingstatus, .invoice_row .tradetxt").html('Invoice Rejected. Upload Invoice');
+	}
+
+	else $(".pendingstatus, .invoice_row .tradetxt").html('Invoice Rejected. Seller yet to Upload Invoice');
+	break;
+	case "Invoice Approved by Buyer; Ethereum Txn Pending;":
+	$(".invoice_row .aprbtngif").show();
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .invoice_row .tradetxt").html('Invoice Approved by Buyer, Updating on Blockchain');
+	break;
+	case "Invoice Approved by Buyer":
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
+	if("<%= senderpage %>" == "Bank"){
+		$(".invoice_row .tradetxt").html('Review Invoice');
+		$(".invoice_row .acceptbtn, .invoice_row .rejectbtn").css("cssText","opacity:1 !important");
+		$(".invoice_row .acceptbtn, .invoice_row .rejectbtn").prop('disabled', false);
+	}
+	else $(".pendingstatus, .invoice_row .tradetxt").html('Financing Bank to Approve');
+	break;
+	case "Invoice Uploaded; Ethereum Txn Pending;":
+	$(".invoice_row .dnldsvbtn").css("cssText","opacity:1 !important");
+	$(".invoice_row .dnldsvbtn").prop('disabled', false);
+	$(".invoice_row .uploadbtn .loaderbtngif").show();
+	$(".pendingstatus, .invoice_row .tradetxt").html('Uploading on Blockchain');
+	break;
+	case "Invoice Uploaded":
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
+	if("<%= senderpage %>" == "Buyer"){
+		$(".pendingstatus, .invoice_row .tradetxt").html('Review Invoice');
+		$(".invoice_row .acceptbtn, .invoice_row .rejectbtn").css("cssText","opacity:1 !important");
+		$(".invoice_row .acceptbtn, .invoice_row .rejectbtn").prop('disabled', false);
+	}
+	else $(".invoice_row .tradetxt").html('Buyer to Approve');
+	break;
+	case "Invoice Approved By Seller Bank; Ethereum Txn Pending;":
+	$(".invoice_row .aprbtngif").show();
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .invoice_row .tradetxt").html('Invoice Approved By Financing Bank, Updating on Blockchain');
+	break;
+	case "Invoice Approved":
+	$(".agreement_row .tradeleft").css("cssText","opacity:1 !important");
+	$(".agreement_row .uploadbtn").css("cssText","opacity:1 !important");
+	$(".agreement_row .uploadbtn").prop('disabled', false);
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".pendingstatus, .invoice_row .tradetxt").html('Invoice Approved');
+	if("<%= senderpage %>" == "Bank"){
+		$(".agreement_row .uploadbtn").css("cssText","opacity:1 !important");
+		$(".agreement_row .uploadbtn").prop('disabled', false);
+		$(".pendingstatus, .agreement_row .tradetxt").html('Update Agreement');
+	}
+
+	else $(".pendingstatus, .agreement_row .tradetxt").html('Financing Bank yet to Upload Agreement');
+	break;
+	case "Letter Of Credit Rejected; Ethereum Txn Pending;":
+	$(".agreement_row .rejbtngif").show();
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".pendingstatus, .agreement_row .tradetxt").html('Letter Of Credit Rejected, Updating on Blockchain');
+	break;
+	case "Letter Of Credit Rejected":
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
+	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".invoice_row .tradetxt").html('Invoice Approved');
+	if("<%= senderpage %>" == "Bank"){
+		$(".agreement_row .uploadbtn").css("cssText","opacity:1 !important");
+		$(".agreement_row .uploadbtn").prop('disabled', false);
+		$(".pendingstatus, .agreement_row .tradetxt").html('Financial Agreement Rejected. Upload Agreement');
+	}
+
+	else $(".pendingstatus, .agreement_row .tradetxt").html('Financial Agreement Rejected. Financing Bank yet to Upload Agreement');
+	break;
+	case "Letter Of Credit Uploaded; Ethereum Txn Pending;":
+	$(".agreement_row .uploadbtn .loaderbtngif").show();
+	if("<%= senderpage %>" == "Bank"){
+		$(".agreement_row .viewbtn1").prop('disabled', false);
+		$(".agreement_row .viewbtn1").css("cssText","opacity:1 !important");
+	}
+	else{
+		$(".agreement_row .viewbtn2").prop('disabled', false);
+		$(".agreement_row .viewbtn2").css("cssText","opacity:1 !important");
+	}
+	$(".pendingstatus, .agreement_row .tradetxt").html('Updating on Blockchain');
+	break;
+	case "Letter Of Credit Uploaded":
+	$(".agreement_row .viewbtn2").css("cssText","opacity:1 !important");
+	$(".agreement_row .viewbtn2").prop('disabled', false);
+	$(".agreement_row .viewbtn1").css("cssText","opacity:1 !important");
+	$(".agreement_row .viewbtn1").prop('disabled', false);
+	if("<%= senderpage %>" == "Buyer"){
+		$(".agreement_row .acceptbtn, .agreement_row .rejectbtn").css("cssText","opacity:1 !important");
+		$(".agreement_row .acceptbtn, .agreement_row .rejectbtn").prop('disabled', false);
+		$(".pendingstatus, .agreement_row .tradetxt").html('Review Financial Agreement');
+	}
+	else $(".agreement_row .tradetxt").html('Buyer to Approve');
+	$(".pendingstatus, .payment_row .tradetxt").html('Payment Scheduled');
+	break;
+	case "Letter Of Credit Approved; Ethereum Txn Pending;":
+	$(".agreement_row .aprbtngif").show();
+	$('.payment_row .tradeleft').css("cssText","opacity:1 !important");
+	$(".payment_row .tradetxt").html('Payment Scheduled');
+	$(".agreement_row").css("cssText","opacity:1 !important");
+	$(".agreement_row .viewbtn1, .agreement_row .viewbtn2").prop('disabled', false);
+	$(".agreement_row .viewbtn1, .agreement_row .viewbtn2").css("cssText","opacity:1 !important");
+	$(".pendingstatus, .agreement_row .tradetxt").html('Agreement Approved, Updating on Blockchain');
+	break;
+	case "Letter Of Credit Approved by Buyer; Ethereum Txn Pending;":
+	$(".agreement_row .aprbtngif").show();
+	$(".agreement_row").css("cssText","opacity:1 !important");
+	$(".agreement_row .viewbtn1, .agreement_row .viewbtn2").prop('disabled', false);
+	$(".agreement_row .viewbtn1, .agreement_row .viewbtn2").css("cssText","opacity:1 !important");
+	$(".pendingstatus, .agreement_row .tradetxt").html('Financial Agreement Approved by Buyer, Updating on Blockchain');
+	break;
+	case "Letter Of Credit Approved by Buyer":
+	$('.payment_row .tradeleft').css("cssText","opacity:1 !important");
+	$(".payment_row .tradetxt").html('Payment Scheduled');
+	$(".agreement_row").css("cssText","opacity:1 !important");
+	$(".agreement_row .viewbtn1, .agreement_row .viewbtn2").prop('disabled', false);
+	$(".agreement_row .viewbtn1, .agreement_row .viewbtn2").css("cssText","opacity:1 !important");
+	if("<%= senderpage %>" == "Seller"){
+		$(".agreement_row .acceptbtn, .agreement_row .rejectbtn").css("cssText","opacity:1 !important");
+		$(".agreement_row .acceptbtn, .agreement_row .rejectbtn").prop('disabled', false);
+		$(".pendingstatus, .agreement_row .tradetxt").html('Review Financial Agreement');
+	}
+	else $(".agreement_row .tradetxt").html('Seller to Approve');
+	break;
+	case "Letter Of Credit Approved":
+	$('.payment_row .tradeleft').css("cssText","opacity:1 !important");
+	$(".pendingstatus, .payment_row .tradetxt").html('Payment Scheduled');
+	$(".bill_row .tradeleft").css("cssText","opacity:1 !important");
+	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").css("cssText","opacity:1 !important");
+	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").prop('disabled', false);
+	$(".agreement_row .tradetxt").html('Agreement Approved');
+	if("<%= senderpage %>" == "Shipper"){
+	$(".bill_row .uploadbtn").css("cssText","opacity:1 !important");
+		$(".bill_row .uploadbtn").prop('disabled', false);
+		$(".pendingstatus, .bill_row .tradetxt").html('Upload Bill Of Lading');
+	}
+	else $(".bill_row .tradetxt").html('Shipper yet to Upload Bill Of Lading');
+	break;
+	case "Bill Of Lading Rejected; Ethereum Txn Pending;":
+	$(".bill_row .rejbtngif").show();
+	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").css("cssText","opacity:1 !important");
+	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").prop('disabled', false);
+	$(".pendingstatus, .bill_row .tradetxt").html('Bill Of Lading Rejected, Updating on Blockchain');
+	break;
+	case "Bill Of Lading Rejected":
+	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").css("cssText","opacity:1 !important");
+	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").prop('disabled', false);
+	$(".pendingstatus, .agreement_row .tradetxt").html('Agreement Approved');
+	if("<%= senderpage %>" == "Shipper"){
+		$(".bill_row .uploadbtn").prop('disabled', false);
+		$(".pendingstatus, .bill_row .tradetxt").html('Bill Of Lading Rejected. Upload Bill Of Lading');
+	}
+	else $(".pendingstatus, .bill_row .tradetxt").html('Bill Of Lading Rejected. Shipper yet to Upload Bill Of Lading');
+	break;
+	case "Bill Of Lading Uploaded; Ethereum Txn Pending;":
+	$(".bill_row .uploadbtn .loaderbtngif").show();
+	$(".bill_row .dnldsvbtn").css("cssText","opacity:1 !important");
+	$(".bill_row .dnldsvbtn").prop('disabled', false);
+	$(".pendingstatus, .bill_row .tradetxt").html('Uploading on Blockchain');
+	break;
+	case "Bill Of Lading Uploaded":
+	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").prop('disabled', false);
+	if("<%= senderpage %>" == "Buyer"){
+		$(".bill_row .acceptbtn, .bill_row .rejectbtn").css("cssText","opacity:1 !important");
+		$(".bill_row .acceptbtn, .bill_row .rejectbtn").prop('disabled', false);
+		$(".pendingstatus, .bill_row .tradetxt").html('Review Bill Of Lading');
+	}
+	else $(".bill_row .tradetxt").html('Buyer to Approve Bill Of Lading');
+	break;
+	case "Bill Of Lading Approved by Buyer; Ethereum Txn Pending;":
+	$(".bill_row .aprbtngif").show();
+	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .bill_row .tradetxt").html('Bill Of Lading Approved by Buyer, Updating on Blockchain');
+	break;
+	case "Bill Of Lading Approved by Buyer":
+	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").prop('disabled', false);
+	if("<%= senderpage %>" == "Bank"){
+		$(".bill_row .acceptbtn, .bill_row .rejectbtn").css("cssText","opacity:1 !important");
+		$(".bill_row .acceptbtn, .bill_row .rejectbtn").prop('disabled', false);
+		$(".pendingstatus, .bill_row .tradetxt").html('Review Bill Of Lading');
+	}
+	else $(".pendingstatus, .bill_row .tradetxt").html('Financing Bank to Approve Bill Of Lading');
+	break;
+	case "Bill Of Lading Approved":
+        $('.payment_row .tradeleft').css("cssText","opacity:1 !important");
+	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .bill_row .tradetxt").html('Bill Of Lading Approved');
+	break;
+	case "Bill Of Lading Approved; Ethereum Txn Pending;":
+	$(".bill_row .aprbtngif").show();
+	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .bill_row .tradetxt").html('Bill Of Lading Approved, Updating on Blockchain');
+	break;
+        case "Payment Scheduled":
+        $('.payment_row .tradeleft').css("cssText","opacity:1 !important");
+        $(".pendingstatus, .payment_row .tradetxt").html('Payment Scheduled');
+        break;
+	case "Payment Successful":
+	$('.payment_row .tradeleft').css("cssText","opacity:1 !important");
+	$(".pendingstatus, .payment_row .tradetxt").html('Payment Successful');
+	break;
+	case "Payment Declined":
+	$('.payment_row .tradeleft').css("cssText","opacity:1 !important");
+	$(".pendingstatus, .payment_row .tradetxt").html('Payment Declined');
+	break;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!-- views/login.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="/sheets/bootstrap.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="/sheets/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body{
+            padding-top:80px;
+            background:url("/images/loginbg.jpg");
+            background-size:cover;
+            height:100%;
+            width:100%;
+        }
+        @font-face{
+
+            font-family: "panton-bold";
+            src: url("/fonts/Panton-BlackCaps.otf");
+
+        }
+        .zlogo{
+
+            display:block;
+            margin:0px auto;
+            width:260px;
+            margin-top:8%;
+            margin-bottom:20px;
+
+        }
+        .loginh1{
+
+            font-size:18px;
+            text-align:center;
+            font-family: "panton-bold";
+            margin-top:50px;
+            margin-bottom:30px;
+
+        }
+        .loginbtn{
+
+            float:right;
+            color:black;
+            padding:5px 10px;
+            border-radius:3px;
+            font-size:14px;
+            font-weight:bold;
+
+        }
+        .icon{
+
+            color: gray;
+            float: right;
+            margin-top: -25px;
+            margin-right: 13px;
+            font-size:18px;
+        }
+        .alert {
+            padding: 7px 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<div class="col-sm-4 col-sm-offset-4">
+    <img src="/images/zeonlab_logo.png" class="zlogo">
+    <h1 class="loginh1">Login</h1>
+    <% if (message) { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+
+    <!-- LOGIN FORM -->
+    <form action="/login" method="post">
+        <div class="form-group">
+            <input type="email" class="form-control" name="username" placeholder="Email ID">
+            <span class="fa fa-user icon"></span>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" name="password" placeholder="Password">
+            <span class="fa fa-lock icon"></span>
+        </div>
+
+        <button type="submit" class="btn btn-warning btn-lg loginbtn">Login</button>
+    </form>
+
+    <hr style="margin-top: 60px;">
+
+    <p>Need an account? <a href="/signup">Signup</a></p>
+    <p>Or go <a href="/">home</a>.</p>
+
+</div>
+
+</div>
+</body>
+</html>
