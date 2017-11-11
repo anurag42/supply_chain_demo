@@ -17,7 +17,7 @@ module.exports = {
 
   getSignup: function(req, res) {
     res.render('signup.ejs', {
-      message: ""
+      message: req.session.message
     });
   },
 
@@ -60,7 +60,6 @@ module.exports = {
 
   postRoleSelection: function(req, res) {
     user = req.session.user;
-    console.log(user.role);
     switch (user.role) {
       case 'Shipper':
         if (req.body.role == 'Supplier') {
@@ -126,13 +125,10 @@ module.exports = {
 };
 
 function getArrFromTradeObject(tradeList, type) {
-  console.log(type);
   var arr = new Array();
   for (var i = 0; i < tradeList.length; ++i) {
     var trade = tradeList[i];
-    console.log(trade);
     arr[i] = trade[type];
-    console.log(arr[i]);
   }
   return arr;
 }
@@ -236,12 +232,13 @@ function getListofTrades1(err, tradeList) {
     statusList = getArrFromTradeObject(tradeList, 'status');
   } else {
     tradeIdArr = ['No Trades Yet'];
-    console.log()
     supplierIdList = [];
     manufacturerIdList = [];
     statusList = [];
   }
-  console.log(tradeIdArr);
+  if (supplierIdList.length[0] || manufacturerIdList.length[0]) {
+    tradeIdArr = ['No Trades Yet'];
+  }
   res.render('profile1.ejs', {
     message: req.session.message,
     role: user.role,
@@ -274,6 +271,9 @@ function getListofTrades2(err, tradeList) {
     manufacturerIdList = [];
     statusList = [];
   }
+  if (dealerIdList[0] || manufacturerIdList[0]) {
+    tradeIdArr = ['No Trades Yet'];
+  }
   res.render('profile2.ejs', {
     message: req.session.message,
     role: user.role,
@@ -295,11 +295,9 @@ function ifUserFound(err, user) {
   if (err)
     throw err;
   else if (user) {
-    res.redirect('/signup', {
-      message: "User Already Exists!!!"
-    });
+    req.session.message = "User Already Exists!!!"
+    res.redirect('/signup');
   } else {
-    console.log()
     file.fileupload(req, res, onKYCUpload.bind({
       'req': req,
       'res': res

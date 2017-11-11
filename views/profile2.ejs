@@ -335,7 +335,7 @@
 						</thead>
 						<tbody id="ongoing_trades"></tbody>
 					</table>
-					<form id="myform" action="/resumetrade" method="post" enctype = "application/x-www-form-urlencoded">
+					<form id="myform" action="/resumetrade2" method="post" enctype = "application/x-www-form-urlencoded">
 						<input type="hidden" id="trade_id" name="trade_id"></input>
 						<input type="hidden" name="senderpage" value=<%= role %>></input>
 						<input type="hidden" name="username" value=<%= username %>></input>
@@ -419,7 +419,7 @@
 					timestamp = new Date( parseInt( timestamp, 16 ) * 1000 ).toString();
 					var indx = timestamp.indexOf('GMT');
 					if(res.status == "Ethereum Transaction Pending!!! Check after 2 mins!!!"){
-						thead.innerHTML = '<tr><th>Tracking ID</th><th>Buyer</th><th>Seller</th><th>Date & Time</th><th>Trade Tracker</th></tr>';
+						thead.innerHTML = '<tr><th>Tracking ID</th><th>Dealer</th><th>Manufacturer</th><th>Date & Time</th><th>Trade Tracker</th></tr>';
 						tbody.innerHTML = '<tr><td style="display:none;">' + res.tradeID + '</td><td class="trackId">' + res.tradeID.slice(0,3) + '...' +  res.tradeID.slice(20,24) + "</td><td>" + res.buyer + "</td><td>" + res.seller + "</td><td>" + timestamp.slice(0, indx) + "</td>"+'<td><button href='+res.tradeID+' class="viewbtn" style="display: none;" onclick="getTradeDetails(this)"><img src="/images/View.png" class="viewimg" style="display: none;">View</button><img src="/images/loader.gif" style="display:block" class="loaderbtngif"></td></tr><hr style="margin:0px;width:350%"></tr>' + tbody.innerHTML;
 						tradefun2(res.tradeID, res.buyerHash, res.sellerHash, res.buyerBankHash, res.sellerBankHash, res.shipperHash);
 					}
@@ -480,7 +480,7 @@
 		else{
 			tr += '<td style="display:none;">' + tradeList[i] + '</td><td class="trackId">' + tradeList[i].slice(0,3) + '...' +  tradeList[i].slice(20,24) + "</td><td>" + dealerList[i] + "</td><td>" + manufacturerList[i] + "</td><td>" + timestamp.slice(0, indx) + "</td>"+'<td><button href='+tradeList[i]+' class="viewbtn" onclick="getTradeDetails(this)"><img src="/images/View.png" class="viewimg">View</button><img src="/images/loader.gif" class="loaderbtngif"></td></tr>';
 		}
-		thead.innerHTML = '<tr><th>Tracking ID</th><th>Buyer</th><th>Seller</th><th>Date & Time</th><th>Trade Tracker</th></tr>';
+		thead.innerHTML = '<tr><th>Tracking ID</th><th>Dealer</th><th>Manufacturer</th><th>Date & Time</th><th>Trade Tracker</th></tr>';
 		tbody.innerHTML = tr + tbody.innerHTML;
 	}
 
