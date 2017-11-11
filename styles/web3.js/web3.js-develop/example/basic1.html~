@@ -1,0 +1,137 @@
+<! DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Employee Contract</title>
+    <style>
+        td {
+            width: 100 px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h3>Register name</h3>
+    </div>
+
+    <div>
+        <text>Add Employee Name:</text>
+
+        <input type="text" id="registerEmployee" placeholder="Name" style="text-align:center">
+        <text id='name'></text>
+    </div>
+    <div>
+        <button onClick="registerEmployee()">Register!</button>
+    </div>
+    <div>
+        <h3>Update Attendance</h3>
+    </div>
+    <div>
+        <text> Enter Employee ID:</text>
+
+        <input type="number" id="EmployeeAttendance" placeholder="ID Number" style="text-align:center">
+        <text id='attendance'></text>
+    </div>
+    <div>
+        <button onClick="Update()">Update</button>
+    </div>
+    <div>
+        <h3>Search Employee by ID</h3>
+    </div>
+    <div>
+	<text> Enter Employee ID:</text>
+        <input type="number" id="EmployeeId" placeholder="ID Number" style="text-align:center">
+        <text id='IdSearch'></text>
+    </div>
+    <div>
+        <button onClick="searchEmployee()">Register!</button>
+    </div>
+</body>
+
+<script type="text/javascript" src="../dist/web3.js"></script>
+<script type="text/javascript">
+    var Web3 = require('web3');
+    var obj = new Web3();
+    obj.setProvider(new obj.providers.HttpProvider("http://localhost:8545"));
+
+    var employeeContract = obj.eth.contract([{
+        "constant": false,
+        "inputs": [{
+            "name": "name",
+            "type": "string"
+        }],
+        "name": "addEmployee",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+    }, {
+        "constant": false,
+        "inputs": [{
+            "name": "emp_id",
+            "type": "uint256"
+        }],
+        "name": "attendance",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+    }, {
+        "inputs": [{
+            "name": "name",
+            "type": "string"
+        }],
+        "payable": false,
+        "type": "constructor"
+    }]);
+    var employee = employeeContract.at("0x35f0b6acb4ae8ca4ab2ad207edbf61f8bde28385");
+
+    function registerEmployee() {
+        var name = document.getElementById('registerEmployee').value;
+        employee.addEmployee.sendTransaction("name", {
+            from: obj.eth.accounts[0]
+        }, function(error, contract) {
+            if (error) {
+console.log("I am error here");
+                console.error(error);
+		return;
+            } 
+	else if(contract.address){
+		console.log("I am here");
+                myContract = contract;
+                console.log('address: ' + myContract.address);
+                document.getElementById('status').innerText = 'Mined!';
+                document.getElementById('call').style.visibility = 'visible';
+            }
+	/*else {
+                console.log("Error");
+            }*/
+        });
+        document.getElementById('name').innerText = ' Registering name in progress, please wait...';
+    }
+
+    function Update() {
+        var id = document.getElementById('EmployeeAttendance').value;
+        employee.attendance.sendTransaction(id, {
+            from: obj.eth.accounts[0]
+        }, function(error, transactionHash) {
+            if (!error) {
+                console.log(transactionHash);
+            } else {
+                console.log("Error");
+            }
+        });
+        document.getElementById('attendance').innerText = ' Registering attendance in progress, please wait...';
+    }
+
+    function searchEmployee() {
+        var id = document.getElementById('EmployeeId').value;
+        var name = employee.dir.call(id).name;
+        if (!name) {
+            document.getElementById('IdSearch').innerText = 'Found!!!' + "\n" + name;
+        } else {
+            alert("Error!!! No such Id registered");
+        }
+      }
+</script>
+
+</html>

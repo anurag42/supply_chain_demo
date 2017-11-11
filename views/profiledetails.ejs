@@ -1,0 +1,247 @@
+<!-- LOCAL INFORMATION -->
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+	<title><%= role %>/Trade Dashboard</title>
+	<link rel="stylesheet" href="/sheets/bootstrap.css">
+	<link rel="stylesheet" href="/sheets/font-awesome.css">
+	<link rel="stylesheet" href="/sheets/tradepage.css">
+	<style>
+		body{
+			//padding-top:80px;
+			word-wrap:break-word;
+			background-color: #f5f5f5;
+		}
+		@font-face{
+
+            font-family: "panton-bold";
+            src: url("/fonts/Panton-BlackCaps.otf");
+
+        }
+        .page-header{
+
+        	border-bottom:0px;
+
+        }
+		.zlogo{
+
+            display:block;
+            margin:0px auto;
+            width:260px;
+            margin-top:0px;
+            margin-bottom:20px;
+
+        }
+        .head1{
+
+			font-family: "panton-bold";
+			font-size:20px;
+
+        }
+        .logotbtn{
+
+        	margin-right:-94%;
+
+        }
+        h3{
+
+			text-align:center;
+			font-size:16px;
+			font-weight:bold;
+			margin-bottom:20px;
+			margin-top:0px;
+
+        }
+        .idea{
+
+			background-color:lightblue !important ;
+			text-align:center;
+
+		}
+        .tip{
+
+					width: 50px;
+    			margin: 10px 0px 20px;
+
+        }
+        .kycdnld{
+					display:inline-block;
+        	font-size:12px;
+        	font-weight:bold;
+        	width:125px;
+        	//margin:0px auto;
+        	padding-top:5px;
+        	padding-bottom:4px;
+        	color:#262626;
+					text-align: left;
+					margin-left: 10px;
+
+        }
+        .dnldimg{
+
+        	width:20px;
+
+        }
+        .pitxt{
+
+        	font-size:12px;
+
+        }
+
+        .well{
+
+        	background:white;
+
+        }
+        .rnd{
+
+        width: 40px;
+        margin-right:8px;
+
+    	}
+    	.trackId{
+    	width: 79%;
+    	font-size: 13px;
+    	}
+        #ongoing_trades{
+
+        	font-size:12px;
+
+        }
+        #ongoing_trades tr>td>a:before{
+
+        	content: "Tracking ID:";
+
+        }
+		.viewbtn{
+
+			background:white;
+			border:1px solid lightgray;
+			padding:4px 10px;
+			border-radius:3px;
+			color:#666666;
+			font-size:13px;
+
+		}
+		.viewimg{
+
+			width:30px;
+			margin-right:5px;
+
+		}
+        .icon{
+
+            color: gray;
+            float: right;
+            margin-top: -25px;
+            margin-right: 13px;
+            font-size:18px;
+        }
+        .ideatxt{
+
+        	text-align:left;
+					font-size: 12px;
+
+        }
+        .trbtn{
+
+            color:black;
+            padding:5px 10px;
+            border-radius:3px;
+            font-size:14px;
+            font-weight:bold;
+            position:relative;
+            left:66%;
+        }
+				form{
+
+						display: inline;
+
+				}
+
+	</style>
+</head>
+<body window.onload="onload()">
+	<nav class="navbar navbar-default">
+<div class="container-fluid">
+	<div class="navbar-header">
+	<a class="navbar-brand" href="#"><img src ="/images/zeonlab_logo.png" alt="Zeonlab-Blockchain" class="logo"></a>
+	</div>
+	<ul class="nav navbar-nav navbar-right navhide">
+		<li><a href="/profiledetails">PROFILE DETAILS</a></li>
+		<li><a href="/profile">TRADE DASHBOARD</a></li>
+<li><a href="/logout" class="footerscrl rdot">LOGOUT</a></li>
+	</ul>
+</div>
+</nav>
+	<div class="container">
+		<div class="page-header text-center">
+			<h1 class="head1"> PROFILE DETAILS</h1>
+		</div>
+
+    <div class="col-sm-8">
+      <div class="well">
+
+        <p class="pitxt"><img src="/images/User.png" class="rnd"><strong>Your Role: </strong> <%= role %></p><hr>
+        <p class="pitxt"><img src="/images/User.png" class="rnd"><strong>User Name: </strong> <%= username %></p><hr>
+        <p class="pitxt"><img src="/images/Address.png" class="rnd"><strong>Blockchain Address: </strong><span class="pitxt"><%= ethAddress %></span></p><hr>
+
+        <p class="pitxt"><img src="/images/Note.png" class="rnd"><strong>Balance: </strong> <%= ethBalance %> Wei</p><hr>
+        <p class="pitxt"><img src="/images/KYC.png" class="rnd"><strong>SHA 256 Hash of KYC Docs </strong></p>
+				<table><tbody id="KYChash"></tbody></table><br>
+    </div>
+    </div>
+		<div class="col-sm-4">
+			<div class="well idea">
+				<img src="/images/Tip_2.png" class="tip">
+				<p class="ideatxt">
+					The hash of KYC doc has been stored in the blockchain.
+					Once the hash is stored, it can not be changed or
+					deleted and the hash itself identifies the file from
+					which it was computed<br><br>
+					It is very easy to compute the hash from a file but
+					very difficult(almost impossible) to craft a similar
+					file which will produce exactly the same hash.Every
+					transaction in the blockchain has a timestamp so having
+					the transaction we know when exactly was it done.
+				</p>
+			</div>
+
+<!-- BCdnld Modal -->
+	<div id="bcdnldmodal" class="modal fade" role="dialog">
+		<div class="modal-dialog" style="width:400px;">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-body" style="padding-top:30px;">
+                    <p>Please hang on while we download this document from blockchain. This may take a while..</p>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+</body>
+<script type="text/javascript" src="/js/jquery.1.11.1.js"></script>
+<script type="text/javascript" src="/js/bootstrap.js"></script>
+<script type="text/javascript" src="/js/sha256.js"></script>
+<script>
+        $(".kycdnld").click(function(){
+
+	        setTimeout(function(){
+                $("#bcdnldmodal").modal('hide');
+            }, 3000);
+
+        });
+
+		var hashbody = document.getElementById('KYChash');
+		var hashList = "<%=kychash%>".split(',');
+		var ethAddress = '<%= ethAddress %>';
+		for (i = 0; i < hashList.length; ++i) {
+			hashbody.innerHTML += '<tr><td><span class="pitxt">' + '&emsp;&emsp;&emsp;&emsp;Doc'+(i+1)+': '+CryptoJS.SHA256(hashList[i]).toString(CryptoJS.enc.Base64) + '</span></td><td><form action="/filedownload" method="post" enctype = "application/x-www-form-urlencoded"><input type="hidden" name="kychash" value='+ hashList[i] + '></input><button type="submit" class="btn btn-default kycdnld"><img src="/images/Download.png" class="dnldimg">Server</button></form></td><td><form action="/getKYChash" method="post" enctype = "application/x-www-form-urlencoded"><input type="hidden" name="usrHash" value='+ ethAddress + '></input><input type="hidden" name="indx" value=' + (i+1) + '></input><button type="submit" data-toggle="modal" data-target="#bcdnldmodal" class="btn btn-default kycdnld"><img src="/images/Download.png" class="dnldimg">Blockchain</button></form></td></tr>';
+
+		}
+</script>

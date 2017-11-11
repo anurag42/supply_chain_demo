@@ -1,0 +1,500 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+	<title><%= role %>/Trade Dashboard</title>
+	<link rel="stylesheet" href="/sheets/bootstrap.css">
+	<link rel="stylesheet" href="/sheets/font-awesome.css">
+
+	<style>
+	@font-face{
+
+	font-family: "panton-bold";
+	src: url("/fonts/Panton-BlackCaps.otf");
+
+}
+@font-face {
+   	font-family: "montserrat-regular";
+    	src: url("/fonts/Montserrat-Regular.otf");
+}
+@font-face {
+   	font-family: "montserrat-light";
+    	src: url("/fonts/Montserrat-Light.otf");
+}
+@font-face {
+   	font-family: "panton-light";
+    	src: url("/fonts/Panton-LightCaps.otf");
+}
+	.navbar{
+
+	width: 100%;
+	border-radius:0px;
+	margin-bottom:0px;
+	background-color: transparent;
+  border-color: transparent;
+
+}
+
+.navbar-brand{
+
+	font-family: "panton-bold";
+	font-size:20px;
+	padding-left:50px;
+
+}
+.navbar-right{
+
+	font-family: "montserrat-regular";
+	margin-right:30px;
+	font-size:10px;
+	font-weight:bold;
+	color:black;
+	letter-spacing:1px;
+}
+.logo
+{
+
+    width: 150px;
+    margin-top: -6px;
+		margin-left: -30px;
+}
+
+.navbar-right>li>a::after{
+
+	content:"•";
+	position:relative;
+	left:15px;
+	top:-1px;
+
+}
+
+.rdot::after{
+
+	display:none;
+
+}
+
+		body{
+			//padding-top:80px;
+			word-wrap:break-word;
+			background-color: #f5f5f5;
+			//background:url("/images/loginbg.jpg");
+		}
+		table{
+
+			width:100%;
+
+		}
+		td{
+
+			padding-right:20px;
+			font-size:12px;
+
+		}
+		th{
+
+			font-size: 12px;
+
+		}
+		.form-control{
+
+			font-size: 12px;
+
+		}
+
+		@font-face{
+
+			font-family: "panton-bold";
+			src: url("/fonts/Panton-BlackCaps.otf");
+
+		}
+		.page-header{
+
+			border-bottom:0px;
+
+		}
+		.zlogo{
+
+			display:block;
+			margin:0px auto;
+			width:260px;
+			margin-top:0px;
+			margin-bottom:20px;
+
+		}
+		.head1{
+
+			font-family: "panton-bold";
+			font-size:20px;
+
+		}
+		.logotbtn{
+
+			margin-right:-85%;
+
+		}
+		h3{
+
+			text-align:center;
+			font-size:12px;
+			font-weight:bold;
+			margin-bottom:20px;
+			margin-top:0px;
+
+		}
+		.btn{
+
+			font-size: 12px;
+
+		}
+		.idea{
+
+			background-color:lightblue !important ;
+			text-align:center;
+
+		}
+		.tip{
+
+			width:50px;
+			margin:10px 0px 20px;
+
+		}
+		.kycdnld{
+
+			font-size:14px;
+			font-weight:bold;
+			width:67%;
+			margin:0px auto;
+			padding-top:5px;
+			padding-bottom:4px;
+			color:#262626;
+
+		}
+		.dnldimg{
+
+			width:30px;
+
+		}
+		.pitxt{
+
+			font-size:12px;
+
+		}
+
+		.well{
+
+			background:white;
+
+		}
+		.rnd{
+
+			width: 40px;
+			margin-right:8px;
+
+		}
+		.trackId{
+			font-size: 12px;
+		}
+		#ongoing_trades{
+
+			font-size:12px;
+
+		}
+		#ongoing_trades tr>td>a:before{
+
+			content: "Tracking ID:";
+
+		}
+		#no_trade{
+			text-align: center;
+			height:315px;
+		}
+		.viewbtn{
+
+			background:white;
+			border:1px solid lightgray;
+			padding:3px 6px;
+			border-radius:3px;
+			color:#666666;
+			font-size:12px;
+
+		}
+		.viewimg{
+
+			width:22px;
+			margin-right:5px;
+
+		}
+		.icon{
+
+			color: gray;
+			float: right;
+			margin-top: -25px;
+			margin-right: 13px;
+			font-size:18px;
+		}
+		.ideatxt{
+
+			text-align:left;
+			font-size: 12px;
+
+		}
+		.trbtn{
+
+			color:black;
+			padding:5px 10px;
+			border-radius:3px;
+			font-size:14px;
+			font-weight:bold;
+			position:relative;
+			left:66%;
+		}
+		.modal-header {
+
+			padding: 15px;
+			border-bottom: 1px solid white;
+
+		}
+		.loadergif{
+
+			text-align:center;
+			width:150px;
+
+		}
+		.loaderbtngif{
+
+			margin-top: 5px;
+			width: 35px;
+			display: none;
+			margin-left: 25px;
+
+		}
+		#triggermodal{
+
+			text-align:center;
+
+		}
+		.popover {
+			color: white;
+			background: #5D7CFF;
+			width:250px;
+		}
+		.popover.top .arrow::after{
+
+			border-top-color: #5D7CFF;
+
+		}
+		.popover-content::before{
+
+			content:" ";
+			background:url("/images/Tip.png") no-repeat;
+			background-size:contain;
+			height:40px;
+			width:40px;
+			display: inline-block;
+			vertical-align:top;
+			float:left;
+			margin-right:5px;
+
+		}
+
+
+
+	</style>
+</head>
+<body window.onload="onload()">
+	<nav class="navbar navbar-default">
+<div class="container-fluid">
+	<div class="navbar-header">
+	<a class="navbar-brand" href="#"><img src ="/images/zeonlab_logo.png" alt="Zeonlab-Blockchain" class="logo"></a>
+	</div>
+	<ul class="nav navbar-nav navbar-right navhide">
+			<li><a href="/profiledetails">PROFILE DETAILS</a></li>
+			<li><a href="/profile">TRADE DASHBOARD</a></li>
+	<li><a href="/logout" class="footerscrl rdot">LOGOUT</a></li>
+	</ul>
+</div>
+</nav>
+	<div class="container">
+
+		<div class="page-header text-center">
+			<h1 class="head1"> Trade Dashboard</h1>
+			<% if (message) { %>
+			<div class="alert alert-danger"><%= message %></div>
+			<% } %>
+		</div>
+
+		<div class="row">
+
+			<div class="col-sm-8">
+			<div class="well" id="show_well">
+				<div id="LiveTrade">
+					<h3> Ongoing Trade Sessions </h3>
+					<table>
+						<thead id="trade_header">
+						</thead>
+						<tbody id="ongoing_trades"></tbody>
+					</table>
+					<form id="myform" action="/resumetrade" method="post" enctype = "application/x-www-form-urlencoded">
+						<input type="hidden" id="trade_id" name="trade_id"></input>
+						<input type="hidden" name="senderpage" value=<%= role %>></input>
+						<input type="hidden" name="username" value=<%= username %>></input>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="well idea" id="idea">
+				<img src="/images/Tip_2.png" class="tip">
+				<p class="ideatxt">
+					This page lists out all the trades along with their blockchain timestamps.
+				</p>
+			</div>
+			<div class="well idea" id="idea_2" style="display:none">
+				<img src="/images/Tip_2.png" class="tip">
+				<p class="ideatxt">
+					Starting a new trade will create blockchain entries against all parties chosen. It sets up the shell of this trade's smart contract, which gets populated as documents are shared.
+				</p>
+			</div>
+			<div class="well" id="triggertradeform"  style="display:none">
+				<h3> Start new trade </h3>
+				<form>
+					<input type="hidden" id="bank_id" name="bank_id" value=<%= username %>></input>
+					<input type="hidden" id="user" name="user" value=<%= user %>></input>
+					<input type="hidden" id="senderpage" name="senderpage" value="Bank"></input>
+					<input type="text" class="form-control" id="supplier_id" name="supplier_id" placeholder="Supplier User Name"></input>
+					<span class="fa fa-user icon"></span><br>
+					<input type="text" class="form-control" id="manufacturer_id" name="_id" placeholder="Manufacturer User Name"></input>
+					<span class="fa fa-user icon"></span><br>
+					<input type="text" class="form-control" id="bank_id" name="bank_id" placeholder="Bank User Name"></input>
+					<span class="fa fa-bank icon"></span><br>
+					<input type="text" class="form-control" id="shipper_id" name="shipper_id" placeholder="Shipper User Name"></input>
+					<span class="fa fa-truck icon"></span><br>
+				</form>
+				<button class="btn btn-warning btn-lg trbtn" data-toggle="modal" data-target="#triggermodal" onclick="tradefun()">Trigger trade</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal -->
+
+<div class="modal fade" id="triggermodal" role="dialog">
+	<div class="modal-dialog modal-sm" style="width:400px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				<img src="/images/loader.gif" class="loadergif">
+				<p>Pls hang on while we set this trade up<br/> on the blockchain. This will make the trade<br/> secure & transparent. this may<br/> take a few minutes. </p>
+				<h4>You can close this window now</h4>
+			</div>
+
+		</div>
+	</div>
+</div>
+</div>
+</body>
+<script type="text/javascript" src="/js/jquery.1.11.1.js"></script>
+<script type="text/javascript" src="/js/bootstrap.js"></script>
+<script>
+	function tradefun() {
+		var xhttp = new XMLHttpRequest();
+		var bank_id = encodeURIComponent(document.getElementById("bank_id").value);
+		var user = encodeURIComponent(document.getElementById("user").value);
+		var senderpage = encodeURIComponent(document.getElementById("senderpage").value);
+		var supplier_id = encodeURIComponent(document.getElementById("supplier_id").value);
+		var manufacturer_id = encodeURIComponent(document.getElementById("manufacturer_id").value);
+		var bank_id = encodeURIComponent(document.getElementById("bank_id").value);
+		var shipper_id = encodeURIComponent(document.getElementById("shipper_id").value);
+		var parameters = "bank_id=" + bank_id + "&user=" + user + "&senderpage=" + senderpage + "&supplier_id=" + supplier_id + "&manufacturer_id=" + manufacturer_id + "&bank_id=" + bank_id + "&shipper_id=" + shipper_id;
+
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				if(xhttp.responseText == -1){
+
+				}
+				else{
+					var tbody = document.getElementById('ongoing_trades');
+					var thead = document.getElementById('trade_header');
+					var res = JSON.parse(xhttp.responseText);
+					var timestamp = res.tradeID.toString().substring(0,8);
+					timestamp = new Date( parseInt( timestamp, 16 ) * 1000 ).toString();
+					var indx = timestamp.indexOf('GMT');
+					if(res.status == "Ethereum Transaction Pending!!! Check after 2 mins!!!"){
+						thead.innerHTML = '<tr><th>Tracking ID</th><th>Manufacturer</th><th>Supplier</th><th>Date & Time</th><th>Trade Tracker</th></tr>';
+						tbody.innerHTML = '<tr><td style="display:none;">' + res.tradeID + '</td><td class="trackId">' + res.tradeID.slice(0,3) + '...' +  res.tradeID.slice(20,24) + "</td><td>" + res.Manufacturer + "</td><td>" + res.Supplier + "</td><td>" + timestamp.slice(0, indx) + "</td>"+'<td><button href='+res.tradeID+' class="viewbtn" style="display: none;" onclick="getTradeDetails(this)"><img src="/images/View.png" class="viewimg" style="display: none;">View</button><img src="/images/loader.gif" style="display:block" class="loaderbtngif"></td></tr><hr style="margin:0px;width:350%"></tr>' + tbody.innerHTML;
+						tradefun2(res.tradeID, res.ManufacturerHash, res.SupplierHash, res.ManufacturerBankHash, res.SupplierBankHash, res.shipperHash);
+					}
+				}
+			}
+		};
+		xhttp.open("POST", "/triggertrade", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send(parameters);
+	}
+
+	function tradefun2(tradeID, ManufacturerHash, SupplierHash, ManufacturerBankHash, SupplierBankHash, shipperHash){
+		var xhttp = new XMLHttpRequest();
+		var parameters = "tradeID=" + encodeURIComponent(tradeID)+ "&ManufacturerHash=" + encodeURIComponent(ManufacturerHash) + "&SupplierHash=" + encodeURIComponent(SupplierHash) + "&ManufacturerBankHash=" + encodeURIComponent(ManufacturerBankHash) + "&SupplierBankHash=" + encodeURIComponent(SupplierBankHash) + "&shipperHash=" + encodeURIComponent(shipperHash);
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				location.reload();
+			}
+		};
+		xhttp.open("POST", "/triggertrade1", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send(parameters);
+	}
+
+
+	if("<%=role%>" == "Manufacturer")
+	{
+		document.getElementById("triggertradeform").style.display = "block";
+		document.getElementById("idea").style.display = "none";
+		document.getElementById("idea_2").style.display = "block";
+	}
+	else
+	{
+
+		document.getElementById("idea").style.display = "block";
+
+	}
+	var tbody = document.getElementById('ongoing_trades');
+	var thead = document.getElementById('trade_header');
+	var v = "<%=trade_id%>";
+	var tradeList = v.split(',');
+	var manufacturerList = "<%=manufacturerList%>".split(',');
+	var supplierList = "<%=supplierList%>".split(',');
+	var statusList = "<%=statusList%>".split(',');
+	for (i = 0; i < tradeList.length; ++i) {
+		if(tradeList[0]=="No Trades Yet")
+		{
+			thead.innerHTML = "<tr><td style=' text-align : center'>No Trades Yet</td></tr>";
+			break;
+		}
+		var tr = "<tr>";
+		var timestamp = tradeList[i].toString().substring(0,8);
+		timestamp = new Date( parseInt( timestamp, 16 ) * 1000 ).toString();
+		var indx = timestamp.indexOf('GMT');
+		if(statusList[i] == "Ethereum Transaction Pending!!! Check after 2 mins!!!"){
+			tr += '<td style="display:none;">' + tradeList[i] + '</td><td class="trackId">' + tradeList[i].slice(0,3) + '...' +  tradeList[i].slice(20,24) + "</td><td>" + supplierList[i] + "</td><td>" + manufacturerList[i] + "</td><td>" + timestamp.slice(0, indx) + "</td>"+'<td><button href='+tradeList[i]+' class="viewbtn" style="display:none" onclick="getTradeDetails(this)"><img src="/images/View.png" class="viewimg">View</button><img src="/images/loader.gif" style="display:block" class="loaderbtngif"></td></tr>';
+		}
+		else{
+			tr += '<td style="display:none;">' + tradeList[i] + '</td><td class="trackId">' + tradeList[i].slice(0,3) + '...' +  tradeList[i].slice(20,24) + "</td><td>" + supplierList[i] + "</td><td>" + manufacturerList[i] + "</td><td>" + timestamp.slice(0, indx) + "</td>"+'<td><button href='+tradeList[i]+' class="viewbtn" onclick="getTradeDetails(this)"><img src="/images/View.png" class="viewimg">View</button><img src="/images/loader.gif" class="loaderbtngif"></td></tr>';
+		}
+		thead.innerHTML = '<tr><th>Tracking ID</th><th>Manufacturer</th><th>Supplier</th><th>Date & Time</th><th>Trade Tracker</th></tr>';
+		tbody.innerHTML = tr + tbody.innerHTML;
+	}
+
+	function getTradeDetails(obj){
+		document.getElementById('trade_id').value = obj.getAttribute("href");
+		document.getElementById('myform').submit();
+	}
+	$(document).ready(function(){
+		$('[data-toggle="popover"]').popover();
+	});
+</script>
+</html>

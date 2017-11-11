@@ -1,0 +1,508 @@
+
+@font-face{
+
+	font-family: "panton-bold";
+	src: url("/fonts/Panton-BlackCaps.otf");
+
+}
+@font-face {
+   	font-family: "montserrat-regular";
+    	src: url("/fonts/Montserrat-Regular.otf");
+}
+@font-face {
+   	font-family: "montserrat-light";
+    	src: url("/fonts/Montserrat-Light.otf");
+}
+@font-face {
+   	font-family: "panton-light";
+    	src: url("/fonts/Panton-LightCaps.otf");
+}
+body{
+			//padding-top:80px;
+			word-wrap:break-word;
+			background-color: #f5f5f5;
+			//background:url("/images/loginbg.jpg");
+		}
+		.navbar{
+
+	width: 100%;
+	border-radius:0px;
+	margin-bottom:0px;
+	background-color: transparent;
+  border-color: transparent;
+
+}
+
+.navbar-brand{
+
+	font-family: "panton-bold";
+	font-size:20px;
+	padding-left:50px;
+
+}
+.navbar-right{
+
+	font-family: "montserrat-regular";
+	margin-right:30px;
+	font-size:10px;
+	font-weight:bold;
+	color:black;
+	letter-spacing:1px;
+}
+.logo
+{
+
+    width: 150px;
+    margin-top: -6px;
+		margin-left: -30px;
+}
+
+.navbar-right>li>a::after{
+
+	content:"•";
+	position:relative;
+	left:15px;
+	top:-1px;
+
+}
+
+.rdot::after{
+
+	display:none;
+
+}
+		hr{
+
+			margin-top:10px;
+			margin-bottom:10px;
+
+		}
+		.btn{
+
+				font-size: 12px;
+
+		}
+		.zlogo{
+
+			display:block;
+			margin:0px auto;
+			width:260px;
+			margin-top:0px;
+			margin-bottom:20px;
+
+		}
+		.page-header{
+
+			border-bottom:0px;
+
+		}
+		.well{
+
+			background:white;
+			margin-left: -20px;
+
+		}
+		.head{
+
+			font-size:22px;
+			text-align:center;
+			font-family: "panton-bold";
+
+		}
+		.logotbtn{
+
+			margin-right:-80%;
+
+		}
+		.trlpnlh{
+
+			text-align:center;
+			font-size:12px;
+
+		}
+		.trlpnl{
+
+			font-size:12px;
+			white-space: nowrap;
+    		overflow-x: hidden;
+
+		}
+		.rnd{
+
+			width: 40px;
+			margin-right:8px;
+
+		}
+		h3{
+
+			text-align:center;
+			font-size:16px;
+			font-weight:bold;
+			margin-bottom:20px;
+			margin-top:0px;
+
+		}
+		.trdiv{
+
+			padding-left:8px;
+			padding-top:5px;
+			padding-bottom:7px;
+			margin-bottom:16px;
+			width:145px;
+			height:45px;
+			color:white;
+			border-radius:3px;
+			position: relative;
+			z-index: 1;
+			font-size:12px;
+
+		}
+		.quo{
+
+			width:25px;
+			margin-right:5px;
+
+		}
+		.pay{
+
+			width:35px;
+			margin-right:5px;
+
+		}
+		.po{
+
+			width:32px;
+			margin-right:5px;
+			vertical-align: -12px;
+
+		}
+		.bol{
+
+			width:25px;
+			margin-right:5px;
+
+		}
+		.inv{
+
+			width: 30px;
+			margin-right: 5px;
+			margin-top: 1px;
+			vertical-align: -12px;
+
+		}
+		.quodiv{
+
+			background:#A87CFF;
+			border:1px solid #A87CFF;
+
+		}
+		.purdiv{
+
+			background:#879AFD;
+			border:1px solid #879AFD;
+
+		}
+		.invdiv{
+
+			background:#00DBA5;
+			border:1px solid #00DBA5;
+
+		}
+		.agrdiv{
+
+			background:#FF4881;
+			border:1px solid #FF4881;
+
+		}
+		.bildiv{
+
+			background:#5F51FF;
+			border:1px solid #5F51FF;
+
+		}
+		.paydiv{
+
+			background:#269ED1;
+			border:1px solid #269ED1;
+			padding-top: 8px;
+
+		}
+
+		.icspc{
+
+			margin-right:5px;
+
+		}
+		.dnldbtn, .dnldbtn_2, .vagrbtn_2{
+
+			width:100px;
+			height: 45px;
+			text-align:left;
+			color:white;
+			padding-left:7px;
+			padding-top:7px;
+			padding-bottom:7px;
+			border-radius:3px;
+			font-size:12px;
+		}
+		.aprbtn, .rejbtn{
+
+			width:95px;
+			height: 45px;
+			text-align:left;
+			color:white;
+			padding-left:7px;
+			padding-top:7px;
+			padding-bottom:7px;
+			border-radius:3px;
+			font-size:12px;
+		}
+		.aprimg, .rejimg, .upimg, .agrimg, .dnldimg{
+
+			width:25px;
+			margin-right:5px;
+
+		}
+		.dnldimg{
+
+			opacity: 0.7;
+			width:22px;
+
+		}
+
+		.aprbtn{
+
+			background:#00DBA5;
+			border:1px solid #00DBA5;
+			margin-left:-7px;
+			margin-right: -10px;
+			opacity: 0.3 !important;
+		}
+		.rejbtn{
+
+			background:#FF6E70;
+			border:1px solid #FF6E70;
+			margin-left: 15px;
+			margin-right: -20px;
+			opacity: 0.3 !important;
+		}
+		.dnldbtn, .vagrbtn_2{
+
+			width:85px;
+			background:white;
+			border:1px solid lightgray;
+			color:black;
+			margin-left: -70px;
+			padding-top:8px;
+			text-align: left;
+			opacity: 0.3 !important;
+		}
+		.dnldbtn_2{
+
+			width:105px;
+			background:white;
+			border:1px solid lightgray;
+			color:black;
+			margin-left: 7px;
+			padding-top:8px;
+			opacity: 0.3 !important;
+
+		}
+
+		.upurbtn{
+			opacity: 0.3 !important;
+		}
+		.vagrbtn{
+			opacity: 0.3 !important;
+		}
+		.upurbtn, .vagrbtn, .vbilbtn{
+
+			width:200px;
+			height: 45px;
+			text-align:left;
+			color:black;
+			padding-left:10px;
+			padding-top:7px;
+			padding-bottom:7px;
+			border-radius:3px;
+			margin-left:-8px;
+			border:1px solid lightgray;
+			background:white;
+			font-size:12px;
+
+		}
+		.dcont{
+
+			margin-top:8px;
+			margin-left:-35px;
+			width:390px;
+
+		}
+		.dline{
+
+			border:1px solid lightgray;
+			width:40px;
+			display:inline-block;
+			height:0px;
+
+		}
+		.ddot{
+
+			border:1px solid lightgray;
+			width:7px;
+			height:7px;
+			border-radius:50%;
+			background:lightgray;
+			display:inline-block;
+			margin-bottom:-2px;
+			margin-left:-1px;
+		}
+		.dtxt{
+
+			font-size:12px;
+			text-align:center;
+			vertical-align: -2px;
+			width:275px;
+			display:inline-block;
+
+		}
+		.rdline{
+
+			border:1px solid lightgray;
+			width:25px;
+			display:inline-block;
+			height:0px;
+
+		}
+		.rddot{
+
+			border:1px solid lightgray;
+			width:7px;
+			height:7px;
+			border-radius:50%;
+			background:lightgray;
+			display:inline-block;
+			margin-bottom:-2px;
+			margin-left:-1px;
+
+		}
+		input[type=file]::-webkit-file-upload-button {
+
+			color:white;
+			background:#666666;
+			border:1px solid #666666;
+			border-radius:3px;
+
+		}
+		.mupbtn{
+
+			margin-top:20px;
+			background:white;
+			border:1px solid lightgray;
+
+		}
+		#qr, #pr, #ir, #ar, #br, #pay{
+			opacity: 0.3;
+		}
+		.popover {
+			color: white;
+			background: #5D7CFF;
+			width:250px;
+		}
+		.popover.top .arrow::after{
+
+			border-top-color: #5D7CFF;
+
+		}
+		.popover-content::before{
+
+			content:" ";
+			background:url("/images/Tip.png") no-repeat;
+			background-size:contain;
+			height:40px;
+			width:40px;
+			display: inline-block;
+			vertical-align:top;
+			float:left;
+			margin-right:5px;
+
+		}
+		.modal-header {
+
+			border-bottom: 1px solid white;
+
+		}
+		#uplshow{
+
+			margin-top:5px;
+			text-align:center;
+			display:none;
+
+		}
+		.loadergif{
+
+			text-align:center;
+			width:150px;
+			margin-top: -30px;
+
+		}
+		.loaderbtngif{
+
+			width: 30px;
+    		position: absolute;
+    		top: 5px;
+    		left: 170px;
+			display:none;
+		}
+		.dnldbtngif{
+
+			width: 30px;
+    		position: absolute;
+    		top: 5px;
+    		left: 110px;
+			display:none;
+		}
+		.aprbtngif{
+
+			width: 30px;
+    		position: absolute;
+    		top: 5px;
+    		left: 70px;
+			display:none;
+		}
+		.rejbtngif{
+
+			width: 30px;
+    		position: absolute;
+    		top: 5px;
+    		left: 170px;
+			display:none;
+		}
+		.agrtxt{
+
+			line-height:2px;
+
+		}
+		.container {
+			width: 1300px;
+		}
+		.dnldcont{
+
+			display:inline-block;
+			line-height:14px;
+
+		}
+		.help{
+
+			position: absolute;
+			top:80px;
+			right:40px;
+			z-index:2;
+			height:auto;
+			border-radius: 5px;
+			padding:5px 8px;
+			width:300px;
+			background-color: #5D7CFF;
+			color:white;
+			font-size:12px;
+		}
