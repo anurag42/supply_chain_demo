@@ -621,6 +621,7 @@ function onFileUpload(err, hash) {
 }
 
 function onFindTradeQuotationUpdate(err, trade) {
+  // if there are any errs, return the err
   if (err)
     return done(err);
   req = this.req;
@@ -640,7 +641,6 @@ function onFindTradePOUpdate(err, trade) {
 }
 
 function onFindTradeInvoiceUpdate(err, trade) {
-  console.log("Here");
   // if there are any errs, return the err
   if (err)
     return done(err);
@@ -658,8 +658,6 @@ function onFindTradeBOLUpdate(err, trade) {
   res = this.res;
   hash = this.hash;
   uploadDoc(req, res, trade.contract_id, trade.shipper_id, 'BillOfLading', hash[0].hash);
-  //eventEmitter.emit('ConnectionuploadDoc');
-  //new changes
 }
 
 function uploadDoc(req, res, address, username, docName, docHash, tradeID) {

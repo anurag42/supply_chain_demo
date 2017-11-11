@@ -51,6 +51,7 @@ module.exports = {
       'trade_id': trade_id
     }, callback);
   },
+
   updateTrade: function(query, update, callback) {
     var options = {
       multi: true

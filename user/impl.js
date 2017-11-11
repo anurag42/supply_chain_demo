@@ -229,15 +229,12 @@ function getListofTrades1(err, tradeList) {
   req = this.req;
   res = this.res;
   user = this.user;
-  console.log(tradeList.length);
   if (tradeList.length > 0) {
-    console.log("IF");
     tradeIdArr = getArrFromTradeObject(tradeList, 'trade_id');
     supplierIdList = getArrFromTradeObject(tradeList, 'supplier_id');
     manufacturerIdList = getArrFromTradeObject(tradeList, 'manufacturer_id');
     statusList = getArrFromTradeObject(tradeList, 'status');
   } else {
-    console.log("ELSE");
     tradeIdArr = ['No Trades Yet'];
     console.log()
     supplierIdList = [];
@@ -266,11 +263,9 @@ function getListofTrades2(err, tradeList) {
   req = this.req;
   res = this.res;
   user = this.user;
-  dealerIdList = getArrFromTradeObject(tradeList, 'dealer_id');
-  if (tradeList[0]) {
+  if (tradeList.length > 0) {
     var tradeIdArr = getArrFromTradeObject(tradeList, '_id');
-
-    supplierIdList = getArrFromTradeObject(tradeList, 'supplier_id');
+    dealerIdList = getArrFromTradeObject(tradeList, 'dealer_id');
     manufacturerIdList = getArrFromTradeObject(tradeList, 'manufacturer_id');
     statusList = getArrFromTradeObject(tradeList, 'status');
   } else {
