@@ -377,7 +377,7 @@
 			</div>
 			<div class="well" id="triggertradeform"  style="display:none">
 				<h3> Start new trade </h3>
-				<form onsubmit="return validation()" action="/triggertradenew" method="post" enctype = "multipart/form-data" >
+				<form id="trigger" action="/triggertradenew" method="post" enctype = "multipart/form-data" >
 					<input type="hidden" id="dealer_id" name="dealer_id" value=<%= username %>></input>
 					<input type="hidden" id="user" name="user" value=<%= user %>></input>
 					<input type="hidden" name="tradetype" value="DEALERTOCUSTOMER"></input>
@@ -390,13 +390,13 @@
 					<span class="fa fa-phone icon"></span><br>
 					<input type="text" class="form-control" id="insurer_id" name="insurer_id"  placeholder="Insurer Name"required></input>
 					<input type="hidden" name="kycExists" id="kycExists"></input>
+					<button type="button" class="btn btn-warning btn-lg trbtn" id="trigger_trade" data-toggle="modal" data-target="#">Trigger trade</button>
+				 <div class="upload_kyc" style="display:none;">
+					 <p><i class="fa fa-check-square-o" aria-hidden="true" id="kycVerified"></i> KYC Done</p>
+					 <p><i class="fa fa-check-square-o" aria-hidden="true" id="kycNotVerified"></i> KYC Not Verified</p>
+					 <button class="btn btn-warning btn-lg trbtn setbutton" type="submit" data-toggle="modal" data-target="#">Proceed</button>
+			 	</div>
 				</form>
-				     <button type="submit" class="btn btn-warning btn-lg trbtn" id="trigger_trade" data-toggle="modal" data-target="#">Trigger trade</button>
-				    <div class="upload_kyc" style="display:none;">
-						<p><i class="fa fa-check-square-o" aria-hidden="true" id="kycVerified"></i> KYC Done</p>
-						<p><i class="fa fa-check-square-o" aria-hidden="true" id="kycNotVerified"></i> KYC Not Verified</p>
-						<a href="http://localhost:63342/bigstylist/views/tradepage.html?_ijt=4kj0o0adc84bucjsoe87rcplq6"><button class="btn btn-warning btn-lg trbtn setbutton" data-toggle="modal" data-target="#">Proceed</button></a>
-					</div>
 			</div>
 		</div>
 	</div>
