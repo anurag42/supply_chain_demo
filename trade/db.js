@@ -55,7 +55,6 @@ module.exports = {
       newTrade.shipper_id = req.body.shipper_id;
       newTrade.save(callback);
     } else if (req.body.tradetype == "DEALERTOCUSTOMER") {
-      console.log("yay1");
       newTrade.dealer_id = req.body.dealer_id;
       newTrade.insurer_id = req.body.insurer_id;
       customerdb.getCustomerFromAadhar(req.body.customeraadhar_id, onFindCustomer.bind({
@@ -102,25 +101,10 @@ function onFindCustomer(err, customer) {
   res = this.res;
   newTrade = this.newTrade;
   callback = this.callback;
-  if (customer) {
-    newTrade.customer_id = customer._id;
-    newTrade.save(callback);
-  } else {
-    customerdb.createNewCustomer(req.body.customeraadhar_id, req.body.customermobile, onNewCustomer.bind({
-      'req': req,
-      'res': res,
-      'newTrade': newTrade,
-      'callback': callback
-    }));
-  }
-}
-
-function onNewCustomer(err, customer) {
-  req = this.req;
-  res = this.res;
-  newTrade = this.newTrade;
-  callback = this.callback;
   newTrade.customer_id = customer._id;
   newTrade.status = "KYC Not Uploaded";
+  if (customer.kychash) {
+    newTrade.status = "RFQ Not Uploaded";
+  }
   newTrade.save(callback);
 }

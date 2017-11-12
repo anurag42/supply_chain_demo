@@ -8,10 +8,11 @@ module.exports = {
     }, callback);
   },
 
-  createNewCustomer: function(aadhar, mobile, callback) {
+  createNewCustomer: function(account, aadhar, mobile, callback) {
     var newCustomer = new Customer();
     newCustomer.aadhar = aadhar;
     newCustomer.mobile = mobile;
+    newCustomer.ethereumAddress = account;
     newCustomer.save(callback);
   },
 
