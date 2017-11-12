@@ -336,22 +336,6 @@ function reject(req, res, tradeID, userAddress, docName, reason) {
     tradeFunctions.sendRejectTxn(req, res, tradeID, userAddress, docName, reason);
 }
 
-function locapprove(req, res, address, username) {
-  var locInstance = letterOfCreditContract.at(address);
-  userdb.findUserByUsername(username, req, res, function(err, user) {
-    sender = user.local.userHash;
-    letterOfCreditFunctions.sendLOCApproveTxn(req, res, locInstance, sender);
-  });
-}
-
-function locreject(req, res, address, username, reason) {
-  var locInstance = letterOfCreditContract.at(address);
-  userdb.findUserByUsername(username, req, res, function(err, user) {
-    sender = user.local.userHash;
-    letterOfCreditFunctions.sendLOCRejectTxn(req, res, locInstance, sender, reason);
-  });
-}
-
 function str2bytearr(str) {
   var data = [];
   for (var i = 0; i < str.length; i++) {
@@ -375,6 +359,7 @@ function hexToString(hex) {
 }
 
 function onNewTradeSession(err, trade) {
+  console.log("trade");
   if (err)
     throw err;
   var res = this.res;
@@ -481,13 +466,13 @@ function onFindTradeApprove(err, trade) {
       update = {
         status: "Letter Of Credit Approved by Buyer; Ethereum Txn Pending;"
       };
-      locapprove(req, res, trade.letterofcredit.contract_id, trade.manufacturer_id);
+      approve(req, res, trade.trade_id, req.body.userAddress, 'LetterOfCredit');
       break;
     case "LA":
       update = {
         status: "Letter Of Credit Approved; Ethereum Txn Pending;"
       };
-      locapprove(req, res, trade.letterofcredit.contract_id, trade.supplier_id);
+      approve(req, res, trade.trade_id, req.body.userAddress, 'LetterOfCredit');
       break;
     case "B":
       if (trade.type == "PARTSSUPPLIERTOOEM") {
@@ -565,13 +550,13 @@ function onFindTradeReject(err, trade) {
       update = {
         status: "Letter Of Credit Rejected; Ethereum Txn Pending;"
       };
-      locreject(req, res, trade.letterofcredit.contract_id, trade.manufacturer_id, req.body.reason);
+      reject(req, res, trade.trade_id, req.body.userAddress, 'LetterOfCredit', req.body.reason);
       break;
     case "LA":
       update = {
         status: "Letter Of Credit Rejected; Ethereum Txn Pending;"
       };
-      locreject(req, res, trade.letterofcredit.contract_id, trade.supplier_id, req.body.reason);
+      reject(req, res, trade.trade_id, req.body.userAddress, 'LetterOfCredit', req.body.reason);
     case "B":
       if (trade.type == "PARTSSUPPLIERTOOEM") {
         update = {

@@ -41,18 +41,18 @@ module.exports = {
       txnID: 'None'
     });
     newTrade.status = "Ethereum Transaction Pending!!! Check after 2 mins!!!";
-    if (req.body.tradetype == "PARTSSUPPLIERTOOEM") {
+    if (req.body.tradeType == "PARTSSUPPLIERTOOEM") {
       newTrade.bank_id = req.body.bank_id;
       newTrade.supplier_id = req.body.supplier_id;
       newTrade.manufacturer_id = req.body.manufacturer_id;
       newTrade.shipper_id = req.body.shipper_id;
       newTrade.save(callback);
-    } else if (req.body.tradetype == "OEMTODEALER") {
+    } else if (req.body.tradeType == "OEMTODEALER") {
       newTrade.dealer_id = req.body.dealer_id;
       newTrade.manufacturer_id = req.body.manufacturer_id;
       newTrade.shipper_id = req.body.shipper_id;
       newTrade.save(callback);
-    } else if (req.body.tradetype == "DEALERTOCUSTOMER") {
+    } else if (req.body.tradeType == "DEALERTOCUSTOMER") {
       newTrade.dealer_id = req.body.dealer_id;
       customerdb.getCustomerFromAadhar(req.body.customeraadhar_id, req, res, onFindCustomer.bind({
         'res': res,
