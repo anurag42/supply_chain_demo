@@ -23,6 +23,11 @@ module.exports = {
     newTrade.status = "No quotation till now";
     newTrade.save(callback);
     newTrade.doc.push({
+      doctype: 'rfq',
+      hash: 'No Request for Quotation till now',
+      txnID: 'None'
+    });
+    newTrade.doc.push({
       doctype: 'quotation',
       hash: 'No Quotation till now',
       txnID: 'None'
@@ -42,7 +47,7 @@ module.exports = {
       hash: 'No Bill of Lading till now',
       txnID: 'None'
     });
-    newTrade.status = "Quotation Not Uploaded";
+    newTrade.status = "RFQ Not Uploaded";
     newTrade.save(callback);
   },
 

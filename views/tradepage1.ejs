@@ -124,10 +124,10 @@
                                     <p class="tradetxt">Received Quotation from Seller</p>
                                 </div>
                                 <div class="col-sm-6 tradeoptions">
-                                    <% if(senderpage == 'Seller') {%> <button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('quotation'); setTitle('Quotation')">Upload Quotation
+                                    <% if(senderpage == 'Buyer') {%> <button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('rfq'); setTitle('Request for Quotation')">Upload Request for Quotation
                                         <i class="fa fa-upload" aria-hidden="true"></i>
                                     </button><br/><%}%>
-                                    <% if(senderpage == 'Buyer') {%><div class="optionbtn">
+                                    <% if(senderpage == 'Seller') {%><div class="optionbtn">
                                         <button class="tradebtn acceptbtn" onclick="fillForm('Q')" form="approval_form">Accept
                                             <i class="fa fa-check" aria-hidden="true"></i>
                                         </button>
@@ -136,10 +136,10 @@
                                         </button>
                                     </div><%}%>
                                     <div class="downloadbtn">
-                                        <button class="tradebtn dnldbcbtn" onclick="dwnldForm('Quotation')" data-toggle="modal" data-target="#bcdnldmodal" form="dwnld_form2">Download
+                                        <button class="tradebtn dnldbcbtn" onclick="dwnldForm('RequestForQuotation')" data-toggle="modal" data-target="#bcdnldmodal" form="dwnld_form2">Download
                                             <i class="fa fa-link" aria-hidden="true"></i>
                                         </button>
-                                        <button class="tradebtn dnldsvbtn" onclick="dwnldForm('Quotation')" form="dwnld_form">Download
+                                        <button class="tradebtn dnldsvbtn" onclick="dwnldForm('RequestForQuotation')" form="dwnld_form">Download
                                             <i class="fa fa-server" aria-hidden="true"></i>
                                         </button>
                                     </div>
@@ -789,9 +789,16 @@ switch("<%= status %>".split(' ')[0]){
   $(".quotation_row .status, .purchase_row .status, .invoice_row .status, .agreement_row .status, .bill_row .status").html("COMPLETED");
 	break;
 }
-
-
+console.log('<%= senderpage %>');
+console.log('<%= status %>');
 switch("<%= status %>"){
+  case "RFQ Not Uploaded":
+  if("<%= senderpage %>" == "Buyer"){
+    $(".request_row .uploadbtn").css("cssText","opacity:1 !important");
+		$(".request_row .uploadbtn").prop('disabled', false);
+		$(".pendingstatus, .request_row .tradetxt").html('Upload Request for Quotation');
+  }
+  else $(".request_row .tradetxt").html('<%= buyer_id %>  to Upload Request for Quotation');
 	case "Quotation Not Uploaded":
 	if("<%= senderpage %>" == "Seller"){
 		$(".quotation_row .uploadbtn").css("cssText","opacity:1 !important");
