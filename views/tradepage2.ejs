@@ -677,7 +677,6 @@ switch("<%= status %>".split(' ')[0]){
     $(".quotation_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
     $(".quotation_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
     $(".quotation_row .status").html("IN PROGRESS");
-
   }
 	break;
 	case "Purchase":
@@ -710,26 +709,6 @@ switch("<%= status %>".split(' ')[0]){
     $(".invoice_row .status").html("IN PROGRESS");
     $(".quotation_row .status, .purchase_row .status").html("COMPLETED");
 
-  }
-	break;
-	case "Letter":
-	$(".quotation_row .tradetxt").html('Quotation Approved');
-	$(".purchase_row .tradetxt").html('Purchase Order Approved');
-	$(".invoice_row .tradetxt").html('Invoice Approved');
-	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
-	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
-	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").css("cssText","opacity:1 !important");
-	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").prop('disabled', false);
-	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
-	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
-	if("<%= status %>" != "Letter Of Credit Approved"){
-    $(".agreement_row").addClass("trading");
-    $(".agreement_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
-    $(".agreement_row .tradeleft").css("cssText","opacity:1 !important");
-    $(".agreement_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
-    $(".agreement_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
-    $(".agreement_row .status").html("IN PROGRESS");
-    $(".quotation_row .status, .purchase_row .status, .invoice_row .status").html("COMPLETED");
   }
 	break;
 	case "Bill":

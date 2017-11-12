@@ -361,10 +361,10 @@
 				<form action="/triggertradenew" method="post" enctype = "multipart/form-data" >
 					<input type="hidden" id="dealer_id" name="dealer_id" value=<%= username %>></input>
 					<input type="hidden" id="user" name="user" value=<%= user %>></input>
-					<input type="hidden" name="tradetype" value="OEMTODEALER"></input>
-					<input type="text" class="form-control" id="manufacturer_id" name="manufacturer_id" placeholder="Manufacturer User Name"></input>
+					<input type="hidden" name="tradetype" value="DEALERTOCUSTOMER"></input>
+					<input type="text" class="form-control" id="customeraadhar_id" name="customeraadhar_id" placeholder="Customer Aadhar Number"></input>
 					<span class="fa fa-user icon"></span><br>
-					<input type="text" class="form-control" id="shipper_id" name="shipper_id" placeholder="Shipper User Name"></input>
+					<input type="text" class="form-control" id="customermobile" name="customermobile" placeholder="Customer Mobile Number"></input>
 					<span class="fa fa-truck icon"></span><br>
 					<button type="submit" class="btn btn-warning btn-lg loginbtn">Trigger trade</button>
 				</form>

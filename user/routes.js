@@ -6,6 +6,8 @@ module.exports = function(app) {
   app.get('/signup', user.getSignup);
   app.post('/signup', user.postSignup);
   app.get('/login', user.getLogin);
+  app.get('/customerlogin', user.getCustomerLogin);
+  app.post('/customerlogin', user.postCustomerLogin);
   app.post('/login', user.postLogin);
   app.get('/roleselection', user.getRoleSelection);
   app.post('/profile', user.postRoleSelection);

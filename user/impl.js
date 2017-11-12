@@ -36,6 +36,14 @@ module.exports = {
     });
   },
 
+  getCustomerLogin: function(req, res) {
+    res.render('customerlogin.ejs');
+  },
+
+  postCustomerLogin: function(req, res) {
+    res.render('customerlogin.ejs');
+  },
+
   postLogin: function(req, res) {
     userdb.findUserByUsername(req.body.username, req, res, onFindUserLogin.bind({
       'req': req,
@@ -62,7 +70,7 @@ module.exports = {
     user = req.session.user;
     switch (user.role) {
       case 'Shipper':
-        if (req.body.role == 'Supplier') {
+        if (req.body.role == 'PARTSSUPPLIERTOOEM') {
           Trade.find({
             'shipper_id': user.username
           }, getListofTrades1.bind({
@@ -70,7 +78,7 @@ module.exports = {
             'res': res,
             'req': req
           }));
-        } else {
+        } else if (req.body.role == 'OEMTODEALER') {
           Trade.find({
             'shipper_id': user.username
           }, getListofTrades2.bind({
@@ -81,7 +89,7 @@ module.exports = {
         }
         break;
       case 'Manufacturer':
-        if (req.body.role == 'Supplier') {
+        if (req.body.role == 'PARTSSUPPLIERTOOEM') {
           Trade.find({
             'manufacturer_id': user.username
           }, getListofTrades1.bind({
@@ -89,7 +97,7 @@ module.exports = {
             'res': res,
             'req': req
           }));
-        } else {
+        } else if (req.body.role == 'OEMTODEALER') {
           Trade.find({
             'manufacturer_id': user.username
           }, getListofTrades2.bind({
@@ -98,7 +106,24 @@ module.exports = {
             'req': req
           }));
         }
-        break;
+      case 'Dealer':
+        if (req.body.role == 'OEMTODEALER') {
+          Trade.find({
+            'dealer_id': user.username
+          }, getListofTrades2.bind({
+            'user': user,
+            'res': res,
+            'req': req
+          }));
+        } else if (req.body.role == 'DEALERTOCUSTOMER') {
+          Trade.find({
+            'dealer_id': user.username
+          }, getListofTrades3.bind({
+            'user': user,
+            'res': res,
+            'req': req
+          }));
+        }
     }
   },
 
@@ -193,13 +218,9 @@ function onFindUserProfile(err, user) {
       res.redirect('/roleselection');
       break;
     case "Dealer":
-      Trade.find({
-        'dealer_id': user.username
-      }, getListofTrades2.bind({
-        'user': user,
-        'res': res,
-        'req': req
-      }));
+      req.session.user = user;
+      res.redirect('/roleselection');
+
       break;
   }
 }
@@ -285,6 +306,41 @@ function getListofTrades2(err, tradeList) {
     trade_id: tradeIdArr,
     dealerList: dealerIdList,
     manufacturerList: manufacturerIdList,
+    statusList: statusList
+  });
+}
+
+function getListofTrades3(err, tradeList) {
+  if (err)
+    return err;
+  req = this.req;
+  res = this.res;
+  user = this.user;
+  if (tradeList.length > 0) {
+    var tradeIdArr = getArrFromTradeObject(tradeList, '_id');
+    dealerIdList = getArrFromTradeObject(tradeList, 'dealer_id');
+    customerIdList = getArrFromTradeObject(tradeList, 'customer_id');
+    statusList = getArrFromTradeObject(tradeList, 'status');
+  } else {
+    tradeIdArr = ['No Trades Yet'];
+    dealerIdList = [];
+    customerIdList = [];
+    statusList = [];
+  }
+  if (dealerIdList[0] || customerIdList[0]) {
+    tradeIdArr = ['No Trades Yet'];
+  }
+  res.render('profile3.ejs', {
+    message: req.session.message,
+    role: user.role,
+    ethAddress: user.ethereumAddress,
+    ethBalance: web3.eth.getBalance(user.ethereumAddress),
+    username: user.username,
+    kychash: user.kychash,
+    user: user._id,
+    trade_id: tradeIdArr,
+    dealerList: dealerIdList,
+    customerList: customerIdList,
     statusList: statusList
   });
 }

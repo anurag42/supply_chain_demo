@@ -16,13 +16,17 @@ module.exports = {
     if (req.body.tradetype == "PARTSSUPPLIERTOOEM") {
       newTrade.bank_id = req.body.bank_id;
       newTrade.supplier_id = req.body.supplier_id;
+      newTrade.manufacturer_id = req.body.manufacturer_id;
     } else if (req.body.tradetype == "OEMTODEALER") {
       newTrade.dealer_id = req.body.dealer_id;
+      newTrade.manufacturer_id = req.body.manufacturer_id;
+    } else if (req.body.tradetype == "DEALERTOCUSTOMER") {
+      newTrade.dealer_id = req.body.dealer_id;
+      newTrade.customer_id = req.body.customer_id;
     }
-    newTrade.manufacturer_id = req.body.manufacturer_id;
+
     newTrade.shipper_id = req.body.shipper_id;
     newTrade.status = "RFQ Not Uploaded";
-    newTrade.save(callback);
     newTrade.doc.push({
       doctype: 'rfq',
       hash: 'No Request for Quotation till now',

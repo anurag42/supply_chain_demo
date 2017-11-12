@@ -43,23 +43,19 @@
             <div class="col-sm-12">
                 <div class="usrinfo">
                     <div class="infoitem">
-                        <img src="/images/bank_icon.png">
-                        <span><strong>Seller Bank:</strong> <%= sellerbank_id %> </span>
-                    </div>
-                    <div class="infoitem">
-                        <img src="/images/bank_icon.png">
-                        <span><strong>Buyer Bank:</strong> <%= bank_id %> </span>
+                        <img src="/images/user_icon.png">
+                        <span><strong>Bank:</strong> <%= bank_id %> </span>
                     </div>
                     <div class="infoitem">
                         <img src="/images/user_icon.png">
-                        <span><strong>Seller:</strong> <%= seller_id %> </span>
+                        <span><strong>Parts Manufacturer:</strong> <%= seller_id %> </span>
                     </div>
                     <div class="infoitem">
                         <img src="/images/user_icon.png">
-                        <span><strong>Buyer:</strong> <%= buyer_id %> </span>
+                        <span><strong>OEM:</strong> <%= buyer_id %> </span>
                     </div>
                     <div class="infoitem">
-                        <img src="/images/logistic_icon.png">
+                        <img src="/images/user_icon.png">
                         <span><strong>Shipper:</strong> <%= shipper_id %> </span>
                     </div>
                     <input type="hidden" id="senderpage" value="<%= senderpage %>">
@@ -72,8 +68,84 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="tradecontainer">
-                    <h4 class="text-center"><strong>Pending Action:</strong> <span class="pendingstatus">Purchase Order Uploaded Seller to Approve</span></h4><br>
+                    <h4 class="text-center"><strong>Pending Action:</strong> <span class="pendingstatus"></span></h4><br>
                     <div class="tradelist">
+                        <div class="row kyc_row tradeitem">
+                            <div class="col-sm-2 tradeleft text-center">
+                                <img src="/images/inv_icon.png">
+                                <p class="status">IN PROGRESS</p>
+                            </div>
+                            <div class="col-sm-10 traderight">
+                                <div class="col-sm-6">
+                                    <p class="tradedate"></p>
+                                    <p class="tradehead">KYC</p>
+                                    <p class="tradetxt">Upload KYC</p>
+                                </div>
+                                <div class="col-sm-6 tradeoptions">
+                                    <% if(senderpage == 'Seller') {%><button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('invoice'); setTitle('Invoice')">Upload KYC
+                                        <i class="fa fa-upload" aria-hidden="true"></i>
+                                    </button><br/><%}%>
+                                    <% if(senderpage == 'Buyer') {%> <div class="optionbtn">
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('I')" form="approval_form">Accept
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('I')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div><%}%>
+                                    <% if(senderpage == 'Bank') {%> <div class="optionbtn">
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('IA')" form="approval_form">Accept
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('IA')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div><%}%>
+                                    <div class="downloadbtn">
+                                        <button class="tradebtn dnldbcbtn" onclick="dwnldForm('Invoice')" data-toggle="modal" data-target="#bcdnldmodal" form="dwnld_form2">Download
+                                            <i class="fa fa-link" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn dnldsvbtn" onclick="dwnldForm('Invoice')" form="dwnld_form">Download
+                                            <i class="fa fa-server" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row tradeitem request_row">
+                            <div class="col-sm-2 tradeleft text-center">
+                                <img src="/images/quo_icon.png">
+                                <p class="status">IN PROGRESS</p>
+                            </div>
+                            <div class="col-sm-10 traderight">
+                                <div class="col-sm-6">
+                                    <p class="tradedate"></p>
+                                    <p class="tradehead">RFP</p>
+                                    <p class="tradetxt">Received Quotation from Seller</p>
+                                </div>
+                                <div class="col-sm-6 tradeoptions">
+                                    <% if(senderpage == 'Buyer') {%> <button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('rfq'); setTitle('Request for Quotation')">Upload Request for Quotation
+                                        <i class="fa fa-upload" aria-hidden="true"></i>
+                                    </button><br/><%}%>
+                                    <% if(senderpage == 'Seller') {%><div class="optionbtn">
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('Q')" form="approval_form">Accept
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('Q')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div><%}%>
+                                    <div class="downloadbtn">
+                                        <button class="tradebtn dnldbcbtn" onclick="dwnldForm('RequestForQuotation')" data-toggle="modal" data-target="#bcdnldmodal" form="dwnld_form2">Download
+                                            <i class="fa fa-link" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn dnldsvbtn" onclick="dwnldForm('RequestForQuotation')" form="dwnld_form">Download
+                                            <i class="fa fa-server" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row tradeitem quotation_row">
                             <div class="col-sm-2 tradeleft text-center">
                                 <img src="/images/quo_icon.png">
@@ -81,7 +153,7 @@
                             </div>
                             <div class="col-sm-10 traderight">
                                 <div class="col-sm-6">
-                                    <p class="tradedate">2.10.2107</p>
+                                    <p class="tradedate"></p>
                                     <p class="tradehead">Quotation</p>
                                     <p class="tradetxt">Received Quotation from Seller</p>
                                 </div>
@@ -115,7 +187,7 @@
                             </div>
                             <div class="col-sm-10 traderight">
                                 <div class="col-sm-6">
-                                    <p class="tradedate">2.10.2107</p>
+                                    <p class="tradedate"></p>
                                     <p class="tradehead">Purchase Order</p>
                                     <p class="tradetxt">Purchase Order Uploaded Seller to Approve</p>
                                 </div>
@@ -149,7 +221,7 @@
                             </div>
                             <div class="col-sm-10 traderight">
                                 <div class="col-sm-6">
-                                    <p class="tradedate">2.10.2107</p>
+                                    <p class="tradedate"></p>
                                     <p class="tradehead">Invoice</p>
                                     <p class="tradetxt">Invoice Received from Seller</p>
                                 </div>
@@ -191,7 +263,7 @@
                             </div>
                             <div class="col-sm-10 traderight">
                                 <div class="col-sm-6">
-                                    <p class="tradedate">2.10.2107</p>
+                                    <p class="tradedate"></p>
                                     <p class="tradehead">Financial Agreement</p>
                                     <p class="tradetxt">Received Agreement from Bank</p>
                                 </div>
@@ -225,7 +297,7 @@
                             </div>
                             <div class="col-sm-10 traderight">
                                 <div class="col-sm-6">
-                                    <p class="tradedate">2.10.2107</p>
+                                    <p class="tradedate"></p>
                                     <p class="tradehead">Bill of Lading</p>
                                     <p class="tradetxt">Shipper yet to Upload Bill Of Lading</p>
                                 </div>
@@ -259,9 +331,85 @@
                             </div>
                             <div class="col-sm-10 traderight">
                                 <div class="col-sm-6">
-                                    <p class="tradedate">2.10.2107</p>
+                                    <p class="tradedate"></p>
                                     <p class="tradehead">Payment</p>
                                     <p class="tradetxt">Payment Scheduled</p>
+                                </div>
+                                <div class="col-sm-6 tradeoptions">
+                                    <% if(senderpage == 'Buyer' || senderpage == "Bank") {%><div class="optionbtn">
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('B')" form="approval_form">Accept
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('B')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div><%}%>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row rc_row tradeitem">
+                            <div class="col-sm-2 tradeleft text-center">
+                                <img src="/images/bill_icon.png">
+                                <p class="status">IN PROGRESS</p>
+                            </div>
+                            <div class="col-sm-10 traderight">
+                                <div class="col-sm-6">
+                                    <p class="tradedate"></p>
+                                    <p class="tradehead">Request RC Book</p>
+                                    <p class="tradetxt">Shipper yet to Upload Bill Of Lading</p>
+                                </div>
+                                <div class="col-sm-6 tradeoptions">
+                                    <div class="downloadbtn">
+                                        <button class="tradebtn uploadbtn">Send To RTO
+                                            <i class="fa fa-upload" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn uploadbtn">Send Sale Details To Insurer
+                                            <i class="fa fa-upload" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row insquo_row tradeitem">
+                            <div class="col-sm-2 tradeleft text-center">
+                                <img src="/images/quo_icon.png">
+                                <p class="status">IN PROGRESS</p>
+                            </div>
+                            <div class="col-sm-10 traderight">
+                                <div class="col-sm-6">
+                                    <p class="tradedate"></p>
+                                    <p class="tradehead">Insurance Quotation</p>
+                                    <p class="tradetxt">Payment Scheduled</p>
+                                </div>
+                                <div class="col-sm-6 tradeoptions">
+                                    <% if(senderpage == 'Buyer' || senderpage == "Bank") {%><div class="optionbtn">
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('B')" form="approval_form">Accept
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('B')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div><%}%>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row insquo_row tradeitem">
+                            <div class="col-sm-2 tradeleft text-center">
+                                <img src="/images/quo_icon.png">
+                                <p class="status">IN PROGRESS</p>
+                            </div>
+                            <div class="col-sm-10 traderight">
+                                <div class="col-sm-6">
+                                    <p class="tradedate"></p>
+                                    <p class="tradehead">Insurance Document</p>
+                                    <p class="tradetxt">Payment Scheduled</p>
+                                </div>
+                                <div class="col-sm-6 tradeoptions">
+                                    <div class="downloadbtn">
+                                        <button class="tradebtn uploadbtn" onclick="dwnldForm('BillOfLading')" form="dwnld_form2" data-toggle="modal" data-target="#bcdnldmodal">Download
+                                            <i class="fa fa-download" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -283,7 +431,7 @@
 				<h4>Upload <span id="title" class="modal-title"></span></h4>
 			</div>
 			<div class="modal-body">
-				<div id="uplshow">
+				<div id="uplshow" style="display:none">
 					<img src="/images/loader.gif" class="loadergif">
 					<p>Please hang on while we upload this document<br/>
 						on to blockchain. This document will then<br/>
@@ -292,7 +440,7 @@
 						<p style="font-weight:bold;">You can close this window now</p>
 					</div>
 					<div id="uplhide">
-						<form id="uploadform" action = "/fileupload" method = "POST" enctype = "multipart/form-data">
+						<form id="uploadform" action = "/uploadDoc" method = "POST" enctype = "multipart/form-data">
 							<div class="form-group">
 								<input type="hidden" id="docName" name="senderpage">
 								<p id="uperror" style="display:none;color:red;">Please Select File</p>
@@ -384,9 +532,6 @@
 						<input type="hidden" class="form-control" name="buyerBank" value=<%= bank_id %>>
 					</div>
 					<div class="form-group">
-						<input type="hidden" class="form-control" name="sellerBank" value=<%= sellerbank_id %>>
-					</div>
-					<div class="form-group">
 						<input type="number" class="form-control" name="timePeriod" placeholder="Time Period in mins before expiry">
 					</div>
 					<div class="form-group">
@@ -423,9 +568,6 @@
 					</div>
 					<div class="form-group">
 						<input type="hidden" class="form-control" name="buyerBank" value=<%= bank_id %>>
-					</div>
-					<div class="form-group">
-						<input type="hidden" class="form-control" name="sellerBank" value=<%= sellerbank_id %>>
 					</div>
 					<div class="form-group">
 						<p>This agreement contains all textual
@@ -647,16 +789,71 @@ switch("<%= status %>".split(' ')[0]){
   $(".quotation_row .status, .purchase_row .status, .invoice_row .status, .agreement_row .status, .bill_row .status").html("COMPLETED");
 	break;
 }
-
-
+console.log('<%= senderpage %>');
+console.log('<%= status %>');
 switch("<%= status %>"){
+  case "RFQ Not Uploaded":
+  if("<%= senderpage %>" == "Buyer"){
+    $(".request_row .uploadbtn").css("cssText","opacity:1 !important");
+		$(".request_row .uploadbtn").prop('disabled', false);
+		$(".pendingstatus, .request_row .tradetxt").html('Upload Request for Quotation');
+  }
+  else $(".request_row .tradetxt").html('<%= buyer_id %>  to Upload Request for Quotation');
+  case "Request For Quotation Uploaded; Ethereum Txn Pending;":
+	$(".request_row .dnldsvbtn").css("cssText","opacity:1 !important");
+	$(".request_row .dnldsvbtn").prop('disabled', false);
+	$(".request_row .uploadbtn .loaderbtngif").show();
+	$(".pendingstatus, .request_row .tradetxt").html('Uploading on Blockchain');
+	break;--------------
+  case "Request For Quotation Approved; Ethereum Txn Pending;":
+	$(".request_row .aprbtngif").show();
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .request_row .tradetxt").html('Request For Quotation Approved, Updating on Blockchain');
+	break;
+	case "Request For Quotation Approved":
+	$(".purchase_row .tradeleft").css("cssText","opacity:1 !important");
+	$(".purchase_row .uploadbtn").css("cssText","opacity:1 !important");
+	$(".purchase_row .uploadbtn").prop('disabled', false);
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .request_row .tradetxt").html('Request For Quotation Approved');
+	if("<%= senderpage %>" == "Buyer"){
+		$(".pendingstatus, .purchase_row .tradetxt").html('Upload Purchase Order');
+		$(".request_row .uploadbtn").prop('disabled', false);
+	}
+	else $(".pendingstatus, .purchase_row .tradetxt").html('Buyer yet to Upload Purchase Order');
+	break;
+  case "Request For Quotation Rejected; Ethereum Txn Pending;":
+	$(".request_row .rejbtngif").show();
+	$(".pendingstatus, .request_row .tradetxt").html('Request For Quotation Rejected, Updating on Blockchain');
+	break;
+	case "Request For Quotation Rejected":
+	if("<%= senderpage %>" == "Seller"){
+		$(".request_row .uploadbtn").css("cssText","opacity:1 !important");
+		$(".request_row .uploadbtn").prop('disabled', false);
+		$(".pendingstatus, .request_row .tradetxt").html('Request For Quotation Rejected. Re-upload Request For Quotation');
+	}
+	else $(".request_row .tradetxt").html('Request For Quotation Rejected. <%= seller_id %>  to Upload Request For Quotation');
+	break;
+  case "Request For Quotation Uploaded":
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
+	if("<%= senderpage %>" == "Buyer"){
+		$(".pendingstatus, .request_row .tradetxt").html('Review Request For Quotation');
+		$(".request_row .acceptbtn, .request_row .rejectbtn").css("cssText","opacity:1 !important");
+		$(".request_row .acceptbtn, .request_row .rejectbtn").prop('disabled', false);
+	}
+	else $(".pendingstatus, .request_row .tradetxt").html('<%= buyer_id %>  to Approve');
+	break;
+  -------------------
 	case "Quotation Not Uploaded":
 	if("<%= senderpage %>" == "Seller"){
 		$(".quotation_row .uploadbtn").css("cssText","opacity:1 !important");
 		$(".quotation_row .uploadbtn").prop('disabled', false);
 		$(".pendingstatus, .quotation_row .tradetxt").html('Upload Quotation');
 	}
-	else $(".quotation_row .tradetxt").html('Seller to Upload Quotation');
+	else $(".quotation_row .tradetxt").html('<%= seller_id %>  to Upload Quotation');
 	break;
 	case "Quotation Rejected; Ethereum Txn Pending;":
 	$(".quotation_row .rejbtngif").show();
@@ -668,7 +865,7 @@ switch("<%= status %>"){
 		$(".quotation_row .uploadbtn").prop('disabled', false);
 		$(".pendingstatus, .quotation_row .tradetxt").html('Quotation Rejected. Re-upload Quotation');
 	}
-	else $(".quotation_row .tradetxt").html('Quotation Rejected. Seller to Upload Quotation');
+	else $(".quotation_row .tradetxt").html('Quotation Rejected. <%= seller_id %>  to Upload Quotation');
 	break;
 	case "Quotation Uploaded; Ethereum Txn Pending;":
 	$(".quotation_row .dnldsvbtn").css("cssText","opacity:1 !important");
@@ -684,7 +881,7 @@ switch("<%= status %>"){
 		$(".quotation_row .acceptbtn, .quotation_row .rejectbtn").css("cssText","opacity:1 !important");
 		$(".quotation_row .acceptbtn, .quotation_row .rejectbtn").prop('disabled', false);
 	}
-	else $(".pendingstatus, .quotation_row .tradetxt").html('Buyer to Approve');
+	else $(".pendingstatus, .quotation_row .tradetxt").html('<%= buyer_id %>  to Approve');
 	break;
 	case "Quotation Approved; Ethereum Txn Pending;":
 	$(".quotation_row .aprbtngif").show();
@@ -721,7 +918,7 @@ switch("<%= status %>"){
 		$(".pendingstatus, .purchase_row .tradetxt").html('Purchase Order Rejected. Re-upload Purchase Order');
 		$(".quotation_row .uploadbtn").prop('disabled', false);
 	}
-	else $(".pendingstatus, .purchase_row .tradetxt").html('Purchase Order Rejected. Buyer yet to Upload Purchase Order');
+	else $(".pendingstatus, .purchase_row .tradetxt").html('Purchase Order Rejected. <%= buyer_id %>  yet to Upload Purchase Order');
 	break;
 	case "Purchase Order Uploaded; Ethereum Txn Pending;":
 	$(".purchase_row .dnldsvbtn").css("cssText","opacity:1 !important");
@@ -757,7 +954,7 @@ switch("<%= status %>"){
 		$(".invoice_row .tradetxt").html('Upload Invoice');
 	}
 
-	else $(".pendingstatus, .invoice_row .tradetxt").html('Seller yet to Upload Invoice');
+	else $(".pendingstatus, .invoice_row .tradetxt").html('<%= seller_id %>  yet to Upload Invoice');
 	break;
 	case "Invoice Rejected; Ethereum Txn Pending;":
 	$(".invoice_row .rejbtngif").show();
@@ -775,13 +972,13 @@ switch("<%= status %>"){
 		$(".pendingstatus, .invoice_row .tradetxt").html('Invoice Rejected. Upload Invoice');
 	}
 
-	else $(".pendingstatus, .invoice_row .tradetxt").html('Invoice Rejected. Seller yet to Upload Invoice');
+	else $(".pendingstatus, .invoice_row .tradetxt").html('Invoice Rejected. <%= seller_id %>  yet to Upload Invoice');
 	break;
 	case "Invoice Approved by Buyer; Ethereum Txn Pending;":
 	$(".invoice_row .aprbtngif").show();
 	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
 	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
-	$(".pendingstatus, .invoice_row .tradetxt").html('Invoice Approved by Buyer, Updating on Blockchain');
+	$(".pendingstatus, .invoice_row .tradetxt").html('Invoice Approved by <%= buyer_id %> , Updating on Blockchain');
 	break;
 	case "Invoice Approved by Buyer":
 	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
@@ -900,7 +1097,7 @@ switch("<%= status %>"){
 		$(".agreement_row .acceptbtn, .agreement_row .rejectbtn").prop('disabled', false);
 		$(".pendingstatus, .agreement_row .tradetxt").html('Review Financial Agreement');
 	}
-	else $(".agreement_row .tradetxt").html('Seller to Approve');
+	else $(".agreement_row .tradetxt").html('<%= seller_id %>  to Approve');
 	break;
 	case "Letter Of Credit Approved":
 	$('.payment_row .tradeleft').css("cssText","opacity:1 !important");
