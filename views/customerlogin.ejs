@@ -48,7 +48,7 @@
             font-weight:bold;
 
         }
-        .loginerror, .loginerror2, .loginerror3{
+        .loginerror, .loginerror2, .loginerror3, .otperror{
 
             display:none;
 
@@ -100,7 +100,7 @@
     <h1 class="loginh1">Login</h1>
     <!-- LOGIN FORM -->
     <div class="loginnext">
-    <form action="/login" method="post">
+    <form action="/login" method="post" id="loginform">
         <div class="alert alert-danger loginerror">Please enter proper aadhar number</div>
         <div class="alert alert-danger loginerror3">Customer with this Aadhar number does not exist!</div>
         <h5 class="loginh5">Verify your Aadhar number</h5>
@@ -112,17 +112,18 @@
         <button class="btn btn-warning nextbtn">Next</button>
     </div>
     <div class="loginverify">
-    <form action="/login" method="post">
+    <form action="/customerlogin" method="post">
         <div class="alert alert-danger loginerror2">Please enter proper aadhar number</div>
         <h5 class="loginh5">Please enter verification code</h5>
         <div class="form-group">
+            <div class="alert alert-danger otperror">OTP is not valid</div>
             <input class="form-control otp o1" type="text" maxlength="1" />
             <input class="form-control otp o2" type="text" maxlength="1" />
             <input class="form-control otp o3" type="text" maxlength="1" />
             <input class="form-control otp o4" type="text" maxlength="1" />
         </div>
-        <p>Your OTP is on the way <span class="aadharshow"></span></p>
-        <input type="hidden" id="mobile"></input>
+        <p>Your OTP is on the way to <span class="mobileshow"></span></p>
+        <input type="hidden" id="mobile" name="mobile"></input>
     </form>
         <button class="btn btn-warning continuebtn">Continue</button>
     </div>
@@ -133,7 +134,6 @@
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 <script>
     $('.nextbtn').click(function(){
-
         var aadhar = $('.aadhar').val();
         if (aadhar == "" || aadhar.length != 12 || isNaN(aadhar)){
             $('.loginerror').show();
@@ -152,7 +152,7 @@
                   document.getElementById('mobile').value = mobile;
                   $('.loginnext').hide();
                   $('.loginverify').show();
-                  $('.aadharshow').html(aadhar);
+                  $('.mobileshow').html(mobile);
                 }
               }
             });
@@ -183,11 +183,9 @@
           data: {'otp': res, 'mobile': document.getElementById('mobile').value},
           success: function(response) {
             if (response.success == 'false') {
-              $('.loginerror3').show();
+              $('.otperror').show();
             } else {
-              $('.loginnext').hide();
-              $('.loginverify').show();
-              $('.aadharshow').html(aadhar);
+              document.getElementById('loginform').submit();
             }
           }
         });

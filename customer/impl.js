@@ -10,7 +10,6 @@ module.exports = {
 
   validateAadhar: function(req, res) {
     var aadhar = req.body.aadhar;
-    console.log(req.body.aadhar);
     customerdb.getCustomerFromAadhar(aadhar, validateMobile.bind({
       'req': req,
       'res': res
@@ -36,8 +35,25 @@ module.exports = {
         success: "true"
       });
     });
+  },
+
+  successfulLogin: function(req, res) {
+    var aadhar = req.body.aadhar;
+    customerdb.getCustomerFromAadhar(aadhar, navigateToTrackerPage.bind({
+      'req': req,
+      'res': res
+    }));
   }
 
+}
+
+function navigateToTrackerPage(err, customer) {
+  if (err || !customer) {
+    console.log(err);
+    return err;
+  }
+  var customerID = customer._id;
+  res.redirect('/resumetrade?customerid=' + customerID);
 }
 
 function validateMobile(err, customer) {

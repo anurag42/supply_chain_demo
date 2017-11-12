@@ -77,6 +77,12 @@ module.exports = {
       console.error(err);
       if (!err && callback) callback();
     });
+  },
+
+  findTradeByCustomerID: function(customerID, callback) {
+    Trade.findOne({
+      'customer_id': customerID
+    }, callback)
   }
 
 };
@@ -92,7 +98,7 @@ function onFindCustomer(err, customer) {
     newTrade.customer_id = customer._id;
     newTrade.save(callback);
   } else {
-    customerdb.createNewCustomer(req.body.customeraadhar_id, req.body.customermobile, req, res, onNewCustomer.bind({
+    customerdb.createNewCustomer(req.body.customeraadhar_id, req.body.customermobile, onNewCustomer.bind({
       'req': req,
       'res': res,
       'newTrade': newTrade,
