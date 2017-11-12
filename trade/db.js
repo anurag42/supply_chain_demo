@@ -12,6 +12,7 @@ module.exports = {
     // set the user's local credentials
     tradeID = newTrade._id;
     newTrade.trade_id = newTrade._id;
+    newTrade.type = req.body.tradetype;
     if (req.body.tradetype == "PARTSSUPPLIERTOOEM") {
       newTrade.bank_id = req.body.bank_id;
       newTrade.supplier_id = req.body.supplier_id;

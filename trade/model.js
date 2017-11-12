@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 // define the schema for our trade model
 var tradeSchema = mongoose.Schema({
   trade_id: String,
+  type: String,
   manufacturer_id: String,
   supplier_id: String,
   dealer_id: String,
