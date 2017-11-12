@@ -52,6 +52,7 @@ function navigateToTrackerPage(err, customer) {
     console.log(err);
     return err;
   }
+  var res = this.res;
   var customerID = customer._id;
   res.redirect('/resumetrade?customerid=' + customerID);
 }
