@@ -82,6 +82,7 @@ module.exports = {
   },
 
   findTradeByCustomerID: function(customerID, callback) {
+    console.log("DBCall");
     Trade.findOne({
       'customer_id': customerID
     }, callback)

@@ -225,17 +225,20 @@ function onFindTradeDocDownload(err, trade) {
   res = this.res;
   console.log(trade.doc[0].doctype);
   switch (req.body.docname) {
-    case "Quotation":
+    case "RequestForQuotation":
       docHash = trade.doc[0].hash;
       break;
-    case "PurchaseOrder":
+    case "Quotation":
       docHash = trade.doc[1].hash;
       break;
-    case "Invoice":
+    case "PurchaseOrder":
       docHash = trade.doc[2].hash;
       break;
-    case "BillOfLading":
+    case "Invoice":
       docHash = trade.doc[3].hash;
+      break;
+    case "BillOfLading":
+      docHash = trade.doc[4].hash;
       break;
   }
   console.log('Hash of ', req.body.docname, ': ', docHash);

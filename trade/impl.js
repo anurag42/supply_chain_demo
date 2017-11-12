@@ -149,7 +149,7 @@ module.exports = {
         trade_id: req.body.tradeID
       };
       var update = {
-        status: "Quotation Not Uploaded"
+        status: "RFQ Not Uploaded"
       };
       tradedb.updateTrade(query, update);
       res.send();
@@ -217,14 +217,14 @@ function onFindTradeSession(err, trade) {
       seller_id: trade.supplier_id,
       buyer_id: trade.manufacturer_id,
       shipper_id: trade.shipper_id,
-      quotation: trade.doc[0],
-      po: trade.doc[1],
-      invoice: trade.doc[2],
+      quotation: trade.doc[1],
+      po: trade.doc[2],
+      invoice: trade.doc[3],
       status: trade.status,
       letterofcredit: trade.paymentinfo,
       creditAmount: trade.paymentinfo.Credit_Amount,
       timePeriod: trade.paymentinfo.No_of_days,
-      billoflading: trade.doc[3],
+      billoflading: trade.doc[4],
       senderpage: req.session.sender,
       username: req.query.username,
       userAddress: req.session.userAddress
@@ -236,14 +236,14 @@ function onFindTradeSession(err, trade) {
       seller_id: trade.manufacturer_id,
       buyer_id: trade.dealer_id,
       shipper_id: trade.shipper_id,
-      quotation: trade.doc[0],
-      po: trade.doc[1],
-      invoice: trade.doc[2],
+      quotation: trade.doc[1],
+      po: trade.doc[2],
+      invoice: trade.doc[3],
       status: trade.status,
       letterofcredit: trade.paymentinfo,
       creditAmount: trade.paymentinfo.Credit_Amount,
       timePeriod: trade.paymentinfo.No_of_days,
-      billoflading: trade.doc[3],
+      billoflading: trade.doc[4],
       senderpage: req.session.sender,
       username: req.query.username,
       userAddress: req.session.userAddress
@@ -255,14 +255,14 @@ function onFindTradeSession(err, trade) {
       seller_id: trade.dealer_id,
       buyer_id: trade.customer_id,
       shipper_id: trade.shipper_id,
-      quotation: trade.doc[0],
-      po: trade.doc[1],
-      invoice: trade.doc[2],
+      quotation: trade.doc[1],
+      po: trade.doc[2],
+      invoice: trade.doc[3],
       status: trade.status,
       letterofcredit: trade.paymentinfo,
       creditAmount: trade.paymentinfo.Credit_Amount,
       timePeriod: trade.paymentinfo.No_of_days,
-      billoflading: trade.doc[3],
+      billoflading: trade.doc[4],
       senderpage: req.session.sender,
       username: req.query.username,
       userAddress: req.session.userAddress
@@ -454,11 +454,17 @@ function onFindTradeApprove(err, trade) {
       approve(req, res, trade.trade_id, req.body.userAddress, 'PurchaseOrder');
       break;
     case "I":
-      update = {
-        status: "Invoice Approved by Buyer; Ethereum Txn Pending;"
-      };
-
-      approve(req, res, trade.trade_id, req.body.userAddress, 'Invoice');
+    case "I":
+      if (trade.type == "PARTSSUPPLIERTOOEM") {
+        update = {
+          status: "Invoice Approved by Buyer; Ethereum Txn Pending;"
+        };
+      } else if (trade.type == "OEMTODEALER") {
+        update = {
+          status: "Invoice Approved By Seller Bank; Ethereum Txn Pending;"
+        };
+      }
+      approve(req, res, trade.contract_id, req.body.userAddress, 'Invoice');
       break;
     case "IA":
       update = {

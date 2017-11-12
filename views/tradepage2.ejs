@@ -55,9 +55,6 @@
                         <span><strong>Shipper:</strong> <%= shipper_id %> </span>
                     </div>
                     <input type="hidden" id="senderpage" value="<%= senderpage %>">
-                    <input type="hidden" id="quote" value="<%=quotation%>">
-                    <input type="hidden" id="status" value="<%=status%>">
-                    <input type="hidden" id="po" value="<%=po%>">
                 </div>
             </div>
         </div>
@@ -78,7 +75,7 @@
                                     <p class="tradetxt">Upload KYC</p>
                                 </div>
                                 <div class="col-sm-6 tradeoptions">
-                                    <% if(senderpage == 'Seller') {%><button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('invoice'); setTitle('Invoice')">Upload KYC
+                                    <% if(senderpage == 'Buyer') {%><button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('kyc'); setTitle('KYC')">Upload KYC
                                         <i class="fa fa-upload" aria-hidden="true"></i>
                                     </button><br/><%}%>
                                     <% if(senderpage == 'Buyer') {%> <div class="optionbtn">
@@ -625,20 +622,6 @@ function setTitle(title){
 }
 
 function fillName(name){
-switch(name){
-	case "quotation":
-	docNameStore = "Quotation";
-	break;
-	case "po":
-	docNameStore = "PurchaseOrder";
-	break;
-	case "invoice":
-	docNameStore = "Invoice";
-	break;
-	case "bol":
-	docNameStore = "BillOfLading";
-	break;
-    }
     $("#docName").val(name);
 }
 
@@ -666,7 +649,8 @@ $(".payment_row .tradetxt").html('Payment Not yet scheduled');
 if("<%= status %>".split(';')[1] ==  ' Ethereum Txn Pending' || "<%= status %>".split(' ')[0] ==  'Payment'){
 	setTimeout(function(){location.reload()}, 5000);
 }
-
+console.log("<%= status %>");
+console.log("<%= senderpage %>");
 
 switch("<%= status %>".split(' ')[0]){
 	case "Quotation":

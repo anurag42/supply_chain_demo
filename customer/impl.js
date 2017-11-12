@@ -49,6 +49,7 @@ module.exports = {
   },
 
   successfulLogin: function(req, res) {
+    console.log("OTP");
     var aadhar = req.body.aadhar;
     customerdb.getCustomerFromAadhar(aadhar, navigateToTrackerPage.bind({
       'req': req,
@@ -59,10 +60,12 @@ module.exports = {
 }
 
 function navigateToTrackerPage(err, customer) {
+  console.log("LOG");
   if (err || !customer) {
     console.log(err);
     return err;
   }
+  console.log("1");
   var res = this.res;
   var customerID = customer._id;
   res.redirect('/resumetrade?customerid=' + customerID + '&senderpage=Customer');
