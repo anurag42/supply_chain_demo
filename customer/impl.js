@@ -17,9 +17,10 @@ module.exports = {
   },
 
   validateKYC: function(req, res) {
+    console.log("1");
     var mobile = req.body.mobile;
     var aadhar = req.body.aadhar;
-    customerdb.getCustomerFromAadharAndMobile(aadhar, validateKYCCallback.bind({
+    customerdb.getCustomerFromAadharAndMobile(aadhar, mobile, validateKYCCallback.bind({
       'req': req,
       'res': res,
       'aadhar': aadhar,
@@ -49,7 +50,6 @@ module.exports = {
   },
 
   successfulLogin: function(req, res) {
-    console.log("OTP");
     var aadhar = req.body.aadhar;
     customerdb.getCustomerFromAadhar(aadhar, navigateToTrackerPage.bind({
       'req': req,
@@ -60,12 +60,10 @@ module.exports = {
 }
 
 function navigateToTrackerPage(err, customer) {
-  console.log("LOG");
   if (err || !customer) {
     console.log(err);
     return err;
   }
-  console.log("1");
   var res = this.res;
   var customerID = customer._id;
   res.redirect('/resumetrade?customerid=' + customerID + '&senderpage=Customer');
@@ -79,11 +77,11 @@ function validateKYCCallback(err, customer) {
       success: "false"
     });
   }
-
   var kycExists = true;
+
   if (!customer) {
     kycExists = false;
-    customerdb.createNewCustomer(this.aadhar, this.mobile, function (response) {
+    customerdb.createNewCustomer(this.aadhar, this.mobile, function(response) {
       console.log(response);
     });
   }
@@ -92,7 +90,6 @@ function validateKYCCallback(err, customer) {
   if (!kycHash) {
     kycExists = false;
   }
-
   res.send({
     success: "true",
     kycExists: kycExists
