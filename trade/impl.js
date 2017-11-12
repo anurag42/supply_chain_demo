@@ -167,15 +167,8 @@ module.exports = {
     }
   },
 
-  resumetrade1: function(req, res) {
-    tradedb.findTradeByTradeID(req.body.trade_id, req, res, onFindTradeResume1.bind({
-      'req': req,
-      'res': res
-    }));
-  },
-
-  resumetrade2: function(req, res) {
-    tradedb.findTradeByTradeID(req.body.trade_id, req, res, onFindTradeResume2.bind({
+  resumetrade: function(req, res) {
+    tradedb.findTradeByTradeID(req.body.trade_id, req, res, onFindTradeResume.bind({
       'req': req,
       'res': res
     }));
@@ -406,34 +399,36 @@ function onNewTradeSession(err, trade) {
   });
 }
 
-function onFindTradeResume1(err, trade) {
+function onFindTradeResume(err, trade) {
   if (err)
     return err;
   req = this.req;
   res = this.res;
   req.session.sender = req.body.senderpage;
-  if (req.body.senderpage == "Manufacturer") {
-    req.session.sender = "Buyer";
-  } else if (req.body.senderpage == "Supplier") {
-    req.session.sender = "Seller";
-  }
   req.session.tradesession = trade._id;
-  res.redirect('/tradesession1');
-}
-
-function onFindTradeResume2(err, trade) {
-  if (err)
-    return err;
-  req = this.req;
-  res = this.res;
-  req.session.tradesession = trade._id;
-  req.session.sender = req.body.senderpage;
-  if (req.body.senderpage == "Dealer") {
-    req.session.sender = "Buyer";
-  } else if (req.body.senderpage == "Manufacturer") {
-    req.session.sender = "Seller";
+  switch (trade.type) {
+    case 'PARTSSUPPLIERTOOEM':
+      if (req.body.senderpage == "Manufacturer") {
+        req.session.sender = "Buyer";
+      } else if (req.body.senderpage == "Supplier") {
+        req.session.sender = "Seller";
+      }
+      break;
+    case 'OEMTODEALER':
+      if (req.body.senderpage == "Dealer") {
+        req.session.sender = "Buyer";
+      } else if (req.body.senderpage == "Manufacturer") {
+        req.session.sender = "Seller";
+      }
+      break;
+    case 'DEALERTOCUSTOMER':
+      if (req.body.senderpage == "Customer") {
+        req.session.sender = "Buyer";
+      } else if (req.body.senderpage == "Dealer") {
+        req.session.sender = "Seller";
+      }
   }
-  res.redirect('/tradesession2');
+  res.redirect('/tradesession');
 }
 
 function onFindTradeApprove(err, trade) {

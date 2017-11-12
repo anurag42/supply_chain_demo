@@ -330,6 +330,9 @@ function getListofTrades3(err, tradeList) {
   if (dealerIdList[0] || customerIdList[0]) {
     tradeIdArr = ['No Trades Yet'];
   }
+  console.log(customerIdList);
+  console.log(tradeIdArr);
+  console.log(dealerIdList);
   res.render('profile3.ejs', {
     message: req.session.message,
     role: user.role,
