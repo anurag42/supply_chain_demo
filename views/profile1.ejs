@@ -337,8 +337,8 @@
 					</table>
 					<form id="myform" action="/resumetrade1" method="post" enctype = "application/x-www-form-urlencoded">
 						<input type="hidden" id="trade_id" name="trade_id"></input>
-						<input type="hidden" name="senderpage" value=<%= role %>></input>
-						<input type="hidden" name="username" value=<%= username %>></input>
+						<input type="hidden" id="senderpage" name="senderpage" value="<%= role %>"></input>
+						<input type="hidden" name="username" value="<%= username %>"></input>
 					</form>
 				</div>
 			</div>
@@ -358,7 +358,7 @@
 			</div>
 			<div class="well" id="triggertradeform"  style="display:none">
 				<h3> Start new trade </h3>
-				<form action="/triggertradenew" method="post" enctype = "multipart/form-data" >
+				<form>
 					<input type="hidden" id="manufacturer_id" name="manufacturer_id" value=<%= username %>></input>
 					<input type="hidden" id="user" name="user" value=<%= user %>></input>
 					<input type="text" class="form-control" id="supplier_id" name="supplier_id" placeholder="Supplier User Name"></input>
@@ -367,9 +367,8 @@
 					<span class="fa fa-bank icon"></span><br>
 					<input type="text" class="form-control" id="shipper_id" name="shipper_id" placeholder="Shipper User Name"></input>
 					<span class="fa fa-truck icon"></span><br>
-					<button type="submit" class="btn btn-warning btn-lg loginbtn">Trigger trade</button>
 				</form>
-				<!--<button class="btn btn-warning btn-lg trbtn" data-toggle="modal" data-target="#triggermodal" onclick="tradefun()">Trigger trade</button>-->
+				<button class="btn btn-warning btn-lg trbtn" data-toggle="modal" data-target="#triggermodal" onclick="tradefun()">Trigger trade</button>
 			</div>
 		</div>
 	</div>
@@ -400,7 +399,6 @@
 <script>
 	function tradefun() {
 		var xhttp = new XMLHttpRequest();
-		var bank_id = encodeURIComponent(document.getElementById("bank_id").value);
 		var user = encodeURIComponent(document.getElementById("user").value);
 		var senderpage = encodeURIComponent(document.getElementById("senderpage").value);
 		var supplier_id = encodeURIComponent(document.getElementById("supplier_id").value);
@@ -417,14 +415,15 @@
 				else{
 					var tbody = document.getElementById('ongoing_trades');
 					var thead = document.getElementById('trade_header');
+					console.log(xhttp.responseText);
 					var res = JSON.parse(xhttp.responseText);
 					var timestamp = res.tradeID.toString().substring(0,8);
 					timestamp = new Date( parseInt( timestamp, 16 ) * 1000 ).toString();
 					var indx = timestamp.indexOf('GMT');
 					if(res.status == "Ethereum Transaction Pending!!! Check after 2 mins!!!"){
 						thead.innerHTML = '<tr><th>Tracking ID</th><th>Manufacturer</th><th>Supplier</th><th>Date & Time</th><th>Trade Tracker</th></tr>';
-						tbody.innerHTML = '<tr><td style="display:none;">' + res.tradeID + '</td><td class="trackId">' + res.tradeID.slice(0,3) + '...' +  res.tradeID.slice(20,24) + "</td><td>" + res.Manufacturer + "</td><td>" + res.Supplier + "</td><td>" + timestamp.slice(0, indx) + "</td>"+'<td><button href='+res.tradeID+' class="viewbtn" style="display: none;" onclick="getTradeDetails(this)"><img src="/images/View.png" class="viewimg" style="display: none;">View</button><img src="/images/loader.gif" style="display:block" class="loaderbtngif"></td></tr><hr style="margin:0px;width:350%"></tr>' + tbody.innerHTML;
-						tradefun2(res.tradeID, res.ManufacturerHash, res.SupplierHash, res.ManufacturerBankHash, res.SupplierBankHash, res.shipperHash);
+						tbody.innerHTML = '<tr><td style="display:none;">' + res.tradeID + '</td><td class="trackId">' + res.tradeID.slice(0,3) + '...' +  res.tradeID.slice(20,24) + "</td><td>" + res.manufacturer_id + "</td><td>" + res.supplier_id + "</td><td>" + timestamp.slice(0, indx) + "</td>"+'<td><button href='+res.tradeID+' class="viewbtn" style="display: none;" onclick="getTradeDetails(this)"><img src="/images/View.png" class="viewimg" style="display: none;">View</button><img src="/images/loader.gif" style="display:block" class="loaderbtngif"></td></tr><hr style="margin:0px;width:350%"></tr>' + tbody.innerHTML;
+						tradefun2(res.tradeID, res.manufacturerHash, res.supplierHash, res.bankHash, res.shipperHash);
 					}
 				}
 			}
@@ -434,9 +433,9 @@
 		xhttp.send(parameters);
 	}
 
-	function tradefun2(tradeID, ManufacturerHash, SupplierHash, ManufacturerBankHash, SupplierBankHash, shipperHash){
+	function tradefun2(tradeID, manufacturerHash, supplierHash, bankHash, shipperHash){
 		var xhttp = new XMLHttpRequest();
-		var parameters = "tradeID=" + encodeURIComponent(tradeID)+ "&ManufacturerHash=" + encodeURIComponent(ManufacturerHash) + "&SupplierHash=" + encodeURIComponent(SupplierHash) + "&ManufacturerBankHash=" + encodeURIComponent(ManufacturerBankHash) + "&SupplierBankHash=" + encodeURIComponent(SupplierBankHash) + "&shipperHash=" + encodeURIComponent(shipperHash);
+		var parameters = "tradeID=" + encodeURIComponent(tradeID)+ "&manufacturerHash=" + encodeURIComponent(manufacturerHash) + "&supplierHash=" + encodeURIComponent(supplierHash) + "&bankHash=" + encodeURIComponent(bankHash) + "&shipperHash=" + encodeURIComponent(shipperHash);
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				location.reload();
@@ -467,6 +466,8 @@
 	var manufacturerList = "<%=manufacturerList%>".split(',');
 	var supplierList = "<%=supplierList%>".split(',');
 	var statusList = "<%=statusList%>".split(',');
+	console.log(tradeList);
+	console.log('----------------------------');
 	for (i = 0; i < tradeList.length; ++i) {
 		if(tradeList[0]=="No Trades Yet")
 		{
@@ -494,6 +495,6 @@
 	$(document).ready(function(){
 		$('[data-toggle="popover"]').popover();
 	});
-	console.log(<%= role %>);
+	console.log("<%= role %>");
 </script>
 </html>

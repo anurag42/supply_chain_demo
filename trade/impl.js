@@ -373,12 +373,13 @@ function onFindTradeResume1(err, trade) {
     return err;
   req = this.req;
   res = this.res;
-  req.session.sender = req.body.senderpage;
+  console.log("senderpage=", req.body.senderpage);
   if (req.body.senderpage == "Manufacturer") {
     req.session.sender = "Buyer";
   } else if (req.body.senderpage == "Supplier") {
     req.session.sender = "Seller";
   }
+  req.session.sender = req.body.senderpage;
   req.session.tradesession = trade._id;
   res.redirect('/tradesession1');
 }
@@ -388,13 +389,13 @@ function onFindTradeResume2(err, trade) {
     return err;
   req = this.req;
   res = this.res;
-  req.session.tradesession = trade._id;
-  req.session.sender = req.body.senderpage;
   if (req.body.senderpage == "Dealer") {
     req.session.sender = "Buyer";
   } else if (req.body.senderpage == "Manufacturer") {
     req.session.sender = "Seller";
   }
+  req.session.tradesession = trade._id;
+  req.session.sender = req.body.senderpage;
   res.redirect('/tradesession2');
 }
 
@@ -403,6 +404,7 @@ function onFindTradeApprove(err, trade) {
     return err;
   req = this.req;
   res = this.res;
+
   var query = {
     trade_id: req.body.trade_id
   };
@@ -418,12 +420,6 @@ function onFindTradeApprove(err, trade) {
   });
 
   switch (req.body.approvaltype) {
-    case "R":
-      update = {
-        status: "Request For Quotation Approved; Ethereum Txn Pending;"
-      };
-      approve(req, res, trade.contract_id, trade.manufacturer_id, 'RequestForQuotation');
-      break;
     case "Q":
       update = {
         status: "Quotation Approved; Ethereum Txn Pending;"
@@ -504,12 +500,6 @@ function onFindTradeReject(err, trade) {
   });
 
   switch (req.body.approvaltype) {
-    case "R":
-      update = {
-        status: "Request For Quotation Rejected; Ethereum Txn Pending;"
-      };
-      approve(req, res, trade.contract_id, trade.manufacturer_id, 'RequestForQuotation');
-      break;
     case "Q":
       update = {
         status: "Quotation Rejected; Ethereum Txn Pending;"
@@ -602,7 +592,7 @@ function onFileUpload(err, hash) {
         'doc.0.hash': hash[0].hash,
         'status': "Quotation Uploaded; Ethereum Txn Pending;"
       }
-    }
+    };
     tradedb.updateTrade(query, update, redirectOnUpdation.bind({
       'tradeID': id,
       'req': req,
@@ -696,10 +686,9 @@ function onFindTradeBOLUpdate(err, trade) {
 }
 
 function uploadDoc(req, res, address, username, docName, docHash, tradeID) {
-  var orderInstance = orderContract.at(address);
   var hashArr = str2bytearr(docHash);
   userdb.findUserByUsername(username, req, res, function(err, user) {
     sender = user.local.userHash;
-    tradeFunctions.sendDocUploadTxn(req, res, orderInstance, sender, docName, hashArr);
+    tradeFunctions.sendDocUploadTxn(req, res, tradeLibAddress, tradeRegistryAddress, sender, docName, hashArr);
   });
 }

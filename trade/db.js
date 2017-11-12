@@ -21,7 +21,6 @@ module.exports = {
     newTrade.manufacturer_id = req.body.manufacturer_id;
     newTrade.shipper_id = req.body.shipper_id;
     newTrade.status = "No quotation till now";
-    newTrade.save(callback);
     newTrade.doc.push({
       doctype: 'rfq',
       hash: 'No Request for Quotation till now',
@@ -47,7 +46,7 @@ module.exports = {
       hash: 'No Bill of Lading till now',
       txnID: 'None'
     });
-    newTrade.status = "RFQ Not Uploaded";
+    newTrade.status = "Ethereum Transaction Pending!!! Check after 2 mins!!!";
     newTrade.save(callback);
   },
 
