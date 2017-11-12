@@ -1,8 +1,8 @@
 var config = {};
 config.ethAddress = '0x7B542CFf04E19cB3391E0CC7791f75DA87c2F6c1';
 config.registryAddress = '0x5f0991343fde6321e6109bcd058c4c4369125361';
-config.tradeLibAddress = '0x73CFA20fE187b55f240dD03d8c81A59168622C74';
-config.tradeAddress = '0x238C8406D7323Db3805b4f1607ED2a9d9e1a4443';
+//config.tradeLibAddress = '0xeC7A78303c6D96Fb5FD69b0bB876109AE4494520';
+config.tradeAddress = '0xECCcD17687C7727F1bb1347528c9571987523556';
 config.web3Provider = "http://localhost:8545";
 config.gasPrice = 40000000000;
 config.gasUsage = 30000000;

@@ -262,13 +262,6 @@ function getListofTrades1(err, tradeList) {
     manufacturerIdList = [];
     statusList = [];
   }
-  console.log(tradeIdArr);
-  console.log('----------------------');
-  console.log(supplierIdList);
-  console.log('----------------------');
-  console.log(manufacturerIdList);
-  console.log('----------------------');
-  console.log(statusList);
   if (supplierIdList.length == 0 || manufacturerIdList.length == 0) {
     tradeIdArr = ['No Trades Yet'];
   }
@@ -288,6 +281,7 @@ function getListofTrades1(err, tradeList) {
 }
 
 function getListofTrades2(err, tradeList) {
+  console.log("In");
   if (err)
     return err;
   req = this.req;
@@ -304,9 +298,10 @@ function getListofTrades2(err, tradeList) {
     manufacturerIdList = [];
     statusList = [];
   }
-  /*if (dealerIdList[0] || manufacturerIdList[0]) {
+  console.log(dealerIdList[0]);
+  if ((dealerIdList.length == 0) || (manufacturerIdList.length == 0)) {
     tradeIdArr = ['No Trades Yet'];
-  }*/
+  }
   res.render('profile2.ejs', {
     message: req.session.message,
     role: user.role,

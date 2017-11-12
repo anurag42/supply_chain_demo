@@ -15,7 +15,7 @@ var scheduler = new Scheduler("mongodb://localhost/db_name", {
   doNotFire: false
 });
 
-var manufacturerHash, supplierHash, bankHash, shipperHash, tradeID, tradeLibAddress, tradeRegistryAddress;
+var manufacturerHash, dealerHash, supplierHash, bankHash, shipperHash, tradeID, tradeLibAddress, tradeRegistryAddress;
 var userHash, gasUsage;
 var config = require('../config.js');
 var file = require('../file/impl.js');
@@ -29,7 +29,7 @@ tradeLibAddress = config.tradeLibAddress;
 tradeRegistryAddress = config.tradeAddress;
 var tradeFunctions = require('../contracts/trade/tradeRegistry.js');
 
-//tradeFunctions.deployTradeLib();
+//tradeFunctions.deployTradeReg();
 
 eventEmitter.on('paymentSuccess', function(status, id) {
   tradedb.findTradeByTradeID(id, req, res, onFindTradePaymentSuccess);
@@ -55,12 +55,11 @@ module.exports = {
   },
 
   middleware1: function(req, res) {
-    if (req.body.senderpage != "Manufacturer") {
-      res.redirect('/profile');
-      return;
-    }
-    else{
-      var pendingTasks = [GetManufacturerHash, GetSupplierHash, GetBankHash, GetShipperHash, SaveTrade];
+    if (req.body.senderpage == "Manufacturer" || req.body.senderpage == "Dealer") {
+      var pendingTasks;
+      console.log(req.body.tradeType);
+      if(req.body.tradeType == "PARTSSUPPLIERTOOEM") pendingTasks = [GetManufacturerHash, GetSupplierHash, GetBankHash, GetShipperHash, SaveTrade];
+      else if(req.body.tradeType == "OEMTODEALER") pendingTasks = [GetDealerHash, GetManufacturerHash, GetShipperHash, SaveTrade];
 
       function next() {
         var currentTask = pendingTasks.shift();
@@ -99,6 +98,14 @@ module.exports = {
         });
       }
 
+      function GetDealerHash() {
+        userdb.findUserByUsername(req.body.dealer_id, req, res, function(err, user) {
+          if (err) return;
+          dealerHash = user.ethereumAddress;
+          next();
+        });
+      }
+
       function GetManufacturerHash() {
         userdb.findUserByUsername(req.body.manufacturer_id, req, res, function(err, user) {
           if (err) return;
@@ -106,6 +113,10 @@ module.exports = {
           next();
         });
       }
+    }
+    else{
+      res.redirect('/profile');
+      return;
     }
   },
 
@@ -121,8 +132,16 @@ module.exports = {
     next();
 
     function setupTradeParties() {
-      var addresses = [req.body.manufacturerHash, req.body.supplierHash, req.body.bankHash, req.body.shipperHash];
-      var roles = ["buyer", "seller", "bank", "shipper"];
+      var addresses;
+      var roles;
+      if(req.body.tradeType == "OEMTODEALER"){
+        addresses = [req.body.dealerHash, req.body.manufacturerHash, req.body.shipperHash];
+        roles = ["buyer", "seller", "shipper"];
+      }
+      else if(req.body.tradeType == "PARTSSUPPLIERTOOEM"){
+        addresses = [req.body.manufacturerHash, req.body.supplierHash, req.body.bankHash, req.body.shipperHash];
+        roles = ["buyer", "seller", "bank", "shipper"];
+      }
       tradeFunctions.setup(tradeRegistryAddress, req.body.tradeID, addresses, roles, next);
     }
 
@@ -300,20 +319,12 @@ function payToSeller(address) {
   });
 }
 
-function approve(req, res, address, username, docName) {
-  var orderInstance = orderContract.at(address);
-  userdb.findUserByUsername(username, req, res, function(err, user) {
-    sender = user.local.userHash;
-    tradeFunctions.sendApproveTxn(req, res, orderInstance, sender, docName);
-  });
+function approve(req, res, tradeID, userAddress, docName) {
+    tradeFunctions.sendApproveTxn(req, res, tradeID, userAddress, docName);
 }
 
-function reject(req, res, address, username, docName, reason) {
-  var orderInstance = orderContract.at(address);
-  userdb.findUserByUsername(username, req, res, function(err, user) {
-    sender = user.local.userHash;
-    tradeFunctions.sendRejectTxn(req, res, orderInstance, sender, docName, reason);
-  });
+function reject(req, res, tradeID, userAddress, docName, reason) {
+    tradeFunctions.sendRejectTxn(req, res, tradeID, userAddress, docName, reason);
 }
 
 function locapprove(req, res, address, username) {
@@ -358,15 +369,19 @@ function onNewTradeSession(err, trade) {
   if (err)
     throw err;
   var res = this.res;
+  var req = this.req;
+  console.log("Sending",req.body.tradeType);
   res.send({
     tradeID: trade._id,
+    tradeType: req.body.tradeType,
     manufacturer_id: trade.manufacturer_id,
     supplier_id: trade.supplier_id,
     status: trade.status,
     manufacturerHash: manufacturerHash,
     supplierHash: supplierHash,
     bankHash: bankHash,
-    shipperHash: shipperHash
+    shipperHash: shipperHash,
+    dealerHash: dealerHash
   });
 }
 
@@ -432,31 +447,26 @@ function onFindTradeApprove(err, trade) {
       update = {
         status: "Quotation Approved; Ethereum Txn Pending;"
       };
-      approve(req, res, trade.contract_id, trade.manufacturer_id, 'Quotation');
+      approve(req, res, trade.trade_id, req.body.userAddress, 'Quotation');
       break;
     case "P":
       update = {
         status: "Purchase Order Approved; Ethereum Txn Pending;"
       };
-      approve(req, res, trade.contract_id, trade.supplier_id, 'PurchaseOrder');
+      approve(req, res, trade.trade_id, req.body.userAddress, 'PurchaseOrder');
       break;
     case "I":
-      if (trade.type == "PARTSSUPPLIERTOOEM") {
-        update = {
-          status: "Invoice Approved by Buyer; Ethereum Txn Pending;"
-        };
-      } else if (trade.type == "OEMTODEALER") {
-        update = {
-          status: "Invoice Approved By Seller Bank; Ethereum Txn Pending;"
-        };
-      }
-      approve(req, res, trade.contract_id, trade.manufacturer_id, 'Invoice');
+      update = {
+        status: "Invoice Approved by Buyer; Ethereum Txn Pending;"
+      };
+
+      approve(req, res, trade.trade_id, req.body.userAddress, 'Invoice');
       break;
     case "IA":
       update = {
         status: "Invoice Approved By Seller Bank; Ethereum Txn Pending;"
       };
-      approve(req, res, trade.contract_id, trade.bank_id, 'Invoice');
+      approve(req, res, trade.trade_id, req.body.userAddress, 'Invoice');
       break;
     case "L":
       update = {
@@ -480,13 +490,13 @@ function onFindTradeApprove(err, trade) {
           status: "Bill Of Lading Approved; Ethereum Txn Pending;"
         };
       }
-      approve(req, res, trade.contract_id, trade.manufacturer_id, 'BillOfLading');
+      approve(req, res, trade.trade_id, req.body.userAddress, 'BillOfLading');
       break;
     case "BA":
       update = {
         status: "Bill Of Lading Approved; Ethereum Txn Pending;"
       };
-      approve(req, res, trade.contract_id, trade.bank_id, 'BillOfLading');
+      approve(req, res, trade.trade_id, req.body.userAddress, 'BillOfLading');
       break;
   }
   tradedb.updateTrade(query, update, redirectOnUpdation.bind({
@@ -522,25 +532,25 @@ function onFindTradeReject(err, trade) {
       update = {
         status: "Quotation Rejected; Ethereum Txn Pending;"
       };
-      reject(req, res, trade.contract_id, trade.manufacturer_id, 'Quotation', req.body.reason);
+      reject(req, res, trade.trade_id, req.body.userAddress, 'Quotation', req.body.reason);
       break;
     case "P":
       update = {
         status: "Purchase Order Rejected; Ethereum Txn Pending;"
       };
-      reject(req, res, trade.contract_id, trade.supplier_id, 'PurchaseOrder', req.body.reason);
+      reject(req, res, trade.trade_id, req.body.userAddress, 'PurchaseOrder', req.body.reason);
       break;
     case "I":
       update = {
         status: "Invoice Rejected; Ethereum Txn Pending;"
       };
-      reject(req, res, trade.contract_id, trade.manufacturer_id, 'Invoice', req.body.reason);
+      reject(req, res, trade.trade_id, req.body.userAddress, 'Invoice', req.body.reason);
       break;
     case "IA":
       update = {
         status: "Invoice Rejected; Ethereum Txn Pending;"
       };
-      reject(req, res, trade.contract_id, trade.bank_id, 'Invoice', req.body.reason);
+      reject(req, res, trade.trade_id, req.body.userAddress, 'Invoice', req.body.reason);
       break;
     case "L":
       update = {
@@ -563,13 +573,13 @@ function onFindTradeReject(err, trade) {
           status: "Bill Of Lading Rejected; Ethereum Txn Pending;"
         };
       }
-      reject(req, res, trade.contract_id, trade.manufacturer_id, 'BillOfLading', req.body.reason);
+      reject(req, res, trade.trade_id, req.body.userAddress, 'BillOfLading', req.body.reason);
       break;
     case "BA":
       update = {
         status: "Bill Of Lading Rejected; Ethereum Txn Pending;"
       };
-      reject(req, res, trade.contract_id, trade.bank_id, 'BillOfLading', req.body.reason);
+      reject(req, res, trade.trade_id, req.body.userAddress, 'BillOfLading', req.body.reason);
       break;
   }
   tradedb.updateTrade(query, update, redirectOnUpdation.bind({
@@ -610,6 +620,7 @@ function onFileUpload(err, hash) {
   var query = {
     trade_id: id
   };
+  var update;
   if (req.body.senderpage == "rfq") {
     var update = {
       $set: {
@@ -628,24 +639,19 @@ function onFileUpload(err, hash) {
       'hash': hash
     }));
   } else if (req.body.senderpage == "quotation") {
-    var update = {
+    update = {
       $set: {
         'doc.0.hash': hash[0].hash,
         'status': "Quotation Uploaded; Ethereum Txn Pending;"
       }
     };
-    tradedb.updateTrade(query, update, redirectOnUpdation.bind({
-      'tradeID': id,
-      'req': req,
-      'res': res
-    }));
     tradedb.findTradeByTradeID(id, req, res, onFindTradeQuotationUpdate.bind({
       'req': req,
       'res': res,
       'hash': hash
     }));
-  } else if (req.body.senderpage == "po") {
-    var update = {
+  } else if (req.body.docname == "po") {
+    update = {
       $set: {
         'doc.1.hash': hash[0].hash,
         'status': "Purchase Order Uploaded; Ethereum Txn Pending;"
@@ -657,11 +663,11 @@ function onFileUpload(err, hash) {
       'res': res,
       'hash': hash
     }));
-  } else if (req.body.senderpage == "invoice") {
-    var update = {
+  } else if (req.body.docname == "invoice") {
+    update = {
       $set: {
         'doc.2.hash': hash[0].hash,
-        'status': "Invoice Order Uploaded; Ethereum Txn Pending;"
+        'status': "Invoice Uploaded; Ethereum Txn Pending;"
       }
     }
     tradedb.updateTrade(query, update);
@@ -670,8 +676,8 @@ function onFileUpload(err, hash) {
       'res': res,
       'hash': hash
     }));
-  } else if (req.body.senderpage == "bol") {
-    var update = {
+  } else if (req.body.docname == "bol") {
+    update = {
       $set: {
         'doc.3.hash': hash[0].hash,
         'status': "Bill Of Lading Order Uploaded; Ethereum Txn Pending;"
@@ -684,6 +690,11 @@ function onFileUpload(err, hash) {
       'hash': hash
     }));
   }
+  tradedb.updateTrade(query, update, redirectOnUpdation.bind({
+    'tradeID': id,
+    'req': req,
+    'res': res
+  }));
 }
 
 function onFindTradeRequestForQuotationUpdate(err, trade) {
@@ -703,7 +714,7 @@ function onFindTradeQuotationUpdate(err, trade) {
   req = this.req;
   res = this.res;
   hash = this.hash;
-  uploadDoc(req, res, trade.contract_id, trade.seller_id, 'Quotation', hash[0].hash);
+  uploadDoc(req, res, req.body.id, req.body.userAddress, 'Quotation', hash[0].hash);
 }
 
 function onFindTradePOUpdate(err, trade) {
@@ -713,7 +724,7 @@ function onFindTradePOUpdate(err, trade) {
   req = this.req;
   res = this.res;
   hash = this.hash;
-  uploadDoc(req, res, trade.contract_id, trade.buyer_id, 'PurchaseOrder', hash[0].hash);
+  uploadDoc(req, res, req.body.id, req.body.userAddress, 'PurchaseOrder', hash[0].hash);
 }
 
 function onFindTradeInvoiceUpdate(err, trade) {
@@ -723,7 +734,7 @@ function onFindTradeInvoiceUpdate(err, trade) {
   req = this.req;
   res = this.res;
   hash = this.hash;
-  uploadDoc(req, res, trade.contract_id, trade.seller_id, 'Invoice', hash[0].hash);
+  uploadDoc(req, res, req.body.id, req.body.userAddress, 'Invoice', hash[0].hash);
 }
 
 function onFindTradeBOLUpdate(err, trade) {
@@ -733,13 +744,11 @@ function onFindTradeBOLUpdate(err, trade) {
   req = this.req;
   res = this.res;
   hash = this.hash;
-  uploadDoc(req, res, trade.contract_id, trade.shipper_id, 'BillOfLading', hash[0].hash);
+  uploadDoc(req, res, req.body.id, req.body.userAddress, 'BillOfLading', hash[0].hash);
 }
 
-function uploadDoc(req, res, address, username, docName, docHash, tradeID) {
+function uploadDoc(req, res, tradeID, userAddress, docName, docHash) {
   var hashArr = str2bytearr(docHash);
-  userdb.findUserByUsername(username, req, res, function(err, user) {
-    sender = user.local.userHash;
-    tradeFunctions.sendDocUploadTxn(req, res, tradeLibAddress, tradeRegistryAddress, sender, docName, hashArr);
-  });
+  console.log(hashArr);
+  tradeFunctions.sendDocUploadTxn(req, res, tradeID, userAddress, docName, hashArr);
 }

@@ -11,28 +11,15 @@ require('../../build/ABI/tradeRegistry.js');
 require('../../build/Binary\ Code/tradeRegistry.js');
 var tradeLibContract = web3.eth.contract(tradeLibABI);
 var tradeContract = web3.eth.contract(tradeRegistryABI);
+var tradeLibAddress = config.tradeLibAddress;
+var tradeRegistryAddress = config.tradeAddress;
 web3.setProvider(new web3.providers.HttpProvider(config.web3Provider));
 
 module.exports = {
-  deployTradeLib: function(){
-    tradeLibContract.new(
-   {
-     from: config.ethAddress,
-     data: tradeLibContractCode,
-     gas: '4700000'
-   }, function (e, contract){
-    if (typeof contract.address !== 'undefined') {
-         console.log('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
-         deployTradeRegistry(contract.address);
-    }
- })
-  },
-  deployTradeRegistry: function(tradeLibAddress){
-    console.log("trade Lib Address", tradeLibAddress);
-    console.log("Slice and add ''", tradeLibAddress.slice(2));
+  deployTradeReg: function(){
     tradeContract.new({
       from: config.ethAddress,
-      data: tradeRegistryContractCode.replace(/__TradeLib__+/g, tradeLibAddress.slice(2)),
+      data: tradeRegistryContractCode,
       gas: '4700000'
     }, function(e, contract) {
       if (typeof contract.address !== 'undefined') {
@@ -51,63 +38,75 @@ module.exports = {
     tradeInstance.createTrade.sendTransaction(tradeID, addresses, roles, params, setupCallback.bind({'tradeInstance': tradeInstance, 'tradeID': tradeID, 'callback': callback}));
   },
 
-  download: function(req, res, tradeInstance, dwnldDoc) {
-    gasUsage = (tradeInstance.getLatestDoc.estimateGas(dwnldDoc) < config.gasUsage) ? tradeInstance.getLatestDoc.estimateGas(dwnldDoc) : config.gasUsage;
+  download: function(req, res, tradeID, dwnldDoc) {
+    console.log('3');
+    var tradeInstance = tradeContract.at(tradeRegistryAddress);
+    gasUsage = (tradeInstance.getLatestDoc.estimateGas(tradeID, dwnldDoc) < config.gasUsage) ? tradeInstance.getLatestDoc.estimateGas(tradeID, dwnldDoc) : config.gasUsage;
     var params =  {
       gas: gasUsage,
       from: config.ethAddress
     };
-    tradeInstance.getLatestDoc.sendTransaction(dwnldDoc, params, downloadCallback.bind({'req': req, 'res': res, 'tradeInstance': tradeInstance}));
+    tradeInstance.getLatestDoc.sendTransaction(tradeID, dwnldDoc, params, downloadCallback.bind({'req': req, 'res': res, 'tradeInstance': tradeInstance, 'tradeID': tradeID}));
   },
 
-  sendApproveTxn: function(req, res, tradeInstance, sender, docName) {
-    gasUsage = (tradeInstance.approve.estimateGas(sender, docName) < config.gasUsage) ? tradeInstance.approve.estimateGas(sender, docName) : config.gasUsage;
+  sendApproveTxn: function(req, res, tradeID, userAddress, docName) {
+    var action = "Approve";
+    var extraData = [];
+    var tradeInstance = tradeContract.at(tradeRegistryAddress);
+    gasUsage = (tradeInstance.action.estimateGas(tradeID, userAddress, docName, action, extraData) < config.gasUsage) ? tradeInstance.action.estimateGas(tradeID, userAddress, docName, action, extraData) : config.gasUsage;
     var params = {
       gas: gasUsage,
       gasPrice: config.gasPrice,
       from: config.ethAddress
     };
-    tradeInstance.approve.sendTransaction(sender, docName, params, function(error, result) {
+    tradeInstance.action.sendTransaction(tradeID, userAddress, docName, action, extraData, params, function(error, result) {
       if (error) {
         console.error(error);
         response.send(error);
         return;
       }
 
-      hasApproved(tradeInstance, updateTradeStatus.bind({
+      hasApproved(tradeInstance, userAddress, updateTradeStatus.bind({
         'req': req,
         'res': res
       }));
     });
   },
 
-  sendRejectTxn: function(req, res, tradeInstance, sender, docName, reason) {
-    gasUsage = (tradeInstance.reject.estimateGas(sender, docName, reason) < config.gasUsage) ? tradeInstance.reject.estimateGas(sender, docName, reason) : config.gasUsage;
-    tradeInstance.reject.sendTransaction(sender, docName, reason, {
-      gas: gasUsage,
-      from: config.ethAddress
-    }, function(error, result) {
-      if (error) {
-        console.error(error);
-        response.send(error);
-        return;
-      }
-      hasRejected(tradeInstance, updateTradeStatus.bind({
-        'req': req,
-        'res': res
-      }));
-    });
-  },
-
-  sendDocUploadTxn: function(req, res, tradeInstance, sender, docName, hashArr2) {
-    gasUsage = (tradeInstance.upload.estimateGas(sender, docName, hashArr2) < config.gasUsage) ? tradeInstance.upload.estimateGas(sender, docName, hashArr2) : config.gasUsage;
-    console.log("Uploading Doc");
+  sendRejectTxn: function(req, res, tradeID, userAddress, docName, reason) {
+    var action = "Reject";
+    //var extraData = reason;
+    var extraData = [];
+    var tradeInstance = tradeContract.at(tradeRegistryAddress);
+    gasUsage = (tradeInstance.action.estimateGas(tradeID, userAddress, docName, action, extraData) < config.gasUsage) ? tradeInstance.action.estimateGas(tradeID, userAddress, docName, action, extraData) : config.gasUsage;
     var params = {
       gas: gasUsage,
       gasPrice: config.gasPrice,
       from: config.ethAddress
     };
-    tradeInstance.upload.sendTransaction(sender, docName, hashArr2, params, function(err, result) {
+    tradeInstance.action.sendTransaction(tradeID, userAddress, docName, action, extraData, params, function(error, result) {
+      if (error) {
+        console.error(error);
+        response.send(error);
+        return;
+      }
+
+      hasRejected(tradeInstance, userAddress, updateTradeStatus.bind({
+        'req': req,
+        'res': res
+      }));
+    });
+  },
+
+  sendDocUploadTxn: function(req, res, tradeID, sender, docName, hashArr) {
+    var tradeInstance = tradeContract.at(tradeRegistryAddress);
+    gasUsage = (tradeInstance.upload.estimateGas(tradeID, sender, docName, hashArr) < config.gasUsage) ? tradeInstance.upload.estimateGas(tradeID, sender, docName, hashArr) : config.gasUsage;
+    var params = {
+      gas: gasUsage,
+      gasPrice: config.gasPrice,
+      from: config.ethAddress
+    };
+    tradeInstance.upload.sendTransaction(tradeID, sender, docName, hashArr, params, function(err, result) {
       if (err) {
         console.error(err);
         return;
@@ -116,39 +115,6 @@ module.exports = {
         'req': req,
         'res': res
       }));
-    });
-  },
-
-  hasUploaded: function(tradeInstance, txnID, tradeID, callback) {
-    tradeInstance.LogUpload().watch(function(e, log) {
-      if (e) {
-        return hadError(e, res);
-      }
-      tradeInstance.LogUpload().stopWatching();
-      console.log('Document Upload succcessful on Blockchain');
-      callback(tradeID, txnID, log.args.docName);
-    });
-  },
-
-  hasApproved: function(tradeInstance, callback) {
-    tradeInstance.LogApprove().watch(function(e, log) {
-      if (e) {
-        return hadError(e, res);
-      }
-      tradeInstance.LogApprove().stopWatching();
-      console.log('Document Approval recorded on Blockchain');
-      callback();
-    });
-  },
-
-  hasRejected: function(tradeInstance, callback) {
-    tradeInstance.LogReject().watch(function(e, log) {
-      if (e) {
-        return hadError(e, res);
-      }
-      tradeInstance.LogReject().stopWatching();
-      console.log('Document Approval recorded on Blockchain');
-      callback();
     });
   },
 
@@ -170,19 +136,18 @@ function watchTradePartiesSetup(tradeInstance, tradeID, callback) {
   });
 }
 
-function hasApproved(tradeInstance, callback) {
-  tradeInstance.LogApprove().watch(function(e, log) {
+function hasApproved(tradeInstance, userAddress, callback) {
+  tradeInstance.LogApprove({sender: userAddress}).watch(function(e, log) {
     if (e) {
       return hadError(e, res);
     }
-    tradeInstance.LogApprove().stopWatching();
     console.log('Document Approval recorded on Blockchain');
     callback();
   });
 }
 
-function hasRejected(tradeInstance, callback) {
-  tradeInstance.LogReject().watch(function(e, log) {
+function hasRejected(tradeInstance, userAddress, callback) {
+  tradeInstance.LogReject({sender: userAddress}).watch(function(e, log) {
     if (e) {
       return hadError(e, res);
     }
@@ -193,17 +158,18 @@ function hasRejected(tradeInstance, callback) {
 }
 
 function hasUploaded(tradeInstance, txnID, tradeID, callback) {
-  tradeInstance.LogUpload().watch(function(e, log) {
+  tradeInstance.LogUpload({uid: tradeID}).watch(function(e, log) {
     if (e) {
       return hadError(e, res);
     }
-    tradeInstance.LogUpload().stopWatching();
     console.log('Document Upload succcessful on Blockchain');
     callback(tradeID, txnID, log.args.docName);
   });
 }
 
 function updateTradeStatus() {
+  var req = this.req;
+  var res = this.res;
   var status;
   tradedb.findTradeByTradeID(req.body.trade_id, req, res, updateTradeStatusCallback);
 }
@@ -229,6 +195,7 @@ function updateTradeStatusOnDocUploadCallback(err, trade) {
 
 
 function updateTradeStatusCallback(err, trade) {
+  console.log("In Updating");
   if (trade.status == "Invoice Approved By Seller Bank; Ethereum Txn Pending;") status = "Invoice Approved";
   else if (trade.status == "Invoice Rejected By Seller Bank; Ethereum Txn Pending;") status = "Invoice Rejected";
   else status = trade.status.split(';')[0];
@@ -258,14 +225,18 @@ function hexToString(hex) {
   return result;
 }
 
-function watchGetDoc(req, res, tradeInstance) {
-  tradeInstance.LogGetDoc().watch(function(e, log) {
+function watchGetDoc(req, res, tradeID, tradeInstance) {
+  console.log('5');
+  tradeInstance.LogGetDoc({uid: tradeID}).watch(function(e, log) {
     if (e) {
       return hadError(e, res);
     }
-    tradeInstance.LogGetDoc().stopWatching();
-    console.log('Document Upload succcessful on Blockchain');
+    console.log('Document download succcessful on Blockchain');
+    console.log(log.args);
+    console.log('---------------');
+    console.log(log.args.hash);
     var hash = hexToString(log.args.hash);
+    console.log(hash);
     ipfs.download(hash, res);
   });
 }
@@ -280,17 +251,15 @@ function setupCallback(error, result) {
 }
 
 function downloadCallback(error, result) {
+  console.log('4');
   if (error) {
     console.error(error);
-    res.send(error);
     return;
   }
-  watchGetDoc(this.req, this.res, this.tradeInstance);
+  watchGetDoc(this.req, this.res, this.tradeID, this.tradeInstance);
 }
 
 function deployTradeRegistry(tradeLibAddress){
-  console.log("trade Lib Address", tradeLibAddress);
-  console.log("Slice and add ''", tradeLibAddress.slice(2));
   tradeContract.new({
     from: config.ethAddress,
     data: tradeRegistryContractCode.replace(/__TradeLib__+/g, tradeLibAddress.slice(2)),

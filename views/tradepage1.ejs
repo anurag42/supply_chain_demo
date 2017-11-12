@@ -25,6 +25,7 @@
 
 <form id="approval_form" action = "/approvetrade" method = "POST">
 		<input type="hidden" name="trade_id" value=<%= id %>>
+    <input type="hidden" name="userAddress" value=<%= userAddress %>>
 		<input type="hidden" class="approvaltype" name="approvaltype" value=''>
 		<input type="hidden" name="senderpage" value=<%= senderpage %>>
 	</form>
@@ -442,7 +443,8 @@
 					<div id="uplhide">
 						<form id="uploadform" action = "/uploadDoc" method = "POST" enctype = "multipart/form-data">
 							<div class="form-group">
-								<input type="hidden" id="docName" name="senderpage">
+								<input type="hidden" id="docName" name="docname">
+                <input type="hidden" name="userAddress" value=<%= userAddress %>>
 								<p id="uperror" style="display:none;color:red;">Please Select File</p>
 								<input type="file" class="form-control" id="docfile" name="file" required>
 								<input type="hidden" name="id" value=<%= id %>>
@@ -475,6 +477,7 @@
             <div class="modal-body" style="padding-top:5px;">
                 <form id="rejection_form" action = "/rejecttrade" method = "POST">
                     <input type="hidden" name="trade_id" value=<%= id %>>
+                    <input type="hidden" name="userAddress" value=<%= userAddress %>>
                     <input type="hidden" class="approvaltype" name="approvaltype" value=''>
                     <input type="hidden" name="senderpage" value=<%= senderpage %>>
                 </form>
@@ -988,7 +991,7 @@ switch("<%= status %>"){
 		$(".invoice_row .acceptbtn, .invoice_row .rejectbtn").css("cssText","opacity:1 !important");
 		$(".invoice_row .acceptbtn, .invoice_row .rejectbtn").prop('disabled', false);
 	}
-	else $(".pendingstatus, .invoice_row .tradetxt").html('Financing Bank to Approve');
+	else $(".pendingstatus, .invoice_row .tradetxt").html('<%= bank_id %> to Approve');
 	break;
 	case "Invoice Uploaded; Ethereum Txn Pending;":
 	$(".invoice_row .dnldsvbtn").css("cssText","opacity:1 !important");
@@ -1004,7 +1007,7 @@ switch("<%= status %>"){
 		$(".invoice_row .acceptbtn, .invoice_row .rejectbtn").css("cssText","opacity:1 !important");
 		$(".invoice_row .acceptbtn, .invoice_row .rejectbtn").prop('disabled', false);
 	}
-	else $(".invoice_row .tradetxt").html('Buyer to Approve');
+	else $(".invoice_row .tradetxt").html('<%= buyer_id %> to Approve');
 	break;
 	case "Invoice Approved By Seller Bank; Ethereum Txn Pending;":
 	$(".invoice_row .aprbtngif").show();

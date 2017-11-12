@@ -56,6 +56,7 @@ module.exports = {
   },
 
   docdownloadbc: function(req, res) {
+    console.log('1');
     tradedb.findTradeByTradeID(req.body.trade_id, req, res, onFindTradeDocDownload2.bind({
       'req': req,
       'res': res
@@ -242,14 +243,13 @@ function onFindTradeDocDownload(err, trade) {
 }
 
 function onFindTradeDocDownload2(err, trade) {
+  console.log('2');
   // if there are any errs, return the err
   if (err)
     return done(err);
   var req = this.req;
   var res = this.res;
-  contractAddress = trade.contract_id;
-  var tradeInstance = orderContract.at(contractAddress);
-  orderFunctions.download(req, res, tradeInstance, req.body.docname);
+  tradeFunctions.download(req, res, trade.trade_id, req.body.docname);
 }
 
 
