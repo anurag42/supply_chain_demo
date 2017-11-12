@@ -1,5 +1,4 @@
 var session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
 var user = require('./impl');
 
 module.exports = function(app) {
@@ -10,7 +9,7 @@ module.exports = function(app) {
   app.post('/login', user.postLogin);
   app.get('/roleselection', user.getRoleSelection);
   app.post('/profile', user.postRoleSelection);
-  app.get('/profiledetails', user.getProfileDetails);
   app.get('/profile', user.getProfile);
+  app.get('/profiledetails', user.getProfileDetails);
   app.get('/logout', user.logout);
 };

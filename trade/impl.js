@@ -37,22 +37,17 @@ eventEmitter.on('paymentSuccess', function(status, id) {
 
 
 module.exports = {
-  getTradeSession1: function(req, res) {
-    if (!req.session.sender) {
-      res.redirect('/login');
-    } else {
-      tradedb.findTradeByTradeObjectID(req, res, onFindTradeSession1.bind({
-        'req': req,
-        'res': res
-      }));
-    }
+  triggertradenew: function(req, res) {
+    tradedb.createNewTrade(req, res, onTriggerTrade.bind({
+      'req': req,
+      'res': res
+    }));
   },
-
-  getTradeSession2: function(req, res) {
+  getTradeSession: function(req, res) {
     if (!req.session.sender) {
       res.redirect('/login');
     } else {
-      tradedb.findTradeByTradeObjectID(req, res, onFindTradeSession2.bind({
+      tradedb.findTradeByTradeObjectID(req, res, onFindTradeSession.bind({
         'req': req,
         'res': res
       }));
@@ -144,15 +139,8 @@ module.exports = {
     }
   },
 
-  resumetrade1: function(req, res) {
-    tradedb.findTradeByTradeID(req.body.trade_id, req, res, onFindTradeResume1.bind({
-      'req': req,
-      'res': res
-    }));
-  },
-
-  resumetrade2: function(req, res) {
-    tradedb.findTradeByTradeID(req.body.trade_id, req, res, onFindTradeResume2.bind({
+  resumetrade: function(req, res) {
+    tradedb.findTradeByTradeID(req.body.trade_id, req, res, onFindTradeResume.bind({
       'req': req,
       'res': res
     }));
@@ -185,59 +173,73 @@ function onTriggerTrade(err) {
   if (err)
     throw err;
   res = this.res;
-  console.log("onfunction");
   res.redirect('/profile');
 }
 
-function onFindTradeSession1(err, trade) {
+function onFindTradeSession(err, trade) {
   if (err)
     return err;
   var req = this.req;
   var res = this.res;
-  res.render('tradepage1.ejs', {
-    id: trade.trade_id,
-    address: trade.contract_id,
-    bank_id: trade.bank_id,
-    seller_id: trade.supplier_id,
-    buyer_id: trade.manufacturer_id,
-    shipper_id: trade.shipper_id,
-    quotation: trade.doc[0],
-    po: trade.doc[1],
-    invoice: trade.doc[2],
-    status: trade.status,
-    letterofcredit: trade.paymentinfo,
-    creditAmount: trade.paymentinfo.Credit_Amount,
-    timePeriod: trade.paymentinfo.No_of_days,
-    billoflading: trade.doc[3],
-    senderpage: req.session.sender,
-    username: req.query.username,
-    userAddress: req.session.userAddress
-  });
-}
+  if (trade.type == 'PARTSSUPPLIERTOOEM') {
+    res.render('tradepage.ejs', {
+      id: trade.trade_id,
+      address: trade.contract_id,
+      bank_id: trade.bank_id,
+      seller_id: trade.supplier_id,
+      buyer_id: trade.manufacturer_id,
+      shipper_id: trade.shipper_id,
+      quotation: trade.doc[0],
+      po: trade.doc[1],
+      invoice: trade.doc[2],
+      status: trade.status,
+      letterofcredit: trade.paymentinfo,
+      creditAmount: trade.paymentinfo.Credit_Amount,
+      timePeriod: trade.paymentinfo.No_of_days,
+      billoflading: trade.doc[3],
+      senderpage: req.session.sender,
+      username: req.query.username,
+      userAddress: req.session.userAddress
+    });
+  } else if (trade.type == 'OEMTODEALER') {
+    res.render('tradepage2.ejs', {
+      id: trade.trade_id,
+      address: trade.contract_id,
+      seller_id: trade.manufacturer_id,
+      buyer_id: trade.dealer_id,
+      shipper_id: trade.shipper_id,
+      quotation: trade.doc[0],
+      po: trade.doc[1],
+      invoice: trade.doc[2],
+      status: trade.status,
+      letterofcredit: trade.paymentinfo,
+      creditAmount: trade.paymentinfo.Credit_Amount,
+      timePeriod: trade.paymentinfo.No_of_days,
+      billoflading: trade.doc[3],
+      senderpage: req.session.sender,
+      username: req.query.username,
+      userAddress: req.session.userAddress
+    });
+  } else if (trade.type == 'DEALERTOCUSTOMER') {
+    res.render('tradepage3.ejs', {
+      id: trade.trade_id,
+      address: trade.contract_id,
+      seller_id: trade.dealer_id,
+      buyer_id: trade.customer_id,
+      quotation: trade.doc[0],
+      po: trade.doc[1],
+      invoice: trade.doc[2],
+      status: trade.status,
+      letterofcredit: trade.paymentinfo,
+      creditAmount: trade.paymentinfo.Credit_Amount,
+      timePeriod: trade.paymentinfo.No_of_days,
+      billoflading: trade.doc[3],
+      senderpage: req.session.sender,
+      username: req.query.username,
+      userAddress: req.session.userAddress
+    });
+  }
 
-function onFindTradeSession2(err, trade) {
-  if (err)
-    return err;
-  var req = this.req;
-  var res = this.res;
-  res.render('tradepage2.ejs', {
-    id: trade.trade_id,
-    address: trade.contract_id,
-    seller_id: trade.manufacturer_id,
-    buyer_id: trade.dealer_id,
-    shipper_id: trade.shipper_id,
-    quotation: trade.doc[0],
-    po: trade.doc[1],
-    invoice: trade.doc[2],
-    status: trade.status,
-    letterofcredit: trade.paymentinfo,
-    creditAmount: trade.paymentinfo.Credit_Amount,
-    timePeriod: trade.paymentinfo.No_of_days,
-    billoflading: trade.doc[3],
-    senderpage: req.session.sender,
-    username: req.query.username,
-    userAddress: req.session.userAddress
-  });
 }
 
 function orderShipped(address) {
@@ -368,35 +370,36 @@ function onNewTradeSession(err, trade) {
   });
 }
 
-function onFindTradeResume1(err, trade) {
+function onFindTradeResume(err, trade) {
   if (err)
     return err;
   req = this.req;
   res = this.res;
-  console.log("senderpage=", req.body.senderpage);
-  if (req.body.senderpage == "Manufacturer") {
-    req.session.sender = "Buyer";
-  } else if (req.body.senderpage == "Supplier") {
-    req.session.sender = "Seller";
-  }
   req.session.sender = req.body.senderpage;
   req.session.tradesession = trade._id;
-  res.redirect('/tradesession1');
-}
-
-function onFindTradeResume2(err, trade) {
-  if (err)
-    return err;
-  req = this.req;
-  res = this.res;
-  if (req.body.senderpage == "Dealer") {
-    req.session.sender = "Buyer";
-  } else if (req.body.senderpage == "Manufacturer") {
-    req.session.sender = "Seller";
+  switch (trade.type) {
+    case 'PARTSSUPPLIERTOOEM':
+      if (req.body.senderpage == "Manufacturer") {
+        req.session.sender = "Buyer";
+      } else if (req.body.senderpage == "Supplier") {
+        req.session.sender = "Seller";
+      }
+      break;
+    case 'OEMTODEALER':
+      if (req.body.senderpage == "Dealer") {
+        req.session.sender = "Buyer";
+      } else if (req.body.senderpage == "Manufacturer") {
+        req.session.sender = "Seller";
+      }
+      break;
+    case 'DEALERTOCUSTOMER':
+      if (req.body.senderpage == "Customer") {
+        req.session.sender = "Buyer";
+      } else if (req.body.senderpage == "Dealer") {
+        req.session.sender = "Seller";
+      }
   }
-  req.session.tradesession = trade._id;
-  req.session.sender = req.body.senderpage;
-  res.redirect('/tradesession2');
+  res.redirect('/tradesession');
 }
 
 function onFindTradeApprove(err, trade) {
@@ -409,7 +412,7 @@ function onFindTradeApprove(err, trade) {
     trade_id: req.body.trade_id
   };
   var update;
-  eventEmitter.once('shippingDateTxnSuccess', function(time, status) {
+  /*eventEmitter.once('shippingDateTxnSuccess', function(time, status) {
     trade.status = status;
     trade.save(function(err) {
       if (err)
@@ -417,9 +420,14 @@ function onFindTradeApprove(err, trade) {
       payToSeller(trade.letterofcredit);
       return;
     });
-  });
+  });*/
 
   switch (req.body.approvaltype) {
+    case "R":
+      update = {
+        status: "Request For Quotation Approved; Ethereum Txn Pending;"
+      };
+      break;
     case "Q":
       update = {
         status: "Quotation Approved; Ethereum Txn Pending;"
@@ -430,14 +438,18 @@ function onFindTradeApprove(err, trade) {
       update = {
         status: "Purchase Order Approved; Ethereum Txn Pending;"
       };
-
       approve(req, res, trade.contract_id, trade.supplier_id, 'PurchaseOrder');
       break;
     case "I":
-      update = {
-        status: "Invoice Approved by Buyer; Ethereum Txn Pending;"
-      };
-
+      if (trade.type == "PARTSSUPPLIERTOOEM") {
+        update = {
+          status: "Invoice Approved by Buyer; Ethereum Txn Pending;"
+        };
+      } else if (trade.type == "OEMTODEALER") {
+        update = {
+          status: "Invoice Approved By Seller Bank; Ethereum Txn Pending;"
+        };
+      }
       approve(req, res, trade.contract_id, trade.manufacturer_id, 'Invoice');
       break;
     case "IA":
@@ -459,9 +471,15 @@ function onFindTradeApprove(err, trade) {
       locapprove(req, res, trade.letterofcredit.contract_id, trade.supplier_id);
       break;
     case "B":
-      update = {
-        status: "Bill Of Lading Approved by Buyer; Ethereum Txn Pending;"
-      };
+      if (trade.type == "PARTSSUPPLIERTOOEM") {
+        update = {
+          status: "Bill Of Lading Approved by Buyer; Ethereum Txn Pending;"
+        };
+      } else if (trade.type == "OEMTODEALER") {
+        update = {
+          status: "Bill Of Lading Approved; Ethereum Txn Pending;"
+        };
+      }
       approve(req, res, trade.contract_id, trade.manufacturer_id, 'BillOfLading');
       break;
     case "BA":
@@ -536,9 +554,15 @@ function onFindTradeReject(err, trade) {
       };
       locreject(req, res, trade.letterofcredit.contract_id, trade.supplier_id, req.body.reason);
     case "B":
-      update = {
-        status: "Bill Of Lading Rejected by Buyer; Ethereum Txn Pending;"
-      };
+      if (trade.type == "PARTSSUPPLIERTOOEM") {
+        update = {
+          status: "Bill Of Lading Rejected by Buyer; Ethereum Txn Pending;"
+        };
+      } else if (trade.type == "OEMTODEALER") {
+        update = {
+          status: "Bill Of Lading Rejected; Ethereum Txn Pending;"
+        };
+      }
       reject(req, res, trade.contract_id, trade.manufacturer_id, 'BillOfLading', req.body.reason);
       break;
     case "BA":
@@ -586,7 +610,24 @@ function onFileUpload(err, hash) {
   var query = {
     trade_id: id
   };
-  if (req.body.senderpage == "quotation") {
+  if (req.body.senderpage == "rfq") {
+    var update = {
+      $set: {
+        'doc.0.hash': hash[0].hash,
+        'status': "Request For Quotation Uploaded; Ethereum Txn Pending;"
+      }
+    }
+    tradedb.updateTrade(query, update, redirectOnUpdation.bind({
+      'tradeID': id,
+      'req': req,
+      'res': res
+    }));
+    tradedb.findTradeByTradeID(id, req, res, onFindTradeRequestForQuotationUpdate.bind({
+      'req': req,
+      'res': res,
+      'hash': hash
+    }));
+  } else if (req.body.senderpage == "quotation") {
     var update = {
       $set: {
         'doc.0.hash': hash[0].hash,
@@ -643,6 +684,16 @@ function onFileUpload(err, hash) {
       'hash': hash
     }));
   }
+}
+
+function onFindTradeRequestForQuotationUpdate(err, trade) {
+  // if there are any errs, return the err
+  if (err)
+    return done(err);
+  req = this.req;
+  res = this.res;
+  hash = this.hash;
+  uploadDoc(req, res, trade.contract_id, trade.buyer_id, 'RequestForQuotation', hash[0].hash);
 }
 
 function onFindTradeQuotationUpdate(err, trade) {

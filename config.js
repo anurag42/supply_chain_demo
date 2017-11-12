@@ -6,4 +6,5 @@ config.tradeAddress = '0x238C8406D7323Db3805b4f1607ED2a9d9e1a4443';
 config.web3Provider = "http://localhost:8545";
 config.gasPrice = 40000000000;
 config.gasUsage = 30000000;
+config.MSG91_AUTH_KEY = '122817A0oIxWGw3C057b82b27';
 module.exports = config;

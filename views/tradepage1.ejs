@@ -799,6 +799,54 @@ switch("<%= status %>"){
 		$(".pendingstatus, .request_row .tradetxt").html('Upload Request for Quotation');
   }
   else $(".request_row .tradetxt").html('<%= buyer_id %>  to Upload Request for Quotation');
+  case "Request For Quotation Uploaded; Ethereum Txn Pending;":
+	$(".request_row .dnldsvbtn").css("cssText","opacity:1 !important");
+	$(".request_row .dnldsvbtn").prop('disabled', false);
+	$(".request_row .uploadbtn .loaderbtngif").show();
+	$(".pendingstatus, .request_row .tradetxt").html('Uploading on Blockchain');
+	break;--------------
+  case "Request For Quotation Approved; Ethereum Txn Pending;":
+	$(".request_row .aprbtngif").show();
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .request_row .tradetxt").html('Request For Quotation Approved, Updating on Blockchain');
+	break;
+	case "Request For Quotation Approved":
+	$(".purchase_row .tradeleft").css("cssText","opacity:1 !important");
+	$(".purchase_row .uploadbtn").css("cssText","opacity:1 !important");
+	$(".purchase_row .uploadbtn").prop('disabled', false);
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .request_row .tradetxt").html('Request For Quotation Approved');
+	if("<%= senderpage %>" == "Buyer"){
+		$(".pendingstatus, .purchase_row .tradetxt").html('Upload Purchase Order');
+		$(".request_row .uploadbtn").prop('disabled', false);
+	}
+	else $(".pendingstatus, .purchase_row .tradetxt").html('Buyer yet to Upload Purchase Order');
+	break;
+  case "Request For Quotation Rejected; Ethereum Txn Pending;":
+	$(".request_row .rejbtngif").show();
+	$(".pendingstatus, .request_row .tradetxt").html('Request For Quotation Rejected, Updating on Blockchain');
+	break;
+	case "Request For Quotation Rejected":
+	if("<%= senderpage %>" == "Seller"){
+		$(".request_row .uploadbtn").css("cssText","opacity:1 !important");
+		$(".request_row .uploadbtn").prop('disabled', false);
+		$(".pendingstatus, .request_row .tradetxt").html('Request For Quotation Rejected. Re-upload Request For Quotation');
+	}
+	else $(".request_row .tradetxt").html('Request For Quotation Rejected. <%= seller_id %>  to Upload Request For Quotation');
+	break;
+  case "Request For Quotation Uploaded":
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
+	if("<%= senderpage %>" == "Buyer"){
+		$(".pendingstatus, .request_row .tradetxt").html('Review Request For Quotation');
+		$(".request_row .acceptbtn, .request_row .rejectbtn").css("cssText","opacity:1 !important");
+		$(".request_row .acceptbtn, .request_row .rejectbtn").prop('disabled', false);
+	}
+	else $(".pendingstatus, .request_row .tradetxt").html('<%= buyer_id %>  to Approve');
+	break;
+  -------------------
 	case "Quotation Not Uploaded":
 	if("<%= senderpage %>" == "Seller"){
 		$(".quotation_row .uploadbtn").css("cssText","opacity:1 !important");
