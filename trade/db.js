@@ -42,7 +42,7 @@ module.exports = {
       hash: 'No Bill of Lading till now',
       txnID: 'None'
     });
-    newTrade.status = "Quotation Not Uploaded";
+    newTrade.status = "RFQ Not Uploaded";
     newTrade.save(callback);
   },
 
