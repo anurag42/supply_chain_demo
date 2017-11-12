@@ -17,7 +17,24 @@ module.exports = {
   },
 
   customerLogin: function(req, res) {
-    res.render('buyerlogin.ejs');
+    res.render('customerlogin.ejs');
+  },
+
+  validateOTP: function(req, res) {
+    var otp = req.body.otp;
+    var mobile = '91' + req.body.mobile;
+    const sendOtp = new SendOtp(config.MSG91_AUTH_KEY);
+    sendOtp.verify(mobile, otp, function(error, data, response) {
+      if (error) {
+        this.res.send({
+          success: "false",
+          message: "Invalid OTP"
+        });
+      }
+      this.res.send({
+        success: "true"
+      });
+    });
   }
 
 }
@@ -36,6 +53,10 @@ function validateMobile(err, customer) {
   const sendOtp = new SendOtp(config.MSG91_AUTH_KEY);
   sendOtp.send(mobile, "ZEONBC", function(error, data, response) {
     console.log(data);
+
+  });
+  this.res.send({
+    success: "true"
   });
 
 }
