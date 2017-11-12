@@ -52,6 +52,7 @@ function validateMobile(err, customer) {
   var mobile = "91" + customer.mobile;
   const sendOtp = new SendOtp(config.MSG91_AUTH_KEY);
   sendOtp.send(mobile, "ZEONBC", function(error, data, response) {
+    console.log(error);
     console.log(data);
 
   });
