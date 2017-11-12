@@ -389,11 +389,12 @@
 					<input type="text" class="form-control" id="number_id" name="mobile" placeholder="Enter Phone no." required></input>
 					<span class="fa fa-phone icon"></span><br>
 					<input type="text" class="form-control" id="insurer_id" name="insurer_id"  placeholder="Insurer Name"required></input>
+					<input type="hidden" name="kycExists" id="kycExists"></input>
 				</form>
 				     <button type="submit" class="btn btn-warning btn-lg trbtn" id="trigger_trade" data-toggle="modal" data-target="#">Trigger trade</button>
 				    <div class="upload_kyc" style="display:none;">
-						<p><i class="fa fa-check-square-o" aria-hidden="true"></i> KYC Done</p>
-						<p><i class="fa fa-check-square-o" aria-hidden="true"></i> KYC Not Verified</p>
+						<p><i class="fa fa-check-square-o" aria-hidden="true" id="kycVerified"></i> KYC Done</p>
+						<p><i class="fa fa-check-square-o" aria-hidden="true" id="kycNotVerified"></i> KYC Not Verified</p>
 						<a href="http://localhost:63342/bigstylist/views/tradepage.html?_ijt=4kj0o0adc84bucjsoe87rcplq6"><button class="btn btn-warning btn-lg trbtn setbutton" data-toggle="modal" data-target="#">Proceed</button></a>
 					</div>
 			</div>
@@ -436,12 +437,40 @@ $(document).ready(function(){
          $(".mobile_error").show();
          return false;
        }
-       else{
-       $(".upload_kyc").show();
-       $("#trigger_trade").hide();
-       $(".show_error").hide();
-       $(".mobile_error").hide();
-       return true;
+       else {
+				 var aadhar = document.getElementById('aadhar_id').value;
+				 var mobile = document.getElementById('number_id').value
+				 $.ajax({
+					 url: '/validateKYC',
+					 type: 'POST',
+					 data: {'aadhar': aadhar, 'mobile': mobile},
+					 success: function(response) {
+						 if (response.success == false) {
+							 	$(".show_error").show();
+						 } else {
+							 	$(".upload_kyc").show();
+ 								var kycVerified = document.getElementById("kycVerified");
+ 								var kycNotVerified = document.getElementById("kycNotVerified");
+								$("#trigger_trade").hide();
+								$(".show_error").hide();
+								$(".mobile_error").hide();
+								if (response.kycExists == true) {
+									kycNotVerified.removeClass("fa-check-square-o");
+									kycNotVerified.addClass("fa-square-o");
+									kycVerified.removeClass("fa-square-o");
+									kycVerified.addClass("fa-check-square-o");
+								} else {
+									kycVerified.removeClass("fa-check-square-o");
+									kycVerified.addClass("fa-square-o");
+									kycNotVerified.removeClass("fa-square-o");
+									kycNotVerified.addClass("fa-check-square-o");
+								}
+								document.getElementById('kycExists').value = response.kycExists;
+						 }
+					 }
+				 });
+
+	       return true;
        }
     });
 

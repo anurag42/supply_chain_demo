@@ -5,7 +5,6 @@ var customerSchema = mongoose.Schema({
   aadhar: String,
   mobile: String,
   kychash: String,
-  kycStatus: String,
   ethereumAddress: String
 });
 

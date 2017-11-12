@@ -6,4 +6,5 @@ module.exports = function(app) {
     app.post('/validateOTP', customer.validateOTP);
     app.get('/customerlogin', customer.customerLogin);
     app.post('/customerlogin', customer.successfulLogin);
+    app.post('/validateKYC', customer.validateKYC);
 };

@@ -16,6 +16,17 @@ module.exports = {
     }));
   },
 
+  validateKYC: function(req, res) {
+    var mobile = req.body.mobile;
+    var aadhar = req.body.aadhar;
+    customerdb.getCustomerFromAadharAndMobile(aadhar, validateKYCCallback.bind({
+      'req': req,
+      'res': res,
+      'aadhar': aadhar,
+      'mobile': mobile
+    }));
+  },
+
   customerLogin: function(req, res) {
     res.render('customerlogin.ejs');
   },
@@ -55,6 +66,35 @@ function navigateToTrackerPage(err, customer) {
   var res = this.res;
   var customerID = customer._id;
   res.redirect('/resumetrade?customerid=' + customerID + '&senderpage=Customer');
+}
+
+function validateKYCCallback(err, customer) {
+  var res = this.res;
+  if (err) {
+    console.error(err);
+    res.send({
+      success: "false"
+    });
+  }
+
+  var kycExists = true;
+  if (!customer) {
+    kycExists = false;
+    customerdb.createNewCustomer(this.aadhar, this.mobile, function (response) {
+      console.log(response);
+    });
+  }
+
+  var kycHash = customer.kychash;
+  if (!kycHash) {
+    kycExists = false;
+  }
+
+  res.send({
+    success: "true",
+    kycExists: kycExists
+  });
+
 }
 
 function validateMobile(err, customer) {
