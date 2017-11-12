@@ -11,8 +11,13 @@ module.exports = {
   getIndex: function(req, res) {
     var aadhar = req.body.aadhar;
     customerdb.getCustomerFromAadhar(aadhar, validateMobile.bind({
-
+      'req': req,
+      'res': res
     }));
+  },
+
+  getCustomerLogin: function(req, res) {
+    res.render('buyerlogin.ejs');
   }
 
 }

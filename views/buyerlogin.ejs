@@ -3,12 +3,12 @@
 <html>
 <head>
     <title>Node Authentication</title>
-    <link rel="stylesheet" href="../styles/sheets/bootstrap.css"> <!-- load bootstrap css -->
-    <link rel="stylesheet" href="../styles/sheets/font-awesome.min.css"> <!-- load fontawesome -->
+    <link rel="stylesheet" href="/sheets/bootstrap.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="/sheets/font-awesome.min.css"> <!-- load fontawesome -->
     <style>
         body{
             padding-top:80px;
-            background:url("../styles/images/loginbg.jpg");
+            background:url("/images/loginbg.jpg");
             background-size:cover;
             height:100%;
             width:100%;
@@ -16,7 +16,7 @@
         @font-face{
 
             font-family: "panton-bold";
-            src: url("../styles/fonts/Panton-BlackCaps.otf");
+            src: url("/fonts/Panton-BlackCaps.otf");
 
         }
         .container{
@@ -96,7 +96,7 @@
 <div class="container">
 
 <div class="col-sm-4 col-sm-offset-4">
-    <img src="../styles/images/zeonlab_logo.png" class="zlogo">
+    <img src="/images/zeonlab_logo.png" class="zlogo">
     <h1 class="loginh1">Login</h1>
     <!-- LOGIN FORM -->
     <div class="loginnext">
@@ -127,8 +127,8 @@
 </div>
 
 </div>
-<script type="text/javascript" src="../styles/js/jquery.1.11.1.js"></script>
-<script type="text/javascript" src="../styles/js/bootstrap.js"></script>
+<script type="text/javascript" src="/js/jquery.1.11.1.js"></script>
+<script type="text/javascript" src="/js/bootstrap.js"></script>
 <script>
     $('.nextbtn').click(function(){
 
@@ -164,9 +164,7 @@
         var o4 = $('.o4').val();
         var res = o1+o2+o3+o4;
         if(res.length != 4){
-
             $('.loginerror2').show();
-
         }
 
     });
