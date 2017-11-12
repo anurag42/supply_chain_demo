@@ -166,9 +166,11 @@ module.exports = {
   // for redirect from customer login page
   getresumetrade: function(req, res) {
     var customerID = req.query.customerid;
+    var senderpage = req.query.senderpage;
     tradedb.findTradeByCustomerID(customerID, onFindTradeResume.bind({
       'req': req,
-      'res': res
+      'res': res,
+      'senderpage': senderpage
     }));
   },
 
@@ -382,7 +384,11 @@ function onFindTradeResume(err, trade) {
     return err;
   req = this.req;
   res = this.res;
-  req.session.sender = req.body.senderpage;
+  var senderpage = req.body.senderpage;
+  if (!senderpage) {
+    senderpage = this.senderpage;
+  }
+  req.session.sender = senderpage;
   req.session.tradesession = trade._id;
   switch (trade.type) {
     case 'PARTSSUPPLIERTOOEM':

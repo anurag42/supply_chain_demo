@@ -54,7 +54,7 @@ function navigateToTrackerPage(err, customer) {
   }
   var res = this.res;
   var customerID = customer._id;
-  res.redirect('/resumetrade?customerid=' + customerID);
+  res.redirect('/resumetrade?customerid=' + customerID + '&senderpage=Customer');
 }
 
 function validateMobile(err, customer) {
