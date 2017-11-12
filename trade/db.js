@@ -1,5 +1,6 @@
 var Trade = require('./model');
 var session = require('express-session');
+var customerdb = require('../customer/db');
 module.exports = {
   findTradeByTradeObjectID: function(req, res, callback) {
     Trade.findOne({
@@ -13,19 +14,6 @@ module.exports = {
     tradeID = newTrade._id;
     newTrade.trade_id = newTrade._id;
     newTrade.type = req.body.tradetype;
-    if (req.body.tradetype == "PARTSSUPPLIERTOOEM") {
-      newTrade.bank_id = req.body.bank_id;
-      newTrade.supplier_id = req.body.supplier_id;
-      newTrade.manufacturer_id = req.body.manufacturer_id;
-    } else if (req.body.tradetype == "OEMTODEALER") {
-      newTrade.dealer_id = req.body.dealer_id;
-      newTrade.manufacturer_id = req.body.manufacturer_id;
-    } else if (req.body.tradetype == "DEALERTOCUSTOMER") {
-      newTrade.dealer_id = req.body.dealer_id;
-      newTrade.customer_id = req.body.customer_id;
-    }
-
-    newTrade.shipper_id = req.body.shipper_id;
     newTrade.status = "RFQ Not Uploaded";
     newTrade.doc.push({
       doctype: 'rfq',
@@ -53,7 +41,26 @@ module.exports = {
       txnID: 'None'
     });
     newTrade.status = "RFQ Not Uploaded";
-    newTrade.save(callback);
+    if (req.body.tradetype == "PARTSSUPPLIERTOOEM") {
+      newTrade.bank_id = req.body.bank_id;
+      newTrade.supplier_id = req.body.supplier_id;
+      newTrade.manufacturer_id = req.body.manufacturer_id;
+      newTrade.shipper_id = req.body.shipper_id;
+      newTrade.save(callback);
+    } else if (req.body.tradetype == "OEMTODEALER") {
+      newTrade.dealer_id = req.body.dealer_id;
+      newTrade.manufacturer_id = req.body.manufacturer_id;
+      newTrade.shipper_id = req.body.shipper_id;
+      newTrade.save(callback);
+    } else if (req.body.tradetype == "DEALERTOCUSTOMER") {
+      newTrade.dealer_id = req.body.dealer_id;
+      customerdb.getCustomerFromAadhar(req.body.customeraadhar_id, req, res, onFindCustomer.bind({
+        'res': res,
+        'req': req,
+        'newTrade': newTrade,
+        'callback': callback
+      }));
+    }
   },
 
   findTradeByTradeID: function(trade_id, req, res, callback) {
@@ -73,3 +80,33 @@ module.exports = {
   }
 
 };
+
+function onFindCustomer(err, customer) {
+  if (err)
+    throw err;
+  req = this.req;
+  res = this.res;
+  newTrade = this.newTrade;
+  callback = this.callback;
+  if (customer) {
+    newTrade.customer_id = customer._id;
+    newTrade.save(callback);
+  } else {
+    customerdb.createNewCustomer(req.body.customeraadhar_id, req.body.customermobile, req, res, onNewCustomer.bind({
+      'req': req,
+      'res': res,
+      'newTrade': newTrade,
+      'callback': callback
+    }));
+  }
+}
+
+function onNewCustomer(err, customer) {
+  req = this.req;
+  res = this.res;
+  newTrade = this.newTrade;
+  callback = this.callback;
+  newTrade.customer_id = customer._id;
+  newTrade.status = "KYC Not Uploaded";
+  newTrade.save(callback);
+}

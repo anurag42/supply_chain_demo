@@ -139,7 +139,8 @@
         }
         else{
             $.ajax({
-              url: '/validateAadhar/',
+              url: '/validateAadhar',
+              type: 'POST',
               success: function() {
                 $('.loginnext').hide();
                 $('.loginverify').show();

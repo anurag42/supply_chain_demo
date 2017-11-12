@@ -402,11 +402,11 @@
 		var bank_id = encodeURIComponent(document.getElementById("bank_id").value);
 		var user = encodeURIComponent(document.getElementById("user").value);
 		var senderpage = encodeURIComponent(document.getElementById("senderpage").value);
-		var dealer_id = encodeURIComponent(document.getElementById("dealer_id").value);
-		var manufacturer_id = encodeURIComponent(document.getElementById("manufacturer_id").value);
+		var customer_id = encodeURIComponent(document.getElementById("customer_id").value);
+		var customer_id = encodeURIComponent(document.getElementById("customer_id").value);
 		var bank_id = encodeURIComponent(document.getElementById("bank_id").value);
 		var shipper_id = encodeURIComponent(document.getElementById("shipper_id").value);
-		var parameters = "bank_id=" + bank_id + "&user=" + user + "&senderpage=" + senderpage + "&dealer_id=" + dealer_id + "&manufacturer_id=" + manufacturer_id + "&bank_id=" + bank_id + "&shipper_id=" + shipper_id;
+		var parameters = "bank_id=" + bank_id + "&user=" + user + "&senderpage=" + senderpage + "&customer_id=" + customer_id + "&customer_id=" + customer_id + "&bank_id=" + bank_id + "&shipper_id=" + shipper_id;
 
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
@@ -421,7 +421,7 @@
 					timestamp = new Date( parseInt( timestamp, 16 ) * 1000 ).toString();
 					var indx = timestamp.indexOf('GMT');
 					if(res.status == "Ethereum Transaction Pending!!! Check after 2 mins!!!"){
-						thead.innerHTML = '<tr><th>Tracking ID</th><th>Dealer</th><th>Manufacturer</th><th>Date & Time</th><th>Trade Tracker</th></tr>';
+						thead.innerHTML = '<tr><th>Tracking ID</th><th>customer</th><th>customer</th><th>Date & Time</th><th>Trade Tracker</th></tr>';
 						tbody.innerHTML = '<tr><td style="display:none;">' + res.tradeID + '</td><td class="trackId">' + res.tradeID.slice(0,3) + '...' +  res.tradeID.slice(20,24) + "</td><td>" + res.buyer + "</td><td>" + res.seller + "</td><td>" + timestamp.slice(0, indx) + "</td>"+'<td><button href='+res.tradeID+' class="viewbtn" style="display: none;" onclick="getTradeDetails(this)"><img src="/images/View.png" class="viewimg" style="display: none;">View</button><img src="/images/loader.gif" style="display:block" class="loaderbtngif"></td></tr><hr style="margin:0px;width:350%"></tr>' + tbody.innerHTML;
 						tradefun2(res.tradeID, res.buyerHash, res.sellerHash, res.buyerBankHash, res.sellerBankHash, res.shipperHash);
 					}
@@ -463,8 +463,8 @@
 	var thead = document.getElementById('trade_header');
 	var v = "<%=trade_id%>";
 	var tradeList = v.split(',');
-	var dealerList = "<%=dealerList%>".split(',');
-	var manufacturerList = "<%=manufacturerList%>".split(',');
+	var customerList = "<%=customerList%>".split(',');
+	var customerList = "<%=customerList%>".split(',');
 	var statusList = "<%=statusList%>".split(',');
 	for (i = 0; i < tradeList.length; ++i) {
 		if(tradeList[0]=="No Trades Yet")
@@ -477,12 +477,12 @@
 		timestamp = new Date( parseInt( timestamp, 16 ) * 1000 ).toString();
 		var indx = timestamp.indexOf('GMT');
 		if(statusList[i] == "Ethereum Transaction Pending!!! Check after 2 mins!!!"){
-			tr += '<td style="display:none;">' + tradeList[i] + '</td><td class="trackId">' + tradeList[i].slice(0,3) + '...' +  tradeList[i].slice(20,24) + "</td><td>" + dealerList[i] + "</td><td>" + manufacturerList[i] + "</td><td>" + timestamp.slice(0, indx) + "</td>"+'<td><button href='+tradeList[i]+' class="viewbtn" style="display:none" onclick="getTradeDetails(this)"><img src="/images/View.png" class="viewimg">View</button><img src="/images/loader.gif" style="display:block" class="loaderbtngif"></td></tr>';
+			tr += '<td style="display:none;">' + tradeList[i] + '</td><td class="trackId">' + tradeList[i].slice(0,3) + '...' +  tradeList[i].slice(20,24) + "</td><td>" + customerList[i] + "</td><td>" + customerList[i] + "</td><td>" + timestamp.slice(0, indx) + "</td>"+'<td><button href='+tradeList[i]+' class="viewbtn" style="display:none" onclick="getTradeDetails(this)"><img src="/images/View.png" class="viewimg">View</button><img src="/images/loader.gif" style="display:block" class="loaderbtngif"></td></tr>';
 		}
 		else{
-			tr += '<td style="display:none;">' + tradeList[i] + '</td><td class="trackId">' + tradeList[i].slice(0,3) + '...' +  tradeList[i].slice(20,24) + "</td><td>" + dealerList[i] + "</td><td>" + manufacturerList[i] + "</td><td>" + timestamp.slice(0, indx) + "</td>"+'<td><button href='+tradeList[i]+' class="viewbtn" onclick="getTradeDetails(this)"><img src="/images/View.png" class="viewimg">View</button><img src="/images/loader.gif" class="loaderbtngif"></td></tr>';
+			tr += '<td style="display:none;">' + tradeList[i] + '</td><td class="trackId">' + tradeList[i].slice(0,3) + '...' +  tradeList[i].slice(20,24) + "</td><td>" + customerList[i] + "</td><td>" + customerList[i] + "</td><td>" + timestamp.slice(0, indx) + "</td>"+'<td><button href='+tradeList[i]+' class="viewbtn" onclick="getTradeDetails(this)"><img src="/images/View.png" class="viewimg">View</button><img src="/images/loader.gif" class="loaderbtngif"></td></tr>';
 		}
-		thead.innerHTML = '<tr><th>Tracking ID</th><th>Dealer</th><th>Manufacturer</th><th>Date & Time</th><th>Trade Tracker</th></tr>';
+		thead.innerHTML = '<tr><th>Tracking ID</th><th>customer</th><th>customer</th><th>Date & Time</th><th>Trade Tracker</th></tr>';
 		tbody.innerHTML = tr + tbody.innerHTML;
 	}
 

@@ -62,6 +62,7 @@ mongoose.connect('mongodb://127.0.0.1/supplychain', {
 require('./user/routes')(app);
 require('./trade/routes')(app);
 require('./file/routes')(app);
+require('./customer/routes')(app);
 console.log("Server started");
 // launch ======================================================================
 app.listen(port);

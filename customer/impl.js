@@ -8,7 +8,7 @@ const SendOtp = require('sendotp');
 
 module.exports = {
 
-  getIndex: function(req, res) {
+  validateAadhar: function(req, res) {
     var aadhar = req.body.aadhar;
     customerdb.getCustomerFromAadhar(aadhar, validateMobile.bind({
       'req': req,
@@ -16,27 +16,25 @@ module.exports = {
     }));
   },
 
-  getCustomerLogin: function(req, res) {
+  customerLogin: function(req, res) {
     res.render('buyerlogin.ejs');
   }
 
 }
 
 function validateMobile(err, customer) {
-  if (err) {
+  console.log("Callback");
+  if (err || !customer) {
     console.error(err);
-    return err;
-  }
-
-  if (!customer) {//No customer with aadhar found
-    res.render('buyerlogin.ejs', {
+    this.res.send({
+      success: "false",
       message: "Customer with this Aadhar number does not exist!"
     });
   }
 
   var mobile = "91" + customer.mobile;
   const sendOtp = new SendOtp(config.MSG91_AUTH_KEY);
-  sendOtp.send(mobile, "ZEONBC", function (error, data, response) {
+  sendOtp.send(mobile, "ZEONBC", function(error, data, response) {
     console.log(data);
   });
 
