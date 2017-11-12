@@ -159,19 +159,19 @@ module.exports = {
   },
 
   resumetrade: function(req, res) {
-    var customerID = req.query.customerid;
-    if (!customerID) {
-      tradedb.findTradeByTradeID(req.body.trade_id, req, res, onFindTradeResume.bind({
-        'req': req,
-        'res': res
-      }));
-    } else {
-      tradedb.findTradeByCustomerID(customerID, onFindTradeResume.bind({
-        'req': req,
-        'res': res
-      }))
-    }
+    tradedb.findTradeByTradeID(req.body.trade_id, req, res, onFindTradeResume.bind({
+      'req': req,
+      'res': res
+    }));
+  },
 
+  // for redirect from customer login page
+  getresumetrade: function(req, res) {
+    var customerID = req.query.customerid;
+    tradedb.findTradeByCustomerID(customerID, onFindTradeResume.bind({
+      'req': req,
+      'res': res
+    }));
   },
 
   uploadDoc: function(req, res) {
