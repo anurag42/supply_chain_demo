@@ -45,10 +45,6 @@
                 <div class="usrinfo">
                     <div class="infoitem">
                         <img src="/images/user_icon.png">
-                        <span><strong>Bank:</strong> <%= bank_id %> </span>
-                    </div>
-                    <div class="infoitem">
-                        <img src="/images/user_icon.png">
                         <span><strong>Parts Manufacturer:</strong> <%= seller_id %> </span>
                     </div>
                     <div class="infoitem">
@@ -443,7 +439,7 @@
 					<div id="uplhide">
 						<form id="uploadform" action = "/uploadDoc" method = "POST" enctype = "multipart/form-data">
 							<div class="form-group">
-								<input type="hidden" id="docName" name="docname">
+								<input type="hidden" id="docName" name="senderpage">
                 <input type="hidden" name="userAddress" value=<%= userAddress %>>
 								<p id="uperror" style="display:none;color:red;">Please Select File</p>
 								<input type="file" class="form-control" id="docfile" name="file" required>
@@ -477,6 +473,7 @@
             <div class="modal-body" style="padding-top:5px;">
                 <form id="rejection_form" action = "/rejecttrade" method = "POST">
                     <input type="hidden" name="trade_id" value=<%= id %>>
+                    <input type="hidden" name="userAddress" value="<%= userAddress %>">
                     <input type="hidden" name="userAddress" value=<%= userAddress %>>
                     <input type="hidden" class="approvaltype" name="approvaltype" value=''>
                     <input type="hidden" name="senderpage" value=<%= senderpage %>>
@@ -532,9 +529,6 @@
 						<input type="hidden" class="form-control" name="seller" value=<%= seller_id %>>
 					</div>
 					<div class="form-group">
-						<input type="hidden" class="form-control" name="buyerBank" value=<%= bank_id %>>
-					</div>
-					<div class="form-group">
 						<input type="number" class="form-control" name="timePeriod" placeholder="Time Period in mins before expiry">
 					</div>
 					<div class="form-group">
@@ -568,9 +562,6 @@
 					</div>
 					<div class="form-group">
 						<input type="hidden" class="form-control" name="seller" value=<%= seller_id %>>
-					</div>
-					<div class="form-group">
-						<input type="hidden" class="form-control" name="buyerBank" value=<%= bank_id %>>
 					</div>
 					<div class="form-group">
 						<p>This agreement contains all textual
@@ -807,7 +798,7 @@ switch("<%= status %>"){
 	$(".request_row .dnldsvbtn").prop('disabled', false);
 	$(".request_row .uploadbtn .loaderbtngif").show();
 	$(".pendingstatus, .request_row .tradetxt").html('Uploading on Blockchain');
-	break;--------------
+	break;
   case "Request For Quotation Approved; Ethereum Txn Pending;":
 	$(".request_row .aprbtngif").show();
 	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
@@ -849,7 +840,6 @@ switch("<%= status %>"){
 	}
 	else $(".pendingstatus, .request_row .tradetxt").html('<%= buyer_id %>  to Approve');
 	break;
-  -------------------
 	case "Quotation Not Uploaded":
 	if("<%= senderpage %>" == "Seller"){
 		$(".quotation_row .uploadbtn").css("cssText","opacity:1 !important");
@@ -991,7 +981,6 @@ switch("<%= status %>"){
 		$(".invoice_row .acceptbtn, .invoice_row .rejectbtn").css("cssText","opacity:1 !important");
 		$(".invoice_row .acceptbtn, .invoice_row .rejectbtn").prop('disabled', false);
 	}
-	else $(".pendingstatus, .invoice_row .tradetxt").html('<%= bank_id %> to Approve');
 	break;
 	case "Invoice Uploaded; Ethereum Txn Pending;":
 	$(".invoice_row .dnldsvbtn").css("cssText","opacity:1 !important");

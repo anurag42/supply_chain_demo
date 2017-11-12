@@ -95,88 +95,21 @@ module.exports = {
       'res': res
     }));
 
-    var pendingTasks = [deployLOC, saveContractId, GetBuyerHash, GetSellerHash, GetBuyerBankHash, GetSellerBankHash, payLOC, setLOCParams];
+    var pendingTasks = [payLOC, setLOCParams];
 
-    function next(result) {
+    function next() {
       var currentTask = pendingTasks.shift();
-      if (currentTask) currentTask(result);
+      if (currentTask) currentTask();
     }
 
     next();
 
-    //Write A Single Callback function for these
-    function deployLOC(result) {
-      var params = {
-        from: config.ethAddress,
-        data: letterOfCreditContractCode,
-        gas: '1500000',
-        gasPrice: '4000000000'
-      };
-      letterOfCreditContract.new(params, function(e, contract) {
-        if (typeof contract.address !== 'undefined') {
-          locAddress = contract.address;
-          console.log(locAddress);
-          next(contract.address);
-        }
-      });
-    }
-
-    function saveContractId(result) {
-      var query = {
-        trade_id: req.body.trade_id
-      };
-      var update = {
-        "letterofcredit.contract_id": result,
-        "letterofcredit.No_of_days": req.body.timePeriod,
-        "letterofcredit.Credit_Amount": req.body.creditAmount
-      };
-      tradedb.updateTrade(query, update);
-      next();
-    }
-
-    function payLOC(address) {
-      console.log(locAddress);
-      var locInstance = letterOfCreditContract.at(locAddress);
-      letterOfCreditFunctions.sendDepositTxn(locInstance, buyerBankHash, req.body.creditAmount);
-      next();
-    }
-
-    function GetBuyerHash(result) {
-      userdb.findUserByUsername(req.body.buyer, req, res, function(err, user) {
-        if (err) return;
-        buyerHash = user.local.userHash;
-        next();
-      });
-    }
-
-    function GetSellerHash(result) {
-      userdb.findUserByUsername(req.body.seller, req, res, function(err, user) {
-        if (err) return;
-        sellerHash = user.local.userHash;
-        next();
-      });
-    }
-
-    function GetBuyerBankHash(result) {
-      userdb.findUserByUsername(req.body.buyerBank, req, res, function(err, user) {
-        if (err) return;
-        buyerBankHash = user.local.userHash;
-        next();
-      });
-    }
-
-    function GetSellerBankHash(result) {
-      userdb.findUserByUsername(req.body.sellerBank, req, res, function(err, user) {
-        if (err) return;
-        sellerBankHash = user.local.userHash;
-        next();
-      });
+    function payLOC() {
+      tradeFunctions.sendDepositTxn(req.body.trade_id, req.body.creditAmount, next);
     }
 
     function setLOCParams() {
-      console.log(locAddress);
-      var locInstance = letterOfCreditContract.at(locAddress);
-      letterOfCreditFunctions.setParams(locInstance, req.body.trade_id, buyerHash, sellerHash, buyerBankHash, sellerBankHash, req.body.creditAmount, req.body.timePeriod);
+      tradeFunctions.uploadLoc(req, res, req.body.trade_id, req.body.creditAmount, req.body.timePeriod);
     }
   }
 };

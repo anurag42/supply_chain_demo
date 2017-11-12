@@ -57,7 +57,7 @@ module.exports = {
   middleware1: function(req, res) {
     if (req.body.senderpage == "Manufacturer" || req.body.senderpage == "Dealer") {
       var pendingTasks;
-      console.log(req.body.tradetype);
+      console.log("middleware", req.body.tradetype);
       if (req.body.tradetype == "PARTSSUPPLIERTOOEM") pendingTasks = [GetManufacturerHash, GetSupplierHash, GetBankHash, GetShipperHash, SaveTrade];
       else if (req.body.tradetype == "OEMTODEALER") pendingTasks = [GetDealerHash, GetManufacturerHash, GetShipperHash, SaveTrade];
 
@@ -616,11 +616,13 @@ function redirectOnUpdation() {
 }
 
 function onFileUpload(err, hash) {
+  console.log('1');
   if (err)
     throw err;
   req = this.req;
   res = this.res;
   id = this.id;
+  console.log(req.body.senderpage);
   var query = {
     trade_id: id
   };
@@ -654,7 +656,7 @@ function onFileUpload(err, hash) {
       'res': res,
       'hash': hash
     }));
-  } else if (req.body.docname == "po") {
+  } else if (req.body.senderpage == "po") {
     update = {
       $set: {
         'doc.1.hash': hash[0].hash,
@@ -667,7 +669,7 @@ function onFileUpload(err, hash) {
       'res': res,
       'hash': hash
     }));
-  } else if (req.body.docname == "invoice") {
+  } else if (req.body.senderpage == "invoice") {
     update = {
       $set: {
         'doc.2.hash': hash[0].hash,
@@ -680,7 +682,7 @@ function onFileUpload(err, hash) {
       'res': res,
       'hash': hash
     }));
-  } else if (req.body.docname == "bol") {
+  } else if (req.body.senderpage == "bol") {
     update = {
       $set: {
         'doc.3.hash': hash[0].hash,
@@ -712,12 +714,15 @@ function onFindTradeRequestForQuotationUpdate(err, trade) {
 }
 
 function onFindTradeQuotationUpdate(err, trade) {
+  console.log('2');
+  console.log(req.body);
   // if there are any errs, return the err
   if (err)
     return done(err);
   req = this.req;
   res = this.res;
   hash = this.hash;
+  console.log(req.body.userAddress);
   uploadDoc(req, res, req.body.id, req.body.userAddress, 'Quotation', hash[0].hash);
 }
 
@@ -752,7 +757,8 @@ function onFindTradeBOLUpdate(err, trade) {
 }
 
 function uploadDoc(req, res, tradeID, userAddress, docName, docHash) {
+  console.log('3');
   var hashArr = str2bytearr(docHash);
-  console.log(hashArr);
+  console.log("here", userAddress);
   tradeFunctions.sendDocUploadTxn(req, res, tradeID, userAddress, docName, hashArr);
 }

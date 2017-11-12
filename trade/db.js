@@ -14,6 +14,8 @@ module.exports = {
     tradeID = newTrade._id;
     newTrade.trade_id = newTrade._id;
     newTrade.type = req.body.tradetype;
+    newTrade.paymentinfo.No_of_days = 0;
+    newTrade.paymentinfo.Credit_Amount = 0;
     newTrade.status = "RFQ Not Uploaded";
     newTrade.doc.push({
       doctype: 'rfq',

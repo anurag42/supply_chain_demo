@@ -25,6 +25,7 @@
 
 <form id="approval_form" action = "/approvetrade" method = "POST">
 		<input type="hidden" name="trade_id" value=<%= id %>>
+    <input type="hidden" name="userAddress" value="<%= userAddress %>">
 		<input type="hidden" class="approvaltype" name="approvaltype" value=''>
 		<input type="hidden" name="senderpage" value=<%= senderpage %>>
 	</form>
@@ -443,6 +444,7 @@
 						<form id="uploadform" action = "/uploadDoc" method = "POST" enctype = "multipart/form-data">
 							<div class="form-group">
 								<input type="hidden" id="docName" name="senderpage">
+                <input type="hidden" name="userAddress" value="<%= userAddress %>">
 								<p id="uperror" style="display:none;color:red;">Please Select File</p>
 								<input type="file" class="form-control" id="docfile" name="file" required>
 								<input type="hidden" name="id" value=<%= id %>>
@@ -475,6 +477,7 @@
             <div class="modal-body" style="padding-top:5px;">
                 <form id="rejection_form" action = "/rejecttrade" method = "POST">
                     <input type="hidden" name="trade_id" value=<%= id %>>
+                    <input type="hidden" name="userAddress" value="<%= userAddress %>">
                     <input type="hidden" class="approvaltype" name="approvaltype" value=''>
                     <input type="hidden" name="senderpage" value=<%= senderpage %>>
                 </form>
@@ -598,7 +601,6 @@
 // $(".tradeitem button").prop('disabled', true);
 $(".trading button").prop('disabled', false);
 $(".tradeitem .status").html('YET TO START');
-var docNameStore;
 $(".dnldbcbtn").click(function(){
 
 	setTimeout(function(){
@@ -635,20 +637,6 @@ function setTitle(title){
 }
 
 function fillName(name){
-switch(name){
-	case "quotation":
-	docNameStore = "Quotation";
-	break;
-	case "po":
-	docNameStore = "PurchaseOrder";
-	break;
-	case "invoice":
-	docNameStore = "Invoice";
-	break;
-	case "bol":
-	docNameStore = "BillOfLading";
-	break;
-    }
     $("#docName").val(name);
 }
 
@@ -846,7 +834,6 @@ switch("<%= status %>"){
 	}
 	else $(".pendingstatus, .request_row .tradetxt").html('<%= buyer_id %>  to Approve');
 	break;
-  -------------------
 	case "Quotation Not Uploaded":
 	if("<%= senderpage %>" == "Seller"){
 		$(".quotation_row .uploadbtn").css("cssText","opacity:1 !important");
@@ -1025,7 +1012,7 @@ switch("<%= status %>"){
 		$(".pendingstatus, .agreement_row .tradetxt").html('Update Agreement');
 	}
 
-	else $(".pendingstatus, .agreement_row .tradetxt").html('Financing Bank yet to Upload Agreement');
+	else $(".pendingstatus, .agreement_row .tradetxt").html('<%= bank_id %> yet to Upload Agreement');
 	break;
 	case "Letter Of Credit Rejected; Ethereum Txn Pending;":
 	$(".agreement_row .rejbtngif").show();
