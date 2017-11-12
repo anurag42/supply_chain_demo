@@ -81,14 +81,14 @@ function validateKYCCallback(err, customer) {
 
   if (!customer) {
     kycExists = false;
-    customerdb.createNewCustomer(this.aadhar, this.mobile, function(response) {
+    customerdb.createNewCustomer(web3.personal.newAccount(this.aadhar), this.aadhar, this.mobile, function(response) {
       console.log(response);
     });
-  }
-
-  var kycHash = customer.kychash;
-  if (!kycHash) {
-    kycExists = false;
+  } else {
+    var kycHash = customer.kychash;
+    if (!kycHash) {
+      kycExists = false;
+    }
   }
   res.send({
     success: "true",
