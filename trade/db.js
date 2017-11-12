@@ -12,15 +12,15 @@ module.exports = {
     // set the user's local credentials
     tradeID = newTrade._id;
     newTrade.trade_id = newTrade._id;
-    if (req.body.bank_id)
+    if (req.body.tradetype == "PARTSSUPPLIERTOOEM") {
       newTrade.bank_id = req.body.bank_id;
-    if (req.body.supplier_id)
       newTrade.supplier_id = req.body.supplier_id;
-    if (req.body.dealer_id)
+    } else if (req.body.tradetype == "OEMTODEALER") {
       newTrade.dealer_id = req.body.dealer_id;
+    }
     newTrade.manufacturer_id = req.body.manufacturer_id;
     newTrade.shipper_id = req.body.shipper_id;
-    newTrade.status = "No quotation till now";
+    newTrade.status = "RFQ Not Uploaded";
     newTrade.doc.push({
       doctype: 'rfq',
       hash: 'No Request for Quotation till now',
