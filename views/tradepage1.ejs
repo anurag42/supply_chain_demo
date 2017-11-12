@@ -124,7 +124,7 @@
                                     <p class="tradetxt">Received Quotation from Seller</p>
                                 </div>
                                 <div class="col-sm-6 tradeoptions">
-                                    <% if(senderpage == 'Buyer') {%> <button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('quotation'); setTitle('Quotation')">Upload Request for Quotation
+                                    <% if(senderpage == 'Buyer') {%> <button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('rfq'); setTitle('Request for Quotation')">Upload Request for Quotation
                                         <i class="fa fa-upload" aria-hidden="true"></i>
                                     </button><br/><%}%>
                                     <% if(senderpage == 'Seller') {%><div class="optionbtn">
@@ -136,10 +136,10 @@
                                         </button>
                                     </div><%}%>
                                     <div class="downloadbtn">
-                                        <button class="tradebtn dnldbcbtn" onclick="dwnldForm('Quotation')" data-toggle="modal" data-target="#bcdnldmodal" form="dwnld_form2">Download
+                                        <button class="tradebtn dnldbcbtn" onclick="dwnldForm('RequestForQuotation')" data-toggle="modal" data-target="#bcdnldmodal" form="dwnld_form2">Download
                                             <i class="fa fa-link" aria-hidden="true"></i>
                                         </button>
-                                        <button class="tradebtn dnldsvbtn" onclick="dwnldForm('Quotation')" form="dwnld_form">Download
+                                        <button class="tradebtn dnldsvbtn" onclick="dwnldForm('RequestForQuotation')" form="dwnld_form">Download
                                             <i class="fa fa-server" aria-hidden="true"></i>
                                         </button>
                                     </div>
