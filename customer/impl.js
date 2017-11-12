@@ -10,6 +10,7 @@ module.exports = {
 
   validateAadhar: function(req, res) {
     var aadhar = req.body.aadhar;
+    console.log(req.body.aadhar);
     customerdb.getCustomerFromAadhar(aadhar, validateMobile.bind({
       'req': req,
       'res': res
@@ -48,7 +49,7 @@ function validateMobile(err, customer) {
       message: "Customer with this Aadhar number does not exist!"
     });
   }
-
+  console.log(customer.mobile);
   var mobile = "91" + customer.mobile;
   const sendOtp = new SendOtp(config.MSG91_AUTH_KEY);
   sendOtp.send(mobile, "ZEONBC", function(error, data, response) {
