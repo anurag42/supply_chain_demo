@@ -455,15 +455,15 @@ $(document).ready(function(){
 								$(".show_error").hide();
 								$(".mobile_error").hide();
 								if (response.kycExists == true) {
-									kycNotVerified.removeClass("fa-check-square-o");
-									kycNotVerified.addClass("fa-square-o");
-									kycVerified.removeClass("fa-square-o");
-									kycVerified.addClass("fa-check-square-o");
+									$("#kycNotVerified").removeClass("fa-check-square-o");
+									$("#kycNotVerified").addClass("fa-square-o");
+									$("#kycVerified").removeClass("fa-square-o");
+									$("#kycVerified").addClass("fa-check-square-o");
 								} else {
-									kycVerified.removeClass("fa-check-square-o");
-									kycVerified.addClass("fa-square-o");
-									kycNotVerified.removeClass("fa-square-o");
-									kycNotVerified.addClass("fa-check-square-o");
+									$("#kycNotVerified").removeClass("fa-square-o");
+									$("#kycNotVerified").addClass("fa-check-square-o");
+									$("#kycVerified").removeClass("fa-check-square-o");
+									$("#kycVerified").addClass("fa-square-o");
 								}
 								document.getElementById('kycExists').value = response.kycExists;
 						 }
