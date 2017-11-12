@@ -676,8 +676,8 @@ $(".payment_row .tradetxt").html('Payment Not yet scheduled');
 if("<%= status %>".split(';')[1] ==  ' Ethereum Txn Pending' || "<%= status %>".split(' ')[0] ==  'Payment'){
 	setTimeout(function(){location.reload()}, 5000);
 }
-
-
+console.log("<%= senderpage %>");
+console.log("<%= status %>");
 switch("<%= status %>".split(' ')[0]){
 	case "Quotation":
 	if("<%= status %>" != "Quotation Approved"){
@@ -804,7 +804,7 @@ switch("<%= status %>"){
 	$(".request_row .dnldsvbtn").prop('disabled', false);
 	$(".request_row .uploadbtn .loaderbtngif").show();
 	$(".pendingstatus, .request_row .tradetxt").html('Uploading on Blockchain');
-	break;--------------
+	break;
   case "Request For Quotation Approved; Ethereum Txn Pending;":
 	$(".request_row .aprbtngif").show();
 	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");

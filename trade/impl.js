@@ -58,8 +58,8 @@ module.exports = {
     if (req.body.senderpage == "Manufacturer" || req.body.senderpage == "Dealer") {
       var pendingTasks;
       console.log(req.body.tradetype);
-      if(req.body.tradetype == "PARTSSUPPLIERTOOEM") pendingTasks = [GetManufacturerHash, GetSupplierHash, GetBankHash, GetShipperHash, SaveTrade];
-      else if(req.body.tradetype == "OEMTODEALER") pendingTasks = [GetDealerHash, GetManufacturerHash, GetShipperHash, SaveTrade];
+      if (req.body.tradetype == "PARTSSUPPLIERTOOEM") pendingTasks = [GetManufacturerHash, GetSupplierHash, GetBankHash, GetShipperHash, SaveTrade];
+      else if (req.body.tradetype == "OEMTODEALER") pendingTasks = [GetDealerHash, GetManufacturerHash, GetShipperHash, SaveTrade];
 
       function next() {
         var currentTask = pendingTasks.shift();
@@ -113,8 +113,7 @@ module.exports = {
           next();
         });
       }
-    }
-    else{
+    } else {
       res.redirect('/profile');
       return;
     }
@@ -134,11 +133,10 @@ module.exports = {
     function setupTradeParties() {
       var addresses;
       var roles;
-      if(req.body.tradetype == "OEMTODEALER"){
+      if (req.body.tradetype == "OEMTODEALER") {
         addresses = [req.body.dealerHash, req.body.manufacturerHash, req.body.shipperHash];
         roles = ["buyer", "seller", "shipper"];
-      }
-      else if(req.body.tradetype == "PARTSSUPPLIERTOOEM"){
+      } else if (req.body.tradetype == "PARTSSUPPLIERTOOEM") {
         addresses = [req.body.manufacturerHash, req.body.supplierHash, req.body.bankHash, req.body.shipperHash];
         roles = ["buyer", "seller", "bank", "shipper"];
       }
@@ -230,7 +228,7 @@ function onFindTradeSession(err, trade) {
       userAddress: req.session.userAddress
     });
   } else if (trade.type == 'OEMTODEALER') {
-    res.render('tradepage2.ejs', {
+    res.render('tradepage1.ejs', {
       id: trade.trade_id,
       address: trade.contract_id,
       seller_id: trade.manufacturer_id,
@@ -249,11 +247,12 @@ function onFindTradeSession(err, trade) {
       userAddress: req.session.userAddress
     });
   } else if (trade.type == 'DEALERTOCUSTOMER') {
-    res.render('tradepage3.ejs', {
+    res.render('tradepage2.ejs', {
       id: trade.trade_id,
       address: trade.contract_id,
       seller_id: trade.dealer_id,
       buyer_id: trade.customer_id,
+      shipper_id: trade.shipper_id,
       quotation: trade.doc[0],
       po: trade.doc[1],
       invoice: trade.doc[2],
@@ -329,11 +328,11 @@ function payToSeller(address) {
 }
 
 function approve(req, res, tradeID, userAddress, docName) {
-    tradeFunctions.sendApproveTxn(req, res, tradeID, userAddress, docName);
+  tradeFunctions.sendApproveTxn(req, res, tradeID, userAddress, docName);
 }
 
 function reject(req, res, tradeID, userAddress, docName, reason) {
-    tradeFunctions.sendRejectTxn(req, res, tradeID, userAddress, docName, reason);
+  tradeFunctions.sendRejectTxn(req, res, tradeID, userAddress, docName, reason);
 }
 
 function str2bytearr(str) {
@@ -364,7 +363,6 @@ function onNewTradeSession(err, trade) {
     throw err;
   var res = this.res;
   var req = this.req;
-  console.log("Sending",req.body.tradetype);
   res.send({
     tradeID: trade._id,
     tradetype: req.body.tradetype,

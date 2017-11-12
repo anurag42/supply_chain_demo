@@ -262,9 +262,6 @@ function getListofTrades1(err, tradeList) {
     manufacturerIdList = [];
     statusList = [];
   }
-  if (supplierIdList.length == 0 || manufacturerIdList.length == 0) {
-    tradeIdArr = ['No Trades Yet'];
-  }
   res.render('profile1.ejs', {
     message: req.session.message,
     role: user.role,
@@ -298,10 +295,8 @@ function getListofTrades2(err, tradeList) {
     manufacturerIdList = [];
     statusList = [];
   }
+  console.log(manufacturerIdList);
   console.log(dealerIdList[0]);
-  if ((dealerIdList.length == 0) || (manufacturerIdList.length == 0)) {
-    tradeIdArr = ['No Trades Yet'];
-  }
   res.render('profile2.ejs', {
     message: req.session.message,
     role: user.role,
@@ -371,6 +366,7 @@ function ifUserFound(err, user) {
 function onKYCUpload(err, hash) {
   req = this.req;
   res = this.res;
+  console.log(hash);
   //Create New Ethereum Account for User and store in DB
   userdb.createNewUser(web3.personal.newAccount(req.body.password), hash[0].hash, req, res, onCreateNewUserCallback.bind({
     'req': req,
@@ -383,7 +379,11 @@ function onCreateNewUserCallback(err, user) {
   req = this.req;
   res = this.res;
   hash = this.hash;
-  registryFunctions.submitKYC(req, res, registryAddress, "656979695441", user.ethereumAddress, hash[0].hash, redirectOnUpload.bind({'req': req, 'res': res, 'user': user}));
+  registryFunctions.submitKYC(req, res, registryAddress, "656979695441", user.ethereumAddress, hash[0].hash, redirectOnUpload.bind({
+    'req': req,
+    'res': res,
+    'user': user
+  }));
 }
 
 function checkIfRegistryDeployed(registryAddress) {

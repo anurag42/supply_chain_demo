@@ -5,6 +5,7 @@ var trade = require('./impl');
 module.exports = function(app) {
   app.post('/triggertrade', trade.middleware1);
   app.post('/triggertrade1', trade.middleware2);
+  app.post('/triggertradenew', trade.triggertradenew);
   app.post('/resumetrade', trade.resumetrade);
   app.get('/resumetrade', trade.getresumetrade);
   app.get('/tradesession', trade.getTradeSession);

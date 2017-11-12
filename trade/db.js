@@ -54,6 +54,7 @@ module.exports = {
       newTrade.save(callback);
     } else if (req.body.tradetype == "DEALERTOCUSTOMER") {
       newTrade.dealer_id = req.body.dealer_id;
+      newTrade.insurer_id = req.body.insurer_id;
       customerdb.getCustomerFromAadhar(req.body.customeraadhar_id, req, res, onFindCustomer.bind({
         'res': res,
         'req': req,
