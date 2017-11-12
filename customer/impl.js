@@ -27,12 +27,12 @@ module.exports = {
     const sendOtp = new SendOtp(config.MSG91_AUTH_KEY);
     sendOtp.verify(mobile, otp, function(error, data, response) {
       if (error) {
-        this.res.send({
+        res.send({
           success: "false",
           message: "Invalid OTP"
         });
       }
-      this.res.send({
+      res.send({
         success: "true"
       });
     });
@@ -41,7 +41,6 @@ module.exports = {
 }
 
 function validateMobile(err, customer) {
-  console.log("Callback");
   if (err || !customer) {
     console.error(err);
     this.res.send({
@@ -49,7 +48,7 @@ function validateMobile(err, customer) {
       message: "Customer with this Aadhar number does not exist!"
     });
   }
-  console.log(customer.mobile);
+
   var mobile = "91" + customer.mobile;
   const sendOtp = new SendOtp(config.MSG91_AUTH_KEY);
   sendOtp.send(mobile, "ZEONBC", function(error, data, response) {
@@ -58,7 +57,8 @@ function validateMobile(err, customer) {
 
   });
   this.res.send({
-    success: "true"
+    success: "true",
+    mobile: mobile
   });
 
 }

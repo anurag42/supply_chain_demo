@@ -122,6 +122,7 @@
             <input class="form-control otp o4" type="text" maxlength="1" />
         </div>
         <p>Your OTP is on the way <span class="aadharshow"></span></p>
+        <input type="hidden" id="mobile"></input>
     </form>
         <button class="btn btn-warning continuebtn">Continue</button>
     </div>
@@ -147,6 +148,8 @@
                 if (response.success == 'false') {
                   $('.loginerror3').show();
                 } else {
+                  var mobile = response.mobile;
+                  document.getElementById('mobile').value = mobile;
                   $('.loginnext').hide();
                   $('.loginverify').show();
                   $('.aadharshow').html(aadhar);
@@ -177,6 +180,7 @@
         $.ajax({
           url: '/validateOTP',
           type: 'POST',
+          data: {'otp': res, 'mobile': document.getElementById('mobile').value},
           success: function(response) {
             if (response.success == 'false') {
               $('.loginerror3').show();
