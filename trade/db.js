@@ -53,9 +53,10 @@ module.exports = {
       newTrade.shipper_id = req.body.shipper_id;
       newTrade.save(callback);
     } else if (req.body.tradetype == "DEALERTOCUSTOMER") {
+      console.log("yay1");
       newTrade.dealer_id = req.body.dealer_id;
       newTrade.insurer_id = req.body.insurer_id;
-      customerdb.getCustomerFromAadhar(req.body.customeraadhar_id, req, res, onFindCustomer.bind({
+      customerdb.getCustomerFromAadhar(req.body.customeraadhar_id, onFindCustomer.bind({
         'res': res,
         'req': req,
         'newTrade': newTrade,
@@ -89,8 +90,11 @@ module.exports = {
 };
 
 function onFindCustomer(err, customer) {
-  if (err)
+  if (err) {
+    console.log(err);
     throw err;
+  }
+  console.log("Yay2");
   req = this.req;
   res = this.res;
   newTrade = this.newTrade;

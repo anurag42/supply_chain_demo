@@ -3,6 +3,7 @@ var session = require('express-session');
 module.exports = {
 
   getCustomerFromAadhar: function(aadhar, callback) {
+    console.log("yaydb");
     Customer.findOne({
       'aadhar': aadhar
     }, callback);
