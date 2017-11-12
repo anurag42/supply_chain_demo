@@ -104,9 +104,9 @@
         <div class="alert alert-danger loginerror">Please enter proper aadhar number</div>
         <h5 class="loginh5">Verify your Aadhar number</h5>
         <div class="form-group">
-            <input type="text" class="form-control aadhar" name="Aadhar Number" placeholder="Aadhar Number">
+            <input type="text" maxLength=12 class="form-control aadhar" name="aadhar" placeholder="Aadhar Number">
         </div>
-        <p>We will text a verification code to this number</p>
+        <p>We will text a verification code to the associated mobile number</p>
     </form>
         <button class="btn btn-warning nextbtn">Next</button>
     </div>
@@ -134,18 +134,18 @@
 
         var aadhar = $('.aadhar').val();
         if (aadhar == "" || aadhar.length != 12 || isNaN(aadhar)){
-
             $('.loginerror').show();
             return false;
-
         }
         else{
-
-            $('.loginnext').hide();
-            $('.loginverify').show();
-            $('.aadharshow').html(aadhar);
-
-
+            $.ajax({
+              url: '/validateAadhar/',
+              success: function() {
+                $('.loginnext').hide();
+                $('.loginverify').show();
+                $('.aadharshow').html(aadhar);
+              }
+            })
         }
 
     });
