@@ -57,9 +57,9 @@ module.exports = {
   middleware1: function(req, res) {
     if (req.body.senderpage == "Manufacturer" || req.body.senderpage == "Dealer") {
       var pendingTasks;
-      console.log(req.body.tradeType);
-      if(req.body.tradeType == "PARTSSUPPLIERTOOEM") pendingTasks = [GetManufacturerHash, GetSupplierHash, GetBankHash, GetShipperHash, SaveTrade];
-      else if(req.body.tradeType == "OEMTODEALER") pendingTasks = [GetDealerHash, GetManufacturerHash, GetShipperHash, SaveTrade];
+      console.log(req.body.tradetype);
+      if(req.body.tradetype == "PARTSSUPPLIERTOOEM") pendingTasks = [GetManufacturerHash, GetSupplierHash, GetBankHash, GetShipperHash, SaveTrade];
+      else if(req.body.tradetype == "OEMTODEALER") pendingTasks = [GetDealerHash, GetManufacturerHash, GetShipperHash, SaveTrade];
 
       function next() {
         var currentTask = pendingTasks.shift();
@@ -134,11 +134,11 @@ module.exports = {
     function setupTradeParties() {
       var addresses;
       var roles;
-      if(req.body.tradeType == "OEMTODEALER"){
+      if(req.body.tradetype == "OEMTODEALER"){
         addresses = [req.body.dealerHash, req.body.manufacturerHash, req.body.shipperHash];
         roles = ["buyer", "seller", "shipper"];
       }
-      else if(req.body.tradeType == "PARTSSUPPLIERTOOEM"){
+      else if(req.body.tradetype == "PARTSSUPPLIERTOOEM"){
         addresses = [req.body.manufacturerHash, req.body.supplierHash, req.body.bankHash, req.body.shipperHash];
         roles = ["buyer", "seller", "bank", "shipper"];
       }
@@ -364,10 +364,10 @@ function onNewTradeSession(err, trade) {
     throw err;
   var res = this.res;
   var req = this.req;
-  console.log("Sending",req.body.tradeType);
+  console.log("Sending",req.body.tradetype);
   res.send({
     tradeID: trade._id,
-    tradeType: req.body.tradeType,
+    tradetype: req.body.tradetype,
     manufacturer_id: trade.manufacturer_id,
     supplier_id: trade.supplier_id,
     status: trade.status,
