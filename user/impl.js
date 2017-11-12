@@ -22,7 +22,7 @@ module.exports = {
 
   getSignup: function(req, res) {
     res.render('signup.ejs', {
-      message: ""
+      message: req.session.message
     });
   },
 
@@ -241,6 +241,16 @@ function getListofTrades1(err, tradeList) {
     manufacturerIdList = [];
     statusList = [];
   }
+  console.log(tradeIdArr);
+  console.log('----------------------');
+  console.log(supplierIdList);
+  console.log('----------------------');
+  console.log(manufacturerIdList);
+  console.log('----------------------');
+  console.log(statusList);
+  if (supplierIdList.length == 0 || manufacturerIdList.length == 0) {
+    tradeIdArr = ['No Trades Yet'];
+  }
   res.render('profile1.ejs', {
     message: req.session.message,
     role: user.role,
@@ -262,11 +272,9 @@ function getListofTrades2(err, tradeList) {
   req = this.req;
   res = this.res;
   user = this.user;
-  dealerIdList = getArrFromTradeObject(tradeList, 'dealer_id');
-  if (tradeList[0]) {
+  if (tradeList.length > 0) {
     var tradeIdArr = getArrFromTradeObject(tradeList, '_id');
-
-    supplierIdList = getArrFromTradeObject(tradeList, 'supplier_id');
+    dealerIdList = getArrFromTradeObject(tradeList, 'dealer_id');
     manufacturerIdList = getArrFromTradeObject(tradeList, 'manufacturer_id');
     statusList = getArrFromTradeObject(tradeList, 'status');
   } else {
@@ -275,6 +283,9 @@ function getListofTrades2(err, tradeList) {
     manufacturerIdList = [];
     statusList = [];
   }
+  /*if (dealerIdList[0] || manufacturerIdList[0]) {
+    tradeIdArr = ['No Trades Yet'];
+  }*/
   res.render('profile2.ejs', {
     message: req.session.message,
     role: user.role,
@@ -295,12 +306,10 @@ function ifUserFound(err, user) {
   res = this.res;
   if (err)
     throw err;
-  else if (user){
-    res.redirect('/signup', {
-      message: "User Already Exists!!!"
-    })
-  }
-  else {
+  else if (user) {
+    req.session.message = "User Already Exists!!!"
+    res.redirect('/signup');
+  } else {
     file.fileupload(req, res, onKYCUpload.bind({
       'req': req,
       'res': res

@@ -15,7 +15,7 @@ var scheduler = new Scheduler("mongodb://localhost/db_name", {
   doNotFire: false
 });
 
-var manufacturerHash, supplierHash, bankHash, shipperHash, tradeID, tradeRegistryAddress;
+var manufacturerHash, supplierHash, bankHash, shipperHash, tradeID, tradeLibAddress, tradeRegistryAddress;
 var userHash, gasUsage;
 var config = require('../config.js');
 var file = require('../file/impl.js');
@@ -25,7 +25,11 @@ web3.setProvider(new web3.providers.HttpProvider(config.web3Provider));
 
 var orderContract;
 var letterOfCreditContract;
+tradeLibAddress = config.tradeLibAddress;
 tradeRegistryAddress = config.tradeAddress;
+var tradeFunctions = require('../contracts/trade/tradeRegistry.js');
+
+//tradeFunctions.deployTradeLib();
 
 eventEmitter.on('paymentSuccess', function(status, id) {
   tradedb.findTradeByTradeID(id, req, res, onFindTradePaymentSuccess);
@@ -33,18 +37,29 @@ eventEmitter.on('paymentSuccess', function(status, id) {
 
 
 module.exports = {
-  getTradeSession: function(req, res) {
+  getTradeSession1: function(req, res) {
     if (!req.session.sender) {
       res.redirect('/login');
     } else {
-      tradedb.findTradeByTradeObjectID(req, res, onFindTradeSession.bind({
+      tradedb.findTradeByTradeObjectID(req, res, onFindTradeSession1.bind({
         'req': req,
         'res': res
       }));
     }
   },
 
-  middleware1: function(req, res, next) {
+  getTradeSession2: function(req, res) {
+    if (!req.session.sender) {
+      res.redirect('/login');
+    } else {
+      tradedb.findTradeByTradeObjectID(req, res, onFindTradeSession2.bind({
+        'req': req,
+        'res': res
+      }));
+    }
+  },
+
+  middleware1: function(req, res) {
     if (req.body.senderpage != "Manufacturer") {
       res.redirect('/profile');
       return;
@@ -101,6 +116,7 @@ module.exports = {
 
   middleware2: function(req, res, next) {
     var pendingTasks = [setupTradeParties, updateTradeStatus];
+    console.log("Middleware2", req.body.tradeID);
 
     function next(result) {
       var currentTask = pendingTasks.shift();
@@ -109,23 +125,14 @@ module.exports = {
 
     next();
 
-    function saveContractId(result) {
-      console.log(req.body.tradeID);
-      var query = {
-        trade_id: req.body.tradeID
-      };
-      var update = {
-        contract_id: result
-      };
-      tradedb.updateTrade(query, update);
-      next(result);
-    }
-
     function setupTradeParties() {
-      tradeFunctions.setup(tradeRegistryAddress, req.body.manufacturerHash, req.body.supplierHash, req.body.bankHash, req.body.shipperHash, next);
+      var addresses = [req.body.manufacturerHash, req.body.supplierHash, req.body.bankHash, req.body.shipperHash];
+      var roles = ["buyer", "seller", "bank", "shipper"];
+      tradeFunctions.setup(tradeRegistryAddress, req.body.tradeID, addresses, roles, next);
     }
 
     function updateTradeStatus() {
+      console.log("Before Saving", req.body.tradeID);
       var query = {
         trade_id: req.body.tradeID
       };
@@ -137,8 +144,15 @@ module.exports = {
     }
   },
 
-  resumetrade: function(req, res) {
-    tradedb.findTradeByTradeID(req.body.trade_id, req, res, onFindTradeResume.bind({
+  resumetrade1: function(req, res) {
+    tradedb.findTradeByTradeID(req.body.trade_id, req, res, onFindTradeResume1.bind({
+      'req': req,
+      'res': res
+    }));
+  },
+
+  resumetrade2: function(req, res) {
+    tradedb.findTradeByTradeID(req.body.trade_id, req, res, onFindTradeResume2.bind({
       'req': req,
       'res': res
     }));
@@ -175,7 +189,7 @@ function onTriggerTrade(err) {
   res.redirect('/profile');
 }
 
-function onFindTradeSession(err, trade) {
+function onFindTradeSession1(err, trade) {
   if (err)
     return err;
   var req = this.req;
@@ -186,6 +200,31 @@ function onFindTradeSession(err, trade) {
     bank_id: trade.bank_id,
     seller_id: trade.supplier_id,
     buyer_id: trade.manufacturer_id,
+    shipper_id: trade.shipper_id,
+    quotation: trade.doc[0],
+    po: trade.doc[1],
+    invoice: trade.doc[2],
+    status: trade.status,
+    letterofcredit: trade.paymentinfo,
+    creditAmount: trade.paymentinfo.Credit_Amount,
+    timePeriod: trade.paymentinfo.No_of_days,
+    billoflading: trade.doc[3],
+    senderpage: req.session.sender,
+    username: req.query.username,
+    userAddress: req.session.userAddress
+  });
+}
+
+function onFindTradeSession2(err, trade) {
+  if (err)
+    return err;
+  var req = this.req;
+  var res = this.res;
+  res.render('tradepage2.ejs', {
+    id: trade.trade_id,
+    address: trade.contract_id,
+    seller_id: trade.manufacturer_id,
+    buyer_id: trade.dealer_id,
     shipper_id: trade.shipper_id,
     quotation: trade.doc[0],
     po: trade.doc[1],
@@ -319,8 +358,8 @@ function onNewTradeSession(err, trade) {
   var res = this.res;
   res.send({
     tradeID: trade._id,
-    buyer_id: trade.manufacturer_id,
-    seller_id: trade.supplier_id,
+    manufacturer_id: trade.manufacturer_id,
+    supplier_id: trade.supplier_id,
     status: trade.status,
     manufacturerHash: manufacturerHash,
     supplierHash: supplierHash,
@@ -329,18 +368,35 @@ function onNewTradeSession(err, trade) {
   });
 }
 
-function onFindTradeResume(err, trade) {
+function onFindTradeResume1(err, trade) {
   if (err)
     return err;
   req = this.req;
   res = this.res;
+  console.log("senderpage=", req.body.senderpage);
   if (req.body.senderpage == "Manufacturer") {
     req.session.sender = "Buyer";
   } else if (req.body.senderpage == "Supplier") {
     req.session.sender = "Seller";
   }
+  req.session.sender = req.body.senderpage;
   req.session.tradesession = trade._id;
-  res.redirect('/tradesession');
+  res.redirect('/tradesession1');
+}
+
+function onFindTradeResume2(err, trade) {
+  if (err)
+    return err;
+  req = this.req;
+  res = this.res;
+  if (req.body.senderpage == "Dealer") {
+    req.session.sender = "Buyer";
+  } else if (req.body.senderpage == "Manufacturer") {
+    req.session.sender = "Seller";
+  }
+  req.session.tradesession = trade._id;
+  req.session.sender = req.body.senderpage;
+  res.redirect('/tradesession2');
 }
 
 function onFindTradeApprove(err, trade) {
@@ -590,6 +646,7 @@ function onFileUpload(err, hash) {
 }
 
 function onFindTradeQuotationUpdate(err, trade) {
+  // if there are any errs, return the err
   if (err)
     return done(err);
   req = this.req;
@@ -609,7 +666,6 @@ function onFindTradePOUpdate(err, trade) {
 }
 
 function onFindTradeInvoiceUpdate(err, trade) {
-  console.log("Here");
   // if there are any errs, return the err
   if (err)
     return done(err);
@@ -627,8 +683,6 @@ function onFindTradeBOLUpdate(err, trade) {
   res = this.res;
   hash = this.hash;
   uploadDoc(req, res, trade.contract_id, trade.shipper_id, 'BillOfLading', hash[0].hash);
-  //eventEmitter.emit('ConnectionuploadDoc');
-  //new changes
 }
 
 function uploadDoc(req, res, address, username, docName, docHash, tradeID) {

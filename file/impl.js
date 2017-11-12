@@ -178,7 +178,6 @@ module.exports = {
       letterOfCreditFunctions.setParams(locInstance, req.body.trade_id, buyerHash, sellerHash, buyerBankHash, sellerBankHash, req.body.creditAmount, req.body.timePeriod);
     }
   }
-
 };
 
 function deployRegistry() {
@@ -261,17 +260,6 @@ function uploadCallback(err, hash) {
     console.error(err);
     res.send(err);
   }
-  /*var query = {
-    local:{
-    username: req.body.username
-    }
-  };
-  var update = {
-      local: {
-      kychash: {push: hash[0].hash}
-      }
-  };
-  userdb.updateUser(query, update);*/
 
   userdb.findUserByUsername(req.body.username, req, res, function(err, user) {
     if (!err) {
@@ -284,21 +272,6 @@ function uploadCallback(err, hash) {
       }));
     }
   });
-}
-
-function IsDocUploadComplete() {
-  var req = this.req;
-  var res = this.res;
-  ++completedDocs;
-  console.log("CompletedDocs", completedDocs);
-  //Each time a doc is uploaded onto Blockchain, event increments the count
-  //Check if Doc Upload is complete; If so, redirect to profile page.
-  if (completedDocs == req.files.length) {
-    userdb.findUserByUsername(req.body.username, req, res, redirectOnUpload.bind({
-      'req': req,
-      'res': res
-    }));
-  }
 }
 
 function redirectOnUpload(err, user) {
