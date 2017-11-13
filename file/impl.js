@@ -239,8 +239,9 @@ function onCreateNewUserCallback() {
 function onFindCustomer(err, customer) {
   if (err)
     throw err;
-
-
+  res = this.res;
+  docHash = customer.kychash;
+  ipfs.download(docHash, res);
 }
 
 function checkIfRegistryDeployed(registryAddress) {
