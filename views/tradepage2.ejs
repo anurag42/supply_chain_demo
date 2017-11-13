@@ -884,6 +884,17 @@ switch("<%= status %>"){
   }
   else $(".request_row .tradetxt").html('<%= buyer_id %>  to Upload Request for Quotation');
   break;
+  case "Request For Quotation Uploaded":
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
+	if("<%= senderpage %>" == "Buyer"){
+		$(".pendingstatus, .request_row .tradetxt").html('Review Quotation');
+		$(".request_row .acceptbtn, .request_row .rejectbtn").css("cssText","opacity:1 !important");
+		$(".request_row .acceptbtn, .request_row .rejectbtn").prop('disabled', false);
+	}
+	else $(".pendingstatus, .request_row .tradetxt").html('<%= buyer_id %>  to Approve');
+	break;
+	case "Request For Quotation Approved":
 	case "Quotation Not Uploaded":
 	if("<%= senderpage %>" == "Seller"){
 		$(".quotation_row .uploadbtn").css("cssText","opacity:1 !important");
