@@ -146,7 +146,6 @@ module.exports = {
   },
 
   uploadInvoice: function(req, res, tradeID, creditAmount, timePeriod, hash) {
-    console.log(tradeID, creditAmount, timePeriod, hash);
     var tradeInstance = tradeContract.at(tradeRegistryAddress);
     gasUsage = (tradeInstance.uploadInvoice.estimateGas(tradeID, creditAmount, timePeriod, hash) < config.gasUsage) ? tradeInstance.uploadInvoice.estimateGas(tradeID, creditAmount, timePeriod, hash) : config.gasUsage;
     var params = {
@@ -185,6 +184,54 @@ module.exports = {
         'res': res,
         'tradeID': tradeID
       }));
+    });
+  },
+
+  setStatusForInsurer: function(req, res, tradeID, status) {
+    var tradeInstance = tradeContract.at(tradeRegistryAddress);
+    gasUsage = (tradeInstance.setStatusForInsurer.estimateGas(tradeID, status) < config.gasUsage) ? tradeInstance.setStatusForInsurer.estimateGas(tradeID, status) : config.gasUsage;
+    var params = {
+      gas: gasUsage,
+      gasPrice: config.gasPrice,
+      from: config.ethAddress
+    };
+    tradeInstance.setStatusForInsurer.sendTransaction(tradeID, status, params, function(err, result) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      tradeInstance.LogSetStatus.watch(function(e, log) {
+        if (e) {
+          console.error(e);
+          return;
+        }
+        console.log('Status setup successful');
+        callback();
+      });
+    });
+  },
+
+  setStatusForRTO: function(req, res, tradeID, status) {
+    var tradeInstance = tradeContract.at(tradeRegistryAddress);
+    gasUsage = (tradeInstance.setStatusForRTO.estimateGas(tradeID, status) < config.gasUsage) ? tradeInstance.setStatusForRTO.estimateGas(tradeID, status) : config.gasUsage;
+    var params = {
+      gas: gasUsage,
+      gasPrice: config.gasPrice,
+      from: config.ethAddress
+    };
+    tradeInstance.setStatusForRTO.sendTransaction(tradeID, status, params, function(err, result) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      tradeInstance.LogSetStatus.watch(function(e, log) {
+        if (e) {
+          console.error(e);
+          return;
+        }
+        console.log('Status setup successful');
+        callback();
+      });
     });
   },
 

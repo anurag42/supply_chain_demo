@@ -164,15 +164,22 @@ module.exports = {
 
     function updateStatusByType(err, trade) {
       var type = trade.type;
+      var query = {
+        trade_id: trade.trade_id
+      };
+      console.log('1');
       if (type == "DEALERTOCUSTOMER") {
         if (trade.status == "Ethereum Transaction Pending!!! Check after 2 mins!!") {
-          trade.status = "KYC Not Uploaded"
+          status = "KYC Not Uploaded"
         } else {
-          trade.status = "Request For Quotation Not Uploaded"
+          status = "Request For Quotation Not Uploaded"
         }
       } else {
-        trade.status = "Request For Quotation Not Uploaded";
+        console.log('2');
+        status = "Request For Quotation Not Uploaded";
       }
+      console.log('3');
+      tradedb.updateTrade(query, update);
       res.send();
     }
   },
