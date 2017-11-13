@@ -653,7 +653,37 @@ console.log("<%= status %>");
 console.log("<%= senderpage %>");
 
 switch("<%= status %>".split(' ')[0]){
+	case "KYC":
+	if("<%= status %>" != "KYC Approved"){
+    $(".kyc_row").addClass("trading");
+    $(".kyc_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+    $(".kyc_row .tradeleft").css("cssText","opacity:1 !important");
+    $(".kyc_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+    $(".kyc_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
+    $(".kyc_row .status").html("IN PROGRESS");
+	}
+	break;
+	case "RFQ":
+	$(".kyc_row .tradetxt").html('KYC Approved');
+	$(".kyc_row .dnldsvbtn, .kyc_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".kyc_row .dnldsvbtn, .kyc_row .dnldbcbtn").prop('disabled', false);
+	if("<%= status %>" != "RFQ Approved"){
+    $(".request_row").addClass("trading");
+    $(".request_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+    $(".request_row .tradeleft").css("cssText","opacity:1 !important");
+    $(".request_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+    $(".request_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
+    $(".request_row .status").html("IN PROGRESS");
+    $(".kyc_row .status").html("COMPLETED");
+	}
+	break;
 	case "Quotation":
+	$(".kyc_row .tradetxt").html('KYC Approved');
+	$(".request_row .tradetxt").html('RFQ Approved');
+	$(".kyc_row .dnldsvbtn, .kyc_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".kyc_row .dnldsvbtn, .kyc_row .dnldbcbtn").prop('disabled', false);
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
 	if("<%= status %>" != "Quotation Approved"){
     $(".quotation_row").addClass("trading");
     $(".quotation_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
@@ -661,10 +691,17 @@ switch("<%= status %>".split(' ')[0]){
     $(".quotation_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
     $(".quotation_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
     $(".quotation_row .status").html("IN PROGRESS");
+    $(".kyc_row .status, .request_row .status").html("COMPLETED");
   }
 	break;
 	case "Purchase":
+	$(".kyc_row .tradetxt").html('KYC Approved');
+	$(".request_row .tradetxt").html('RFQ Approved');
 	$(".quotation_row .tradetxt").html('Quotation Approved');
+	$(".kyc_row .dnldsvbtn, .kyc_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".kyc_row .dnldsvbtn, .kyc_row .dnldbcbtn").prop('disabled', false);
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
 	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
 	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
 	if("<%= status %>" != "Purchase Order Approved"){
@@ -674,12 +711,18 @@ switch("<%= status %>".split(' ')[0]){
     $(".purchase_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
     $(".purchase_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
     $(".purchase_row .status").html("IN PROGRESS");
-    $(".quotation_row .status").html("COMPLETED");
+    $(".kyc_row .status, .request_row .status, .quotation_row .status").html("COMPLETED");
   }
 	break;
 	case "Invoice":
+	$(".kyc_row .tradetxt").html('KYC Approved');
+	$(".request_row .tradetxt").html('RFQ Approved');
 	$(".quotation_row .tradetxt").html('Quotation Approved');
 	$(".purchase_row .tradetxt").html('Purchase Order Approved');
+	$(".kyc_row .dnldsvbtn, .kyc_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".kyc_row .dnldsvbtn, .kyc_row .dnldbcbtn").prop('disabled', false);
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
 	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
 	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
 	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").css("cssText","opacity:1 !important");
@@ -691,17 +734,23 @@ switch("<%= status %>".split(' ')[0]){
     $(".invoice_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
     $(".invoice_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
     $(".invoice_row .status").html("IN PROGRESS");
-    $(".quotation_row .status, .purchase_row .status").html("COMPLETED");
+    $(".kyc_row .status, .request_row .status, .quotation_row .status, .purchase_row .status").html("COMPLETED");
 
   }
 	break;
 	case "Bill":
+	$(".kyc_row .tradetxt").html('KYC Approved');
+	$(".request_row .tradetxt").html('RFQ Approved');
 	$(".quotation_row .tradetxt").html('Quotation Approved');
 	$(".purchase_row .tradetxt").html('Purchase Order Approved');
 	$(".invoice_row .tradetxt").html('Invoice Approved');
 	$('.payment_row .tradeleft').css("cssText","opacity:1 !important");
 	$(".payment_row .tradetxt").html('Payment Scheduled');
 	$(".agreement_row .tradetxt").html('Financial Agreement Approved');
+	$(".kyc_row .dnldsvbtn, .kyc_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".kyc_row .dnldsvbtn, .kyc_row .dnldbcbtn").prop('disabled', false);
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
 	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
 	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
 	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").css("cssText","opacity:1 !important");
@@ -717,10 +766,12 @@ switch("<%= status %>".split(' ')[0]){
     $(".bill_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
     $(".bill_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
     $(".bill_row .status").html("IN PROGRESS");
-    $(".quotation_row .status, .purchase_row .status, .invoice_row .status, .agreement_row .status").html("COMPLETED");
+    $(".kyc_row .status, .request_row .status, .quotation_row .status, .purchase_row .status, .invoice_row .status, .agreement_row .status").html("COMPLETED");
   }
 	break;
 	case "Payment":
+	$(".kyc_row .tradetxt").html('KYC Approved');
+	$(".request_row .tradetxt").html('RFQ Approved');
 	$(".quotation_row .tradetxt").html('Quotation Approved');
 	$(".purchase_row .tradetxt").html('Purchase Order Approved');
 	$(".invoice_row .tradetxt").html('Invoice Approved');
@@ -739,12 +790,13 @@ switch("<%= status %>".split(' ')[0]){
   $(".payment_row .tradeleft").css("cssText","opacity:1 !important");
   $(".payment_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
   $(".payment_row .status").html("IN PROGRESS");
-  $(".quotation_row .status, .purchase_row .status, .invoice_row .status, .agreement_row .status, .bill_row .status").html("COMPLETED");
+  $(".kyc_row .status, .request_row .status, .quotation_row .status, .purchase_row .status, .invoice_row .status, .agreement_row .status, .bill_row .status").html("COMPLETED");
 	break;
 }
 
 
 switch("<%= status %>"){
+  case "KYC Approved":
   case "RFQ Not Uploaded":
   if("<%= senderpage %>" == "Buyer"){
     $(".request_row .uploadbtn").css("cssText","opacity:1 !important");
@@ -752,6 +804,7 @@ switch("<%= status %>"){
 		$(".pendingstatus, .request_row .tradetxt").html('Upload Request for Quotation');
   }
   else $(".request_row .tradetxt").html('<%= buyer_id %>  to Upload Request for Quotation');
+  break;
 	case "Quotation Not Uploaded":
 	if("<%= senderpage %>" == "Seller"){
 		$(".quotation_row .uploadbtn").css("cssText","opacity:1 !important");
