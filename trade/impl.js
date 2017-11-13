@@ -148,11 +148,23 @@ module.exports = {
       var query = {
         trade_id: req.body.tradeID
       };
+      tradedb.findTradeByTradeID(req.body.tradeID, req, res, updateStatusByType({
+        'req': req,
+        'res': res
+      }));
       var update = {
         status: "RFQ Not Uploaded"
       };
       tradedb.updateTrade(query, update);
       res.send();
+    }
+
+    function updateStatusByType(err, trade) {
+      var type = trade.tradetype;
+      var status = "RFQ Not Uploaded";
+      if (type == 'DEALERTOCUSTOMER') {
+        status: "RFQ Not Uploaded";
+      }
     }
   },
 
