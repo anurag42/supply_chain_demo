@@ -800,14 +800,14 @@ switch("<%= status %>"){
 	else $(".request_row .tradetxt").html('Request For Quotation Rejected. <%= seller_id %>  to Upload Request For Quotation');
 	break;
   case "Request For Quotation Uploaded":
-	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
+  $(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
 	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
 	if("<%= senderpage %>" == "Seller"){
-		$(".pendingstatus, .request_row .tradetxt").html('Review Request For Quotation');
+		$(".pendingstatus, .request_row .tradetxt").html('Review Quotation');
 		$(".request_row .acceptbtn, .request_row .rejectbtn").css("cssText","opacity:1 !important");
 		$(".request_row .acceptbtn, .request_row .rejectbtn").prop('disabled', false);
 	}
-	else $(".pendingstatus, .request_row .tradetxt").html('<%= buyer_id %>  to Approve');
+	else $(".pendingstatus, .request_row .tradetxt").html('<%= seller_id %>  to Approve');
 	break;
 	case "Quotation Not Uploaded":
 	if("<%= senderpage %>" == "Seller"){
