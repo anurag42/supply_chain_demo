@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><%=senderpage%>/Trade Tracker</title>
+    <title>Trade Tracker</title>
     <link rel="stylesheet" href="/sheets/bootstrap.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="/sheets/font-awesome.min.css"> <!-- load fontawesome -->
     <link rel="stylesheet" href="/sheets/trade.css">
@@ -45,15 +45,15 @@
                 <div class="usrinfo">
                     <div class="infoitem">
                         <img src="/images/user_icon.png">
-                        <span><strong>OEM:</strong> <%= seller_id %> </span>
+                        <span><strong>Dealer:</strong> <%= seller_id %> </span>
                     </div>
                     <div class="infoitem">
                         <img src="/images/user_icon.png">
-                        <span><strong>Dealer:</strong> <%= buyer_id %> </span>
+                        <span><strong>Customer:</strong> <%= buyer_id %> </span>
                     </div>
                     <div class="infoitem">
                         <img src="/images/user_icon.png">
-                        <span><strong>Shipper:</strong> <%= shipper_id %> </span>
+                        <span><strong>Insurer:</strong> <%= insurer_id %> </span>
                     </div>
                     <input type="hidden" id="senderpage" value="<%= senderpage %>">
                 </div>

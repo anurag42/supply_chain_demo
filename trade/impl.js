@@ -266,7 +266,7 @@ function onFindTradeSession(err, trade) {
       address: trade.contract_id,
       seller_id: trade.dealer_id,
       buyer_id: trade.customer_id,
-      shipper_id: trade.shipper_id,
+      insurer_id: trade.insurer_id,
       quotation: trade.doc[1],
       po: trade.doc[2],
       invoice: trade.doc[3],
@@ -404,23 +404,23 @@ function onFindTradeResume(err, trade) {
   req.session.tradesession = trade._id;
   switch (trade.type) {
     case 'PARTSSUPPLIERTOOEM':
-      if (req.body.senderpage == "Manufacturer") {
+      if (senderpage == "Manufacturer") {
         req.session.sender = "Buyer";
-      } else if (req.body.senderpage == "Supplier") {
+      } else if (senderpage == "Supplier") {
         req.session.sender = "Seller";
       }
       break;
     case 'OEMTODEALER':
-      if (req.body.senderpage == "Dealer") {
+      if (senderpage == "Dealer") {
         req.session.sender = "Buyer";
-      } else if (req.body.senderpage == "Manufacturer") {
+      } else if (senderpage == "Manufacturer") {
         req.session.sender = "Seller";
       }
       break;
     case 'DEALERTOCUSTOMER':
-      if (req.body.senderpage == "Customer") {
+      if (senderpage == "Customer") {
         req.session.sender = "Buyer";
-      } else if (req.body.senderpage == "Dealer") {
+      } else if (senderpage == "Dealer") {
         req.session.sender = "Seller";
       }
   }

@@ -96,7 +96,6 @@ function onFindCustomer(err, customer) {
     console.log(err);
     throw err;
   }
-  console.log("Yay2");
   req = this.req;
   res = this.res;
   newTrade = this.newTrade;
