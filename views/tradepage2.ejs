@@ -865,8 +865,8 @@ switch("<%= status %>"){
 	$(".pendingstatus, .kyc_row .tradetxt").html('Uploading on Blockchain');
 	break;
   case "KYC Uploaded":
-	$(".kyc_row .dnldsvbtn, .kyc_row_row .dnldbcbtn").css("cssText","opacity:1 !important");
-	$(".kyc_row_row .dnldsvbtn, .kyc_row_row .dnldbcbtn").prop('disabled', false);
+	$(".kyc_row .dnldsvbtn, .kyc_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".kyc_row .dnldsvbtn, .kyc_row .dnldbcbtn").prop('disabled', false);
 	if("<%= senderpage %>" == "Seller"){
 		$(".pendingstatus, .kyc_row_row .tradetxt").html('Review KYC');
 		$(".kyc_row .acceptbtn, .kyc_row .rejectbtn").css("cssText","opacity:1 !important");
