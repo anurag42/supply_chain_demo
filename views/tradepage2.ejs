@@ -220,7 +220,7 @@
                                     <p class="tradetxt">Invoice Received from Seller</p>
                                 </div>
                                 <div class="col-sm-6 tradeoptions">
-                                    <% if(senderpage == 'Seller') {%><button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('invoice'); setTitle('Invoice')">Upload Invoice
+                                    <% if(senderpage == 'Seller') {%><button class="tradebtn uploadbtn" data-toggle="modal" data-target="#invoiceuploadmodal" onclick="fillName('invoice'); setTitle('Invoice')">Upload Invoice
                                         <i class="fa fa-upload" aria-hidden="true"></i>
                                     </button><br/><%}%>
                                     <% if(senderpage == 'Buyer') {%> <div class="optionbtn">
@@ -440,6 +440,48 @@
                 <input type="hidden" name="userAddress" value=<%= userAddress %>>
 								<p id="uperror" style="display:none;color:red;">Please Select File</p>
 								<input type="file" class="form-control" id="docfile" name="file" required>
+								<input type="hidden" name="id" value=<%= id %>>
+								<input type="hidden" id="hash" name="sha256hash">
+							</div>
+						</form>
+						<div class="form-group">
+							<button class="btn mupbtn" onclick = "computeHash()"><img src="/images/Upload.png" class="upimg">Upload</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+	<!--Invoice Upload Modal -->
+<div id="invoiceuploadmodal" class="modal fade" role="dialog">
+	<div class="modal-dialog" style="width:400px;">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>Upload <span id="title" class="modal-title"></span></h4>
+			</div>
+			<div class="modal-body">
+				<div id="uplshow" style="display:none">
+					<img src="/images/loader.gif" class="loadergif">
+					<p>Please hang on while we upload this document<br/>
+						on to blockchain. This document will then<br/>
+						be immutable and permanent.<br/>
+						This may take few minutes. </p>
+						<p style="font-weight:bold;">You can close this window now</p>
+					</div>
+					<div id="uplhide">
+						<form id="uploadform" action = "/uploadDoc" method = "POST" enctype = "multipart/form-data">
+							<div class="form-group">
+								<input type="hidden" id="docName" name="senderpage">
+                <input type="hidden" name="userAddress" value=<%= userAddress %>>
+								<p id="uperror" style="display:none;color:red;">Please Select File</p>
+								<input type="file" class="form-control" id="docfile" name="file" required>
+								<input type="text" class="form-control" id="paymentamount" required>
 								<input type="hidden" name="id" value=<%= id %>>
 								<input type="hidden" id="hash" name="sha256hash">
 							</div>
