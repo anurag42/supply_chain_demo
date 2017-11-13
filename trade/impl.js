@@ -216,6 +216,7 @@ function onFindCustomer(err, customer) {
   req = this.req;
   res = this.res;
   senderpage = this.senderpage;
+  req.session.userAddress = customer.ethereumAddress;
   tradedb.findTradeByCustomerID(customerID, onFindTradeResume.bind({
     'req': req,
     'res': res,
