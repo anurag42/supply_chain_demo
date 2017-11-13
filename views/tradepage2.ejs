@@ -887,7 +887,7 @@ switch("<%= status %>"){
   case "Request For Quotation Uploaded":
 	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
 	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
-	if("<%= senderpage %>" == "Buyer"){
+	if("<%= senderpage %>" == "Seller"){
 		$(".pendingstatus, .request_row .tradetxt").html('Review Quotation');
 		$(".request_row .acceptbtn, .request_row .rejectbtn").css("cssText","opacity:1 !important");
 		$(".request_row .acceptbtn, .request_row .rejectbtn").prop('disabled', false);
