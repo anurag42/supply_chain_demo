@@ -15,6 +15,7 @@ var tradedb = require('../trade/db');
 
 module.exports = {
   paymentScheduler: function(time, days, tradeID) {
+    console.log("schedule", time, days, tradeID);
     scheduler.on('PaymentProcessor', function() {
       payToSeller(tradeID);
       console.log('Scheduled');
@@ -38,7 +39,7 @@ function payToSeller(id) {
     gasPrice: config.gasPrice,
     from: config.ethAddress
   };
-  tradeInstance.pay.sendTransaction(id, params, function(err, result) {
+  tradeInstance.payToSeller.sendTransaction(id, params, function(err, result) {
     if (err) {
       console.error(err);
       res.send(err);
@@ -60,10 +61,10 @@ function watchPayment(tradeInstance, id) {
       trade_id: id
     };
     var update;
-    if (log.args.s == "True") update = {
+    if (log.args.status == "True") update = {
       status: 'Payment Successful'
     };
-    else if (log.args.s == "False") update = {
+    else if (log.args.status == "False") update = {
       status: 'Payment Declined'
     };
     tradedb.updateTrade(query, update);

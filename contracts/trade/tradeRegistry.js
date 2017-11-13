@@ -5,13 +5,9 @@ var eventEmitter = new events.EventEmitter();
 var config = require('../../config.js');
 var tradedb = require('../../trade/db');
 var ipfs = require('../../file/ipfs');
-require('../../build/ABI/tradeLib.js');
-require('../../build/Binary\ Code/tradeLib.js');
 require('../../build/ABI/tradeRegistry.js');
 require('../../build/Binary\ Code/tradeRegistry.js');
-var tradeLibContract = web3.eth.contract(tradeLibABI);
 var tradeContract = web3.eth.contract(tradeRegistryABI);
-var tradeLibAddress = config.tradeLibAddress;
 var tradeRegistryAddress = config.tradeAddress;
 var eventScheduler = require('../../events/events.js');
 web3.setProvider(new web3.providers.HttpProvider(config.web3Provider));
@@ -300,6 +296,7 @@ function updateTradeStatusCallback(err, trade) {
   else if (trade.status == "Invoice Rejected By Seller Bank; Ethereum Txn Pending;") status = "Invoice Rejected";
   else status = trade.status.split(';')[0];
   if (status == "Letter Of Credit Approved") eventScheduler.paymentScheduler(this.time, trade.paymentinfo.No_of_days, trade.trade_id);
+  else if (status == "BillOfLading Approved" && trade.type == "OEMTODEALER") paySellerDirect(trade.trade_id, trade.seller_id);
   console.log("In Updating", status);
   var query = {
     trade_id: req.body.trade_id
@@ -385,5 +382,16 @@ function hasDeposited(tradeInstance, tradeID, callback) {
     }
     console.log('Deposit succcessful');
     callback();
+  });
+}
+
+function paySellerDirect(tradeID, sellerID) {
+  userdb.findUserByUsername(sellerID, req, res, function(err, user) {
+    if (err) return;
+    web3.eth.sendTransaction({
+      from: config.ethAddress,
+      to: user.ethereumAddress,
+      value: 100
+    });
   });
 }

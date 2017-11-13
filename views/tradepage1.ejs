@@ -893,7 +893,7 @@ switch("<%= status %>"){
 		$(".pendingstatus, .purchase_row .tradetxt").html('Upload Purchase Order');
 		$(".quotation_row .uploadbtn").prop('disabled', false);
 	}
-	else $(".pendingstatus, .purchase_row .tradetxt").html('Buyer yet to Upload Purchase Order');
+	else $(".pendingstatus, .purchase_row .tradetxt").html('<%= buyer_id %> yet to Upload Purchase Order');
 	break;
 	case "Purchase Order Rejected; Ethereum Txn Pending;":
 	$(".purchase_row .rejbtngif").show();
