@@ -101,7 +101,7 @@ function onFindCustomer(err, customer) {
   newTrade = this.newTrade;
   callback = this.callback;
   newTrade.customer_id = customer._id;
-  newTrade.status = "KYC Not Uploaded";
+  newTrade.status = "Ethereum Transaction Pending!!! Check after 2 mins!!!";
   if (customer.kychash) {
     newTrade.status = "RFQ Not Uploaded";
   }

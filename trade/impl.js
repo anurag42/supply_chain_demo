@@ -14,8 +14,9 @@ var Scheduler = require('mongo-scheduler');
 var scheduler = new Scheduler("mongodb://localhost/db_name", {
   doNotFire: false
 });
+var customerdb = require('../customer/db');
 
-var manufacturerHash, dealerHash, supplierHash, bankHash, shipperHash, tradeID, tradeLibAddress, tradeRegistryAddress;
+var manufacturerHash, dealerHash, supplierHash, bankHash, shipperHash, insurerHash, tradeID, tradeLibAddress, tradeRegistryAddress;
 var userHash, gasUsage;
 var config = require('../config.js');
 var file = require('../file/impl.js');
@@ -25,6 +26,7 @@ web3.setProvider(new web3.providers.HttpProvider(config.web3Provider));
 
 var orderContract;
 var letterOfCreditContract;
+var registryFunctions = require('../contracts/registry/registry.js');
 tradeLibAddress = config.tradeLibAddress;
 tradeRegistryAddress = config.tradeAddress;
 var tradeFunctions = require('../contracts/trade/tradeRegistry.js');
@@ -60,6 +62,7 @@ module.exports = {
       console.log("middleware", req.body.tradetype);
       if (req.body.tradetype == "PARTSSUPPLIERTOOEM") pendingTasks = [GetManufacturerHash, GetSupplierHash, GetBankHash, GetShipperHash, SaveTrade];
       else if (req.body.tradetype == "OEMTODEALER") pendingTasks = [GetDealerHash, GetManufacturerHash, GetShipperHash, SaveTrade];
+      else if (req.body.tradetype == "DEALERTOCUSTOMER") pendingTasks = [GetDealerHash, GetInsurerHash, SaveTrade];
 
       function next() {
         var currentTask = pendingTasks.shift();
@@ -78,6 +81,14 @@ module.exports = {
         userdb.findUserByUsername(req.body.shipper_id, req, res, function(err, user) {
           if (err) return;
           shipperHash = user.ethereumAddress;
+          next();
+        });
+      }
+
+      function GetInsurerHash() {
+        userdb.findUserByUsername(req.body.insurer_id, req, res, function(err, user) {
+          if (err) return;
+          insurerHash = user.ethereumAddress;
           next();
         });
       }
@@ -139,6 +150,9 @@ module.exports = {
       } else if (req.body.tradetype == "PARTSSUPPLIERTOOEM") {
         addresses = [req.body.manufacturerHash, req.body.supplierHash, req.body.bankHash, req.body.shipperHash];
         roles = ["buyer", "seller", "bank", "shipper"];
+      } else if (req.body.tradetype == "DEALERTOCUSTOMER") {
+        addresses = [req.body.customerHash, req.body.dealerHash, req.body.insurerHash];
+        roles = ["buyer", "seller", "insurer"];
       }
       tradeFunctions.setup(tradeRegistryAddress, req.body.tradeID, addresses, roles, next);
     }
@@ -148,24 +162,33 @@ module.exports = {
       var query = {
         trade_id: req.body.tradeID
       };
-      tradedb.findTradeByTradeID(req.body.tradeID, req, res, updateStatusByType({
-        'req': req,
-        'res': res
-      }));
-      var update = {
-        status: "RFQ Not Uploaded"
-      };
+      tradedb.findTradeByTradeID(req.body.tradeID, req, res
+        /*,
+                updateStatusByType({
+                       'req': req,
+                       'res': res
+                     })*/
+      );
+      if (req.body.tradetype == "DEALERTOCUSTOMER") {
+        var update = {
+          status: "KYC Not Uploaded"
+        };
+      } else {
+        var update = {
+          status: "RFQ Not Uploaded"
+        };
+      }
       tradedb.updateTrade(query, update);
       res.send();
     }
 
-    function updateStatusByType(err, trade) {
-      var type = trade.tradetype;
+    /*function updateStatusByType(err, trade) {
+      var type = trade.type;
       var status = "RFQ Not Uploaded";
       if (type == 'DEALERTOCUSTOMER') {
         status: "RFQ Not Uploaded";
       }
-    }
+    }*/
   },
 
   resumetrade: function(req, res) {
@@ -178,11 +201,13 @@ module.exports = {
   // for redirect from customer login page
   getresumetrade: function(req, res) {
     var customerID = req.query.customerid;
+    console.log(customerID);
     var senderpage = req.query.senderpage;
-    getCustomerfromID(customerID, onFindCustomer.bind({
+    customerdb.getCustomerfromID(customerID, onFindCustomer.bind({
       'req': req,
       'res': res,
-      'senderpage': senderpage
+      'senderpage': senderpage,
+      'customerID': customerID
     }));
   },
 
@@ -216,6 +241,7 @@ function onFindCustomer(err, customer) {
   req = this.req;
   res = this.res;
   senderpage = this.senderpage;
+  customerID = this.customerID;
   req.session.userAddress = customer.ethereumAddress;
   tradedb.findTradeByCustomerID(customerID, onFindTradeResume.bind({
     'req': req,
@@ -276,6 +302,7 @@ function onFindTradeSession(err, trade) {
       userAddress: req.session.userAddress
     });
   } else if (trade.type == 'DEALERTOCUSTOMER') {
+    console.log("DEALERTOCUSTOMER", req.session.userAddress);
     res.render('tradepage2.ejs', {
       id: trade.trade_id,
       address: trade.contract_id,
@@ -387,7 +414,6 @@ function hexToString(hex) {
 }
 
 function onNewTradeSession(err, trade) {
-  console.log("trade");
   if (err)
     throw err;
   var res = this.res;
@@ -397,12 +423,16 @@ function onNewTradeSession(err, trade) {
     tradetype: req.body.tradetype,
     manufacturer_id: trade.manufacturer_id,
     supplier_id: trade.supplier_id,
+    dealer_id: trade.dealer_id,
+    insurer_id: req.body.customer_id,
     status: trade.status,
     manufacturerHash: manufacturerHash,
     supplierHash: supplierHash,
     bankHash: bankHash,
     shipperHash: shipperHash,
-    dealerHash: dealerHash
+    dealerHash: dealerHash,
+    insurerHash: insurerHash,
+    customerHash: req.body.customerEthAddress
   });
 }
 
@@ -463,6 +493,11 @@ function onFindTradeApprove(err, trade) {
   });*/
 
   switch (req.body.approvaltype) {
+    case "K":
+      update = {
+        status: "KYC Approved"
+      };
+      break;
     case "R":
       update = {
         status: "Request For Quotation Approved; Ethereum Txn Pending;"
@@ -559,6 +594,17 @@ function onFindTradeReject(err, trade) {
   });
 
   switch (req.body.approvaltype) {
+    case "K":
+      update = {
+        status: "KYC Rejected"
+      };
+      break;
+    case "R":
+      update = {
+        status: "Request For Quotation Rejected; Ethereum Txn Pending;"
+      };
+      reject(req, res, trade.trade_id, req.body.userAddress, 'Quotation', req.body.reason);
+      break;
     case "Q":
       update = {
         status: "Quotation Rejected; Ethereum Txn Pending;"
@@ -638,7 +684,6 @@ function redirectOnUpdation() {
   var req = this.req;
   var res = this.res;
   req.session.tradesession = this.tradeID;
-  req.session.sender = req.body.senderpage;
   res.redirect('/tradesession');
 }
 
@@ -659,20 +704,19 @@ function onFileUpload(err, hash) {
       $set: {
         'status': "KYC Uploaded; Ethereum Txn Pending;"
       }
-    }
+    };
+    registryFunctions.submitKYC(req, res, registryAddress, "", req.body.userAddress, hash[0].hash, updateTradeStatusOnDocUpload.bind({
+      'req': req,
+      'res': res
+    }));
   }
   if (req.body.senderpage == "rfq") {
-    var update = {
+    update = {
       $set: {
         'doc.0.hash': hash[0].hash,
         'status': "Request For Quotation Uploaded; Ethereum Txn Pending;"
       }
-    }
-    tradedb.updateTrade(query, update, redirectOnUpdation.bind({
-      'tradeID': id,
-      'req': req,
-      'res': res
-    }));
+    };
     tradedb.findTradeByTradeID(id, req, res, onFindTradeRequestForQuotationUpdate.bind({
       'req': req,
       'res': res,
@@ -698,7 +742,6 @@ function onFileUpload(err, hash) {
         'status': "Purchase Order Uploaded; Ethereum Txn Pending;"
       }
     }
-    tradedb.updateTrade(query, update);
     tradedb.findTradeByTradeID(id, req, res, onFindTradePOUpdate.bind({
       'req': req,
       'res': res,
@@ -711,7 +754,6 @@ function onFileUpload(err, hash) {
         'status': "Invoice Uploaded; Ethereum Txn Pending;"
       }
     }
-    tradedb.updateTrade(query, update);
     tradedb.findTradeByTradeID(id, req, res, onFindTradeInvoiceUpdate.bind({
       'req': req,
       'res': res,
@@ -724,7 +766,6 @@ function onFileUpload(err, hash) {
         'status': "Bill Of Lading Uploaded; Ethereum Txn Pending;"
       }
     }
-    tradedb.updateTrade(query, update);
     tradedb.findTradeByTradeID(id, req, res, onFindTradeBOLUpdate.bind({
       'req': req,
       'res': res,
@@ -739,13 +780,14 @@ function onFileUpload(err, hash) {
 }
 
 function onFindTradeRequestForQuotationUpdate(err, trade) {
+  console.log('2');
   // if there are any errs, return the err
   if (err)
     return done(err);
   req = this.req;
   res = this.res;
   hash = this.hash;
-  uploadDoc(req, res, trade.contract_id, trade.buyer_id, 'RequestForQuotation', hash[0].hash);
+  uploadDoc(req, res, req.body.id, req.body.userAddress, 'RFQ', hash[0].hash);
 }
 
 function onFindTradeQuotationUpdate(err, trade) {
@@ -795,5 +837,26 @@ function uploadDoc(req, res, tradeID, userAddress, docName, docHash) {
   console.log('3');
   var hashArr = str2bytearr(docHash);
   console.log("here", userAddress);
+  console.log("here", tradeID);
+  console.log("here", docName);
   tradeFunctions.sendDocUploadTxn(req, res, tradeID, userAddress, docName, hashArr);
+}
+
+function updateTradeStatusOnDocUpload() {
+  var req = this.req;
+  var res = this.res;
+  var status;
+  tradedb.findTradeByTradeID(req.body.id, req, res, updateTradeStatusOnDocUploadCallback);
+}
+
+function updateTradeStatusOnDocUploadCallback(err, trade) {
+  status = trade.status.split(';')[0];
+  console.log(status);
+  var query = {
+    trade_id: req.body.id
+  };
+  var update = {
+    status: status
+  };
+  tradedb.updateTrade(query, update);
 }

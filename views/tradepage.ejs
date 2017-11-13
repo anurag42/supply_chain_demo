@@ -71,48 +71,6 @@
                 <div class="tradecontainer">
                     <h4 class="text-center"><strong>Pending Action:</strong> <span class="pendingstatus"></span></h4><br>
                     <div class="tradelist">
-                        <div class="row kyc_row tradeitem">
-                            <div class="col-sm-2 tradeleft text-center">
-                                <img src="/images/inv_icon.png">
-                                <p class="status">IN PROGRESS</p>
-                            </div>
-                            <div class="col-sm-10 traderight">
-                                <div class="col-sm-6">
-                                    <p class="tradedate"></p>
-                                    <p class="tradehead">KYC</p>
-                                    <p class="tradetxt">Upload KYC</p>
-                                </div>
-                                <div class="col-sm-6 tradeoptions">
-                                    <% if(senderpage == 'Seller') {%><button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('invoice'); setTitle('Invoice')">Upload KYC
-                                        <i class="fa fa-upload" aria-hidden="true"></i>
-                                    </button><br/><%}%>
-                                    <% if(senderpage == 'Buyer') {%> <div class="optionbtn">
-                                        <button class="tradebtn acceptbtn" onclick="fillForm('I')" form="approval_form">Accept
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                        </button>
-                                        <button class="tradebtn rejectbtn" onclick="fillForm('I')" data-toggle="modal" data-target="#rejectmodal">Reject
-                                            <i class="fa fa-times" aria-hidden="true"></i>
-                                        </button>
-                                    </div><%}%>
-                                    <% if(senderpage == 'Bank') {%> <div class="optionbtn">
-                                        <button class="tradebtn acceptbtn" onclick="fillForm('IA')" form="approval_form">Accept
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                        </button>
-                                        <button class="tradebtn rejectbtn" onclick="fillForm('IA')" data-toggle="modal" data-target="#rejectmodal">Reject
-                                            <i class="fa fa-times" aria-hidden="true"></i>
-                                        </button>
-                                    </div><%}%>
-                                    <div class="downloadbtn">
-                                        <button class="tradebtn dnldbcbtn" onclick="dwnldForm('Invoice')" data-toggle="modal" data-target="#bcdnldmodal" form="dwnld_form2">Download
-                                            <i class="fa fa-link" aria-hidden="true"></i>
-                                        </button>
-                                        <button class="tradebtn dnldsvbtn" onclick="dwnldForm('Invoice')" form="dwnld_form">Download
-                                            <i class="fa fa-server" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row tradeitem request_row">
                             <div class="col-sm-2 tradeleft text-center">
                                 <img src="/images/quo_icon.png">
@@ -129,10 +87,10 @@
                                         <i class="fa fa-upload" aria-hidden="true"></i>
                                     </button><br/><%}%>
                                     <% if(senderpage == 'Seller') {%><div class="optionbtn">
-                                        <button class="tradebtn acceptbtn" onclick="fillForm('Q')" form="approval_form">Accept
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('R')" form="approval_form">Accept
                                             <i class="fa fa-check" aria-hidden="true"></i>
                                         </button>
-                                        <button class="tradebtn rejectbtn" onclick="fillForm('Q')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('R')" data-toggle="modal" data-target="#rejectmodal">Reject
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                         </button>
                                     </div><%}%>
@@ -803,6 +761,7 @@ switch("<%= status %>"){
 		$(".pendingstatus, .request_row .tradetxt").html('Upload Request for Quotation');
   }
   else $(".request_row .tradetxt").html('<%= buyer_id %>  to Upload Request for Quotation');
+  break;
   case "Request For Quotation Uploaded; Ethereum Txn Pending;":
 	$(".request_row .dnldsvbtn").css("cssText","opacity:1 !important");
 	$(".request_row .dnldsvbtn").prop('disabled', false);
@@ -826,7 +785,7 @@ switch("<%= status %>"){
 		$(".pendingstatus, .purchase_row .tradetxt").html('Upload Purchase Order');
 		$(".request_row .uploadbtn").prop('disabled', false);
 	}
-	else $(".pendingstatus, .purchase_row .tradetxt").html('Buyer yet to Upload Purchase Order');
+	else $(".pendingstatus, .purchase_row .tradetxt").html('<%= buyer_id %> yet to Upload Purchase Order');
 	break;
   case "Request For Quotation Rejected; Ethereum Txn Pending;":
 	$(".request_row .rejbtngif").show();
@@ -903,7 +862,7 @@ switch("<%= status %>"){
 		$(".pendingstatus, .purchase_row .tradetxt").html('Upload Purchase Order');
 		$(".quotation_row .uploadbtn").prop('disabled', false);
 	}
-	else $(".pendingstatus, .purchase_row .tradetxt").html('Buyer yet to Upload Purchase Order');
+	else $(".pendingstatus, .purchase_row .tradetxt").html('<%= buyer_id %> yet to Upload Purchase Order');
 	break;
 	case "Purchase Order Rejected; Ethereum Txn Pending;":
 	$(".purchase_row .rejbtngif").show();
@@ -1146,7 +1105,7 @@ switch("<%= status %>"){
 		$(".bill_row .acceptbtn, .bill_row .rejectbtn").prop('disabled', false);
 		$(".pendingstatus, .bill_row .tradetxt").html('Review Bill Of Lading');
 	}
-	else $(".bill_row .tradetxt").html('Buyer to Approve Bill Of Lading');
+	else $(".bill_row .tradetxt").html('<%= buyer_id %> to Approve Bill Of Lading');
 	break;
 	case "Bill Of Lading Approved by Buyer; Ethereum Txn Pending;":
 	$(".bill_row .aprbtngif").show();
