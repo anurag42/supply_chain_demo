@@ -846,15 +846,15 @@ switch("<%= status %>"){
   }
   else $(".kyc_row .tradetxt").html('<%= buyer_id %>  to Upload KYC');
   break;
-  case "Quotation Uploaded":
+  case "KYC Uploaded":
 	$(".kyc_row .dnldsvbtn, .kyc_row_row .dnldbcbtn").css("cssText","opacity:1 !important");
 	$(".kyc_row_row .dnldsvbtn, .kyc_row_row .dnldbcbtn").prop('disabled', false);
-	if("<%= senderpage %>" == "Buyer"){
+	if("<%= senderpage %>" == "Seller"){
 		$(".pendingstatus, .kyc_row_row .tradetxt").html('Review KYC');
-		$(".kyc_row_row .acceptbtn, .kyc_row_row .rejectbtn").css("cssText","opacity:1 !important");
-		$(".kyc_row_row .acceptbtn, .kyc_row_row .rejectbtn").prop('disabled', false);
+		$(".kyc_row .acceptbtn, .kyc_row .rejectbtn").css("cssText","opacity:1 !important");
+		$(".kyc_row .acceptbtn, .kyc_row .rejectbtn").prop('disabled', false);
 	}
-	else $(".pendingstatus, .quotation_row .tradetxt").html('<%= buyer_id %>  to Approve');
+	else $(".pendingstatus, .kyc_row .tradetxt").html('<%= buyer_id %>  to Approve');
 	break;
   case "KYC Approved":
   case "RFQ Not Uploaded":
