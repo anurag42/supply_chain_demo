@@ -117,7 +117,7 @@
                             <div class="col-sm-10 traderight">
                                 <div class="col-sm-6">
                                     <p class="tradedate"></p>
-                                    <p class="tradehead">RFP</p>
+                                    <p class="tradehead">RFQ</p>
                                     <p class="tradetxt">Received Quotation from Seller</p>
                                 </div>
                                 <div class="col-sm-6 tradeoptions">
@@ -249,40 +249,6 @@
                                         <button class="tradebtn dnldsvbtn" onclick="dwnldForm('Invoice')" form="dwnld_form">Download
                                             <i class="fa fa-server" aria-hidden="true"></i>
                                         </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row agreement_row tradeitem">
-                            <div class="col-sm-2 tradeleft text-center">
-                                <img src="/images/agr_icon.png">
-                                <p class="status">IN PROGRESS</p>
-                            </div>
-                            <div class="col-sm-10 traderight">
-                                <div class="col-sm-6">
-                                    <p class="tradedate"></p>
-                                    <p class="tradehead">Financial Agreement</p>
-                                    <p class="tradetxt">Received Agreement from Bank</p>
-                                </div>
-                                <div class="col-sm-6 tradeoptions">
-                                    <% if(senderpage == 'Bank') {%> <button class="tradebtn uploadbtn" data-toggle="modal" data-target="#Agreementmodal">Update Agreement
-                                        <i class="fa fa-upload" aria-hidden="true"></i>
-                                    </button><br/><%}%>
-                                    <% if(senderpage == 'Buyer' || senderpage == 'Seller') {%><div class="optionbtn">
-                                        <button class="tradebtn acceptbtn" onclick="fillForm('L')" form="approval_form">Accept
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                        </button>
-                                        <button class="tradebtn rejectbtn" onclick="fillForm('L')" data-toggle="modal" data-target="#rejectmodal">Reject
-                                            <i class="fa fa-times" aria-hidden="true"></i>
-                                        </button>
-                                    </div><%}%>
-                                    <div class="downloadbtn">
-                                    <button class="tradebtn viewbtn1" data-toggle="modal" data-target="#Agreementviewmodal">View Agreement
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                    </button><br/>
-                                    <button class="tradebtn viewbtn2" data-toggle="modal" data-target="#Agreementviewmodal">View Agreement
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                    </button>
                                     </div>
                                 </div>
                             </div>
@@ -629,21 +595,8 @@ function setTitle(title){
 }
 
 function fillName(name){
-switch(name){
-	case "quotation":
-	docNameStore = "Quotation";
-	break;
-	case "po":
-	docNameStore = "PurchaseOrder";
-	break;
-	case "invoice":
-	docNameStore = "Invoice";
-	break;
-	case "bol":
-	docNameStore = "BillOfLading";
-	break;
-    }
     $("#docName").val(name);
+    $("#docName1").val(name);
 }
 
 function dwnldForm(name){

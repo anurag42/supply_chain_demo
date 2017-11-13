@@ -243,74 +243,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row agreement_row tradeitem">
-                            <div class="col-sm-2 tradeleft text-center">
-                                <img src="/images/agr_icon.png">
-                                <p class="status">IN PROGRESS</p>
-                            </div>
-                            <div class="col-sm-10 traderight">
-                                <div class="col-sm-6">
-                                    <p class="tradedate"></p>
-                                    <p class="tradehead">Financial Agreement</p>
-                                    <p class="tradetxt">Received Agreement from Bank</p>
-                                </div>
-                                <div class="col-sm-6 tradeoptions">
-                                    <% if(senderpage == 'Bank') {%> <button class="tradebtn uploadbtn" data-toggle="modal" data-target="#Agreementmodal">Update Agreement
-                                        <i class="fa fa-upload" aria-hidden="true"></i>
-                                    </button><br/><%}%>
-                                    <% if(senderpage == 'Buyer' || senderpage == 'Seller') {%><div class="optionbtn">
-                                        <button class="tradebtn acceptbtn" onclick="fillForm('L')" form="approval_form">Accept
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                        </button>
-                                        <button class="tradebtn rejectbtn" onclick="fillForm('L')" data-toggle="modal" data-target="#rejectmodal">Reject
-                                            <i class="fa fa-times" aria-hidden="true"></i>
-                                        </button>
-                                    </div><%}%>
-                                    <div class="downloadbtn">
-                                    <button class="tradebtn viewbtn1" data-toggle="modal" data-target="#Agreementviewmodal">View Agreement
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                    </button><br/>
-                                    <button class="tradebtn viewbtn2" data-toggle="modal" data-target="#Agreementviewmodal">View Agreement
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                    </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row bill_row tradeitem">
-                            <div class="col-sm-2 tradeleft text-center">
-                                <img src="/images/bill_icon.png">
-                                <p class="status">IN PROGRESS</p>
-                            </div>
-                            <div class="col-sm-10 traderight">
-                                <div class="col-sm-6">
-                                    <p class="tradedate"></p>
-                                    <p class="tradehead">Bill of Lading</p>
-                                    <p class="tradetxt">Shipper yet to Upload Bill Of Lading</p>
-                                </div>
-                                <div class="col-sm-6 tradeoptions">
-                                    <% if(senderpage == 'Shipper') {%><button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('bol'); setTitle('Bill Of Lading')">Upload Bill Of Lading
-                                        <i class="fa fa-upload" aria-hidden="true"></i>
-                                    </button><br/><%}%>
-                                    <% if(senderpage == 'Buyer' || senderpage == "Bank") {%><div class="optionbtn">
-                                        <button class="tradebtn acceptbtn" onclick="fillForm('B')" form="approval_form">Accept
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                        </button>
-                                        <button class="tradebtn rejectbtn" onclick="fillForm('B')" data-toggle="modal" data-target="#rejectmodal">Reject
-                                            <i class="fa fa-times" aria-hidden="true"></i>
-                                        </button>
-                                    </div><%}%>
-                                    <div class="downloadbtn">
-                                        <button class="tradebtn dnldbcbtn" onclick="dwnldForm('BillOfLading')" form="dwnld_form2" data-toggle="modal" data-target="#bcdnldmodal">Download
-                                            <i class="fa fa-link" aria-hidden="true"></i>
-                                        </button>
-                                        <button class="tradebtn dnldsvbtn" onclick="dwnldForm('BillOfLading')" form="dwnld_form">Download
-                                            <i class="fa fa-server" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row payment_row tradeitem">
                             <div class="col-sm-2 tradeleft text-center">
                                 <img src="/images/pay_icon.png">
@@ -656,7 +588,7 @@ function computeHash(formID){
   $('#uplshow').show();
 }
 
-$(document).ready(function(){rejection_form
+$(document).ready(function(){
     $('[data-toggle="popover"]').popover();
 });
 
