@@ -255,14 +255,11 @@
                                     <p class="tradetxt">Payment Scheduled</p>
                                 </div>
                                 <div class="col-sm-6 tradeoptions">
-                                    <% if(senderpage == 'Buyer' || senderpage == "Bank") {%><div class="optionbtn">
-                                        <button class="tradebtn acceptbtn" onclick="fillForm('B')" form="approval_form">Accept
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                        </button>
-                                        <button class="tradebtn rejectbtn" onclick="fillForm('B')" data-toggle="modal" data-target="#rejectmodal">Reject
-                                            <i class="fa fa-times" aria-hidden="true"></i>
-                                        </button>
-                                    </div><%}%>
+                                  <form action="/paytodealer" method="POST">
+                                  <button class="tradebtn uploadbtn">Pay to <%= seller_id%>
+                                      <i class="fa fa-money" aria-hidden="true"></i>
+                                  </button>
+                                </form>
                                 </div>
                             </div>
                         </div>
@@ -620,7 +617,7 @@ $(".purchase_row .tradetxt").html('Yet to Upload Purchase Order');
 $(".invoice_row .tradetxt").html('Yet to Upload Invoice');
 $(".agreement_row .tradetxt").html('Yet to Upload Agreement');
 $(".bill_row .tradetxt").html('Yet to Upload Bill of Lading');
-$(".payment_row .tradetxt").html('Payment Not yet scheduled');
+$(".payment_row .tradetxt").html('Payment By Customer Pending');
 
 if("<%= status %>".split(';')[1] ==  ' Ethereum Txn Pending' || "<%= status %>".split(' ')[0] ==  'Payment'){
 	setTimeout(function(){location.reload()}, 5000);
@@ -833,7 +830,7 @@ switch("<%= status %>"){
 	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
 	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
 	if("<%= senderpage %>" == "Seller"){
-		$(".pendingstatus, .request_row .tradetxt").html('Review Quotation');
+		$(".pendingstatus, .request_row .tradetxt").html('Review Request For Quotation');
 		$(".request_row .acceptbtn, .request_row .rejectbtn").css("cssText","opacity:1 !important");
 		$(".request_row .acceptbtn, .request_row .rejectbtn").prop('disabled', false);
 	}
@@ -1019,164 +1016,18 @@ switch("<%= status %>"){
 	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
 	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
 	$(".pendingstatus, .invoice_row .tradetxt").html('Invoice Approved');
-	if("<%= senderpage %>" == "Bank"){
-		$(".agreement_row .uploadbtn").css("cssText","opacity:1 !important");
-		$(".agreement_row .uploadbtn").prop('disabled', false);
-		$(".pendingstatus, .agreement_row .tradetxt").html('Update Agreement');
+	if("<%= senderpage %>" == "Buyer"){
+		$(".payment_row .uploadbtn").css("cssText","opacity:1 !important");
+		$(".payment_row .uploadbtn").prop('disabled', false);
 	}
 
 	else $(".pendingstatus, .agreement_row .tradetxt").html('Financing Bank yet to Upload Agreement');
 	break;
-	case "Letter Of Credit Rejected; Ethereum Txn Pending;":
-	$(".agreement_row .rejbtngif").show();
-	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
-	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
-	$(".pendingstatus, .agreement_row .tradetxt").html('Letter Of Credit Rejected, Updating on Blockchain');
-	break;
-	case "Letter Of Credit Rejected":
-	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
-	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
-	$(".invoice_row .tradetxt").html('Invoice Approved');
-	if("<%= senderpage %>" == "Bank"){
-		$(".agreement_row .uploadbtn").css("cssText","opacity:1 !important");
-		$(".agreement_row .uploadbtn").prop('disabled', false);
-		$(".pendingstatus, .agreement_row .tradetxt").html('Financial Agreement Rejected. Upload Agreement');
-	}
 
-	else $(".pendingstatus, .agreement_row .tradetxt").html('Financial Agreement Rejected. Financing Bank yet to Upload Agreement');
-	break;
-	case "Letter Of Credit Uploaded; Ethereum Txn Pending;":
-	$(".agreement_row .uploadbtn .loaderbtngif").show();
-	if("<%= senderpage %>" == "Bank"){
-		$(".agreement_row .viewbtn1").prop('disabled', false);
-		$(".agreement_row .viewbtn1").css("cssText","opacity:1 !important");
-	}
-	else{
-		$(".agreement_row .viewbtn2").prop('disabled', false);
-		$(".agreement_row .viewbtn2").css("cssText","opacity:1 !important");
-	}
-	$(".pendingstatus, .agreement_row .tradetxt").html('Updating on Blockchain');
-	break;
-	case "Letter Of Credit Uploaded":
-	$(".agreement_row .viewbtn2").css("cssText","opacity:1 !important");
-	$(".agreement_row .viewbtn2").prop('disabled', false);
-	$(".agreement_row .viewbtn1").css("cssText","opacity:1 !important");
-	$(".agreement_row .viewbtn1").prop('disabled', false);
-	if("<%= senderpage %>" == "Buyer"){
-		$(".agreement_row .acceptbtn, .agreement_row .rejectbtn").css("cssText","opacity:1 !important");
-		$(".agreement_row .acceptbtn, .agreement_row .rejectbtn").prop('disabled', false);
-		$(".pendingstatus, .agreement_row .tradetxt").html('Review Financial Agreement');
-	}
-	else $(".agreement_row .tradetxt").html('Buyer to Approve');
-	$(".pendingstatus, .payment_row .tradetxt").html('Payment Scheduled');
-	break;
-	case "Letter Of Credit Approved; Ethereum Txn Pending;":
-	$(".agreement_row .aprbtngif").show();
-	$('.payment_row .tradeleft').css("cssText","opacity:1 !important");
-	$(".payment_row .tradetxt").html('Payment Scheduled');
-	$(".agreement_row").css("cssText","opacity:1 !important");
-	$(".agreement_row .viewbtn1, .agreement_row .viewbtn2").prop('disabled', false);
-	$(".agreement_row .viewbtn1, .agreement_row .viewbtn2").css("cssText","opacity:1 !important");
-	$(".pendingstatus, .agreement_row .tradetxt").html('Agreement Approved, Updating on Blockchain');
-	break;
-	case "Letter Of Credit Approved by Buyer; Ethereum Txn Pending;":
-	$(".agreement_row .aprbtngif").show();
-	$(".agreement_row").css("cssText","opacity:1 !important");
-	$(".agreement_row .viewbtn1, .agreement_row .viewbtn2").prop('disabled', false);
-	$(".agreement_row .viewbtn1, .agreement_row .viewbtn2").css("cssText","opacity:1 !important");
-	$(".pendingstatus, .agreement_row .tradetxt").html('Financial Agreement Approved by Buyer, Updating on Blockchain');
-	break;
-	case "Letter Of Credit Approved by Buyer":
-	$('.payment_row .tradeleft').css("cssText","opacity:1 !important");
-	$(".payment_row .tradetxt").html('Payment Scheduled');
-	$(".agreement_row").css("cssText","opacity:1 !important");
-	$(".agreement_row .viewbtn1, .agreement_row .viewbtn2").prop('disabled', false);
-	$(".agreement_row .viewbtn1, .agreement_row .viewbtn2").css("cssText","opacity:1 !important");
-	if("<%= senderpage %>" == "Seller"){
-		$(".agreement_row .acceptbtn, .agreement_row .rejectbtn").css("cssText","opacity:1 !important");
-		$(".agreement_row .acceptbtn, .agreement_row .rejectbtn").prop('disabled', false);
-		$(".pendingstatus, .agreement_row .tradetxt").html('Review Financial Agreement');
-	}
-	else $(".agreement_row .tradetxt").html('<%= seller_id %>  to Approve');
-	break;
-	case "Letter Of Credit Approved":
-	$('.payment_row .tradeleft').css("cssText","opacity:1 !important");
-	$(".pendingstatus, .payment_row .tradetxt").html('Payment Scheduled');
-	$(".bill_row .tradeleft").css("cssText","opacity:1 !important");
-	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").css("cssText","opacity:1 !important");
-	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").prop('disabled', false);
-	$(".agreement_row .tradetxt").html('Agreement Approved');
-	if("<%= senderpage %>" == "Shipper"){
-	$(".bill_row .uploadbtn").css("cssText","opacity:1 !important");
-		$(".bill_row .uploadbtn").prop('disabled', false);
-		$(".pendingstatus, .bill_row .tradetxt").html('Upload Bill Of Lading');
-	}
-	else $(".bill_row .tradetxt").html('Shipper yet to Upload Bill Of Lading');
-	break;
-	case "Bill Of Lading Rejected; Ethereum Txn Pending;":
-	$(".bill_row .rejbtngif").show();
-	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").css("cssText","opacity:1 !important");
-	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").prop('disabled', false);
-	$(".pendingstatus, .bill_row .tradetxt").html('Bill Of Lading Rejected, Updating on Blockchain');
-	break;
-	case "Bill Of Lading Rejected":
-	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").css("cssText","opacity:1 !important");
-	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").prop('disabled', false);
-	$(".pendingstatus, .agreement_row .tradetxt").html('Agreement Approved');
-	if("<%= senderpage %>" == "Shipper"){
-		$(".bill_row .uploadbtn").prop('disabled', false);
-		$(".pendingstatus, .bill_row .tradetxt").html('Bill Of Lading Rejected. Upload Bill Of Lading');
-	}
-	else $(".pendingstatus, .bill_row .tradetxt").html('Bill Of Lading Rejected. Shipper yet to Upload Bill Of Lading');
-	break;
-	case "Bill Of Lading Uploaded; Ethereum Txn Pending;":
-	$(".bill_row .uploadbtn .loaderbtngif").show();
-	$(".bill_row .dnldsvbtn").css("cssText","opacity:1 !important");
-	$(".bill_row .dnldsvbtn").prop('disabled', false);
-	$(".pendingstatus, .bill_row .tradetxt").html('Uploading on Blockchain');
-	break;
-	case "Bill Of Lading Uploaded":
-	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").css("cssText","opacity:1 !important");
-	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").prop('disabled', false);
-	if("<%= senderpage %>" == "Buyer"){
-		$(".bill_row .acceptbtn, .bill_row .rejectbtn").css("cssText","opacity:1 !important");
-		$(".bill_row .acceptbtn, .bill_row .rejectbtn").prop('disabled', false);
-		$(".pendingstatus, .bill_row .tradetxt").html('Review Bill Of Lading');
-	}
-	else $(".bill_row .tradetxt").html('Buyer to Approve Bill Of Lading');
-	break;
-	case "Bill Of Lading Approved by Buyer; Ethereum Txn Pending;":
-	$(".bill_row .aprbtngif").show();
-	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").css("cssText","opacity:1 !important");
-	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").prop('disabled', false);
-	$(".pendingstatus, .bill_row .tradetxt").html('Bill Of Lading Approved by Buyer, Updating on Blockchain');
-	break;
-	case "Bill Of Lading Approved by Buyer":
-	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").css("cssText","opacity:1 !important");
-	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").prop('disabled', false);
-	if("<%= senderpage %>" == "Bank"){
-		$(".bill_row .acceptbtn, .bill_row .rejectbtn").css("cssText","opacity:1 !important");
-		$(".bill_row .acceptbtn, .bill_row .rejectbtn").prop('disabled', false);
-		$(".pendingstatus, .bill_row .tradetxt").html('Review Bill Of Lading');
-	}
-	else $(".pendingstatus, .bill_row .tradetxt").html('Financing Bank to Approve Bill Of Lading');
-	break;
-	case "Bill Of Lading Approved":
-        $('.payment_row .tradeleft').css("cssText","opacity:1 !important");
-	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").css("cssText","opacity:1 !important");
-	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").prop('disabled', false);
-	$(".pendingstatus, .bill_row .tradetxt").html('Bill Of Lading Approved');
-	break;
-	case "Bill Of Lading Approved; Ethereum Txn Pending;":
-	$(".bill_row .aprbtngif").show();
-	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").css("cssText","opacity:1 !important");
-	$(".bill_row .dnldsvbtn, .bill_row .dnldbcbtn").prop('disabled', false);
-	$(".pendingstatus, .bill_row .tradetxt").html('Bill Of Lading Approved, Updating on Blockchain');
-	break;
-        case "Payment Scheduled":
-        $('.payment_row .tradeleft').css("cssText","opacity:1 !important");
-        $(".pendingstatus, .payment_row .tradetxt").html('Payment Scheduled');
-        break;
+  case "Payment Scheduled":
+  $('.payment_row .tradeleft').css("cssText","opacity:1 !important");
+  $(".pendingstatus, .payment_row .tradetxt").html('Payment Scheduled');
+  break;
 	case "Payment Successful":
 	$('.payment_row .tradeleft').css("cssText","opacity:1 !important");
 	$(".pendingstatus, .payment_row .tradetxt").html('Payment Successful');
