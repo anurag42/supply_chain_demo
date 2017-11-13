@@ -272,11 +272,19 @@
                                     <% if(senderpage == 'Bank') {%> <button class="tradebtn uploadbtn" data-toggle="modal" data-target="#Agreementmodal">Update Agreement
                                         <i class="fa fa-upload" aria-hidden="true"></i>
                                     </button><br/><%}%>
-                                    <% if(senderpage == 'Buyer' || senderpage == 'Seller') {%><div class="optionbtn">
+                                    <% if(senderpage == 'Buyer') {%><div class="optionbtn">
                                         <button class="tradebtn acceptbtn" onclick="fillForm('L')" form="approval_form">Accept
                                             <i class="fa fa-check" aria-hidden="true"></i>
                                         </button>
                                         <button class="tradebtn rejectbtn" onclick="fillForm('L')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div><%}%>
+                                    <% if(senderpage == 'Seller') {%><div class="optionbtn">
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('LA')" form="approval_form">Accept
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('LA')" data-toggle="modal" data-target="#rejectmodal">Reject
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                         </button>
                                     </div><%}%>
@@ -306,11 +314,19 @@
                                     <% if(senderpage == 'Shipper') {%><button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('bol'); setTitle('Bill Of Lading')">Upload Bill Of Lading
                                         <i class="fa fa-upload" aria-hidden="true"></i>
                                     </button><br/><%}%>
-                                    <% if(senderpage == 'Buyer' || senderpage == "Bank") {%><div class="optionbtn">
+                                    <% if(senderpage == 'Buyer') {%><div class="optionbtn">
                                         <button class="tradebtn acceptbtn" onclick="fillForm('B')" form="approval_form">Accept
                                             <i class="fa fa-check" aria-hidden="true"></i>
                                         </button>
                                         <button class="tradebtn rejectbtn" onclick="fillForm('B')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div><%}%>
+                                    <% if(senderpage == "Bank") {%><div class="optionbtn">
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('BA')" form="approval_form">Accept
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('BA')" data-toggle="modal" data-target="#rejectmodal">Reject
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                         </button>
                                     </div><%}%>
@@ -921,7 +937,7 @@ switch("<%= status %>"){
 		$(".purchase_row .acceptbtn, .purchase_row .rejectbtn").css("cssText","opacity:1 !important");
 		$(".purchase_row .acceptbtn, .purchase_row .rejectbtn").prop('disabled', false);
 	}
-	else $(".purchase_row .tradetxt").html('Seller to Approve');
+	else $(".purchase_row .tradetxt").html('<%= seller_id %> to Approve');
 	break;
 	case "Purchase Order Approved; Ethereum Txn Pending;":
 	$(".purchase_row .aprbtngif").show();
@@ -975,7 +991,7 @@ switch("<%= status %>"){
 		$(".invoice_row .acceptbtn, .invoice_row .rejectbtn").css("cssText","opacity:1 !important");
 		$(".invoice_row .acceptbtn, .invoice_row .rejectbtn").prop('disabled', false);
 	}
-	else $(".pendingstatus, .invoice_row .tradetxt").html('Financing Bank to Approve');
+	else $(".pendingstatus, .invoice_row .tradetxt").html('<%= bank_id %> to Approve');
 	break;
 	case "Invoice Uploaded; Ethereum Txn Pending;":
 	$(".invoice_row .dnldsvbtn").css("cssText","opacity:1 !important");
@@ -991,7 +1007,7 @@ switch("<%= status %>"){
 		$(".invoice_row .acceptbtn, .invoice_row .rejectbtn").css("cssText","opacity:1 !important");
 		$(".invoice_row .acceptbtn, .invoice_row .rejectbtn").prop('disabled', false);
 	}
-	else $(".invoice_row .tradetxt").html('Buyer to Approve');
+	else $(".invoice_row .tradetxt").html('<%= buyer_id %> to Approve');
 	break;
 	case "Invoice Approved By Seller Bank; Ethereum Txn Pending;":
 	$(".invoice_row .aprbtngif").show();
@@ -1054,7 +1070,7 @@ switch("<%= status %>"){
 		$(".agreement_row .acceptbtn, .agreement_row .rejectbtn").prop('disabled', false);
 		$(".pendingstatus, .agreement_row .tradetxt").html('Review Financial Agreement');
 	}
-	else $(".agreement_row .tradetxt").html('Buyer to Approve');
+	else $(".agreement_row .tradetxt").html('<%= buyer_id %> to Approve');
 	$(".pendingstatus, .payment_row .tradetxt").html('Payment Scheduled');
 	break;
 	case "Letter Of Credit Approved; Ethereum Txn Pending;":
@@ -1146,7 +1162,7 @@ switch("<%= status %>"){
 		$(".bill_row .acceptbtn, .bill_row .rejectbtn").prop('disabled', false);
 		$(".pendingstatus, .bill_row .tradetxt").html('Review Bill Of Lading');
 	}
-	else $(".pendingstatus, .bill_row .tradetxt").html('Financing Bank to Approve Bill Of Lading');
+	else $(".pendingstatus, .bill_row .tradetxt").html('<%= bank_id %> to Approve Bill Of Lading');
 	break;
 	case "Bill Of Lading Approved":
         $('.payment_row .tradeleft').css("cssText","opacity:1 !important");

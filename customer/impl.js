@@ -92,7 +92,8 @@ function validateKYCCallback(err, customer) {
   }
   res.send({
     success: "true",
-    kycExists: kycExists
+    kycExists: kycExists,
+    customer_id: customer._id
   });
 
 }

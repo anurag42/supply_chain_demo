@@ -8,13 +8,15 @@ var Scheduler = require('mongo-scheduler');
 var scheduler = new Scheduler("mongodb://localhost/db_name", {
   doNotFire: false
 });
-var letterofcredit = require('../contract\ functions/letterOfCredit.js');
+require('../build/ABI/tradeRegistry.js');
+var tradeContract = web3.eth.contract(tradeRegistryABI);
+var tradeRegistryAddress = config.tradeAddress;
 var tradedb = require('../trade/db');
 
 module.exports = {
-  paymentScheduler: function(locInstance, time, days, tradeID) {
+  paymentScheduler: function(time, days, tradeID) {
     scheduler.on('PaymentProcessor', function() {
-      payToSeller(locInstance, tradeID);
+      payToSeller(tradeID);
       console.log('Scheduled');
     });
 
@@ -24,54 +26,36 @@ module.exports = {
     };
 
     scheduler.schedule(payEvent);
-  },
-
-  IsDocUploadComplete: function(req, res) {
-    var completedDocs = 0;
-    console.log("CompletedDocs", completedDocs);
-    //Each time a doc is uploaded onto Blockchain, event increments the count
-    //Check if Doc Upload is complete; If so, redirect to profile page.
-    eventEmitter.on('IsDocUploadComplete', function() {
-      ++completedDocs;
-      console.log("Upload Done", completedDocs);
-      console.log(req.files.length);
-      if (completedDocs == req.files.length) {
-        userdb.findUserByUsername(req.body.username, req, res, function(err, user) {
-          req.session.userId = user._id;
-          console.log("Session", req.session);
-          res.redirect('/profile');
-        });
-      }
-    });
-  },
-
+  }
 };
 
-function payToSeller(locInstance, id) {
+function payToSeller(id) {
   console.log('Payment Initiated');
-  gasUsage = locInstance.pay.estimateGas();
+  var tradeInstance = tradeContract.at(tradeRegistryAddress);
+  gasUsage = tradeInstance.payToSeller.estimateGas(id);
   var params = {
     gas: gasUsage,
     gasPrice: config.gasPrice,
     from: config.ethAddress
   };
-  locInstance.pay.sendTransaction(params, function(err, result) {
+  tradeInstance.pay.sendTransaction(id, params, function(err, result) {
     if (err) {
       console.error(err);
       res.send(err);
       return;
     }
-    watchPayment(locInstance, id);
+    watchPayment(tradeInstance, id);
   });
 }
 
-function watchPayment(locInstance, id) {
-  locInstance.LogPayment().watch(function(e, log) {
+function watchPayment(tradeInstance, id) {
+  tradeInstance.LogPayment({
+    'uid': id
+  }).watch(function(e, log) {
     if (e) {
       return console.error(e);
     }
-    locInstance.LogPayment().stopWatching();
-    console.log('Payment triggered from LOC contract');
+    console.log('Payment triggered from trade contract');
     var query = {
       trade_id: id
     };
