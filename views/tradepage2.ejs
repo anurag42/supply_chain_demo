@@ -846,6 +846,24 @@ switch("<%= status %>"){
   }
   else $(".kyc_row .tradetxt").html('<%= buyer_id %>  to Upload KYC');
   break;
+  case "KYC Rejected; Ethereum Txn Pending;":
+	$(".kyc_row .rejbtngif").show();
+	$(".pendingstatus, .kyc_row .tradetxt").html('KYC Rejected, Updating on Blockchain');
+	break;
+	case "KYC Rejected":
+	if("<%= senderpage %>" == "Buyer"){
+		$(".kyc_row .uploadbtn").css("cssText","opacity:1 !important");
+		$(".kyc_row .uploadbtn").prop('disabled', false);
+		$(".pendingstatus, .kyc_row .tradetxt").html('KYC Rejected. Re-upload KYC');
+	}
+	else $(".quotation_row .tradetxt").html('KYC Rejected. <%= buyer_id %>  to Upload KYC');
+	break;
+	case "KYC Uploaded; Ethereum Txn Pending;":
+	$(".kyc_row .dnldsvbtn").css("cssText","opacity:1 !important");
+	$(".kyc_row .dnldsvbtn").prop('disabled', false);
+	$(".kyc_row .uploadbtn .loaderbtngif").show();
+	$(".pendingstatus, .kyc_row .tradetxt").html('Uploading on Blockchain');
+	break;
   case "KYC Uploaded":
 	$(".kyc_row .dnldsvbtn, .kyc_row_row .dnldbcbtn").css("cssText","opacity:1 !important");
 	$(".kyc_row_row .dnldsvbtn, .kyc_row_row .dnldbcbtn").prop('disabled', false);
