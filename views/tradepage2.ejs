@@ -790,7 +790,7 @@ switch("<%= status %>"){
 		$(".kyc_row .uploadbtn").prop('disabled', false);
 		$(".pendingstatus, .kyc_row .tradetxt").html('Upload KYC');
   }
-  else $(".kyc_row .tradetxt").html('<%= buyer_id %>  to Upload KYC');
+  else $(".kyc_row .tradetxt").html('Customer  to Upload KYC');
   break;
   case "KYC Rejected; Ethereum Txn Pending;":
 	$(".kyc_row .rejbtngif").show();
@@ -802,7 +802,7 @@ switch("<%= status %>"){
 		$(".kyc_row .uploadbtn").prop('disabled', false);
 		$(".pendingstatus, .kyc_row .tradetxt").html('KYC Rejected. Re-upload KYC');
 	}
-	else $(".kyc_row .tradetxt").html('KYC Rejected. <%= buyer_id %>  to Upload KYC');
+	else $(".kyc_row .tradetxt").html('KYC Rejected. Customer  to Upload KYC');
 	break;
 	case "KYC Uploaded; Ethereum Txn Pending;":
 	$(".kyc_row .dnldsvbtn").css("cssText","opacity:1 !important");
@@ -818,7 +818,7 @@ switch("<%= status %>"){
 		$(".kyc_row .acceptbtn, .kyc_row .rejectbtn").css("cssText","opacity:1 !important");
 		$(".kyc_row .acceptbtn, .kyc_row .rejectbtn").prop('disabled', false);
 	}
-	else $(".pendingstatus, .kyc_row .tradetxt").html('<%= buyer_id %>  to Approve');
+	else $(".pendingstatus, .kyc_row .tradetxt").html('Customer  to Approve');
 	break;
   case "KYC Approved":
   case "Request For Quotation Not Uploaded":
@@ -827,7 +827,7 @@ switch("<%= status %>"){
 		$(".request_row .uploadbtn").prop('disabled', false);
 		$(".pendingstatus, .request_row .tradetxt").html('Upload Request for Quotation');
   }
-  else $(".request_row .tradetxt").html('<%= buyer_id %>  to Upload Request for Quotation');
+  else $(".request_row .tradetxt").html('Customer  to Upload Request for Quotation');
   break;
   case "Request For Quotation Uploaded":
 	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
@@ -881,7 +881,7 @@ switch("<%= status %>"){
 		$(".quotation_row .acceptbtn, .quotation_row .rejectbtn").css("cssText","opacity:1 !important");
 		$(".quotation_row .acceptbtn, .quotation_row .rejectbtn").prop('disabled', false);
 	}
-	else $(".pendingstatus, .quotation_row .tradetxt").html('<%= buyer_id %>  to Approve');
+	else $(".pendingstatus, .quotation_row .tradetxt").html('Customer  to Approve');
 	break;
 	case "Quotation Approved; Ethereum Txn Pending;":
 	$(".quotation_row .aprbtngif").show();
@@ -918,7 +918,7 @@ switch("<%= status %>"){
 		$(".pendingstatus, .purchase_row .tradetxt").html('Purchase Order Rejected. Re-upload Purchase Order');
 		$(".quotation_row .uploadbtn").prop('disabled', false);
 	}
-	else $(".pendingstatus, .purchase_row .tradetxt").html('Purchase Order Rejected. <%= buyer_id %>  yet to Upload Purchase Order');
+	else $(".pendingstatus, .purchase_row .tradetxt").html('Purchase Order Rejected. Customer  yet to Upload Purchase Order');
 	break;
 	case "Purchase Order Uploaded; Ethereum Txn Pending;":
 	$(".purchase_row .dnldsvbtn").css("cssText","opacity:1 !important");
@@ -978,7 +978,7 @@ switch("<%= status %>"){
 	$(".invoice_row .aprbtngif").show();
 	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");
 	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
-	$(".pendingstatus, .invoice_row .tradetxt").html('Invoice Approved by <%= buyer_id %> , Updating on Blockchain');
+	$(".pendingstatus, .invoice_row .tradetxt").html('Invoice Approved by Customer , Updating on Blockchain');
 	break;
 	case "Invoice Approved by Buyer":
 	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").css("cssText","opacity:1 !important");

@@ -3,17 +3,17 @@ pragma solidity ^ 0.4 .11;
 /**
  * @title- TradeRegistry contract
  * This contract stores the details of trade - parties involved within,
- * documents exchanged between them as a part 
+ * documents exchanged between them as a part
  * of trade (Request For Quotation, Quotation, PurchaseOrder, Invoice, LetterOfCredit, BillOfLading)
- * 
+ *
  * Each document is stored as Hash of its content,
  * to ensure that the contents of doc remain unmodified.
- * 
+ *
  * The contract also ensures for guaranteed payment to seller upon trade completion
  **/
 contract TradeReg {
   address owner;
-  
+
  /** Sets status for each document being stored in contract
   * Initial Status - NOT_YET_UPLOADED
   * Once Document is uploaded, status would be set to REVIEW_PENDING
@@ -41,7 +41,7 @@ contract TradeReg {
     }
     _;
   }
-  
+
   /**
    * @param versiondir - Stores each document against it's version number
    * @param status - Current Status of each doc involved in the Trade
@@ -52,9 +52,9 @@ contract TradeReg {
     docStatus status;
     uint version;
   }
-  
+
   /**
-   * @param NoOfDays - 
+   * @param NoOfDays -
    * @param creditAmount - Amount guranteed to be paid by the buyer
    * @param status - Current status of Letter of credit contract
    **/
@@ -63,9 +63,9 @@ contract TradeReg {
     uint creditAmount;
     docStatus status;
   }
-  
+
   /**
-   * @param NoOfDays - 
+   * @param NoOfDays -
    * @param creditAmount - Amount to be paid by the buyer
    * @param status - Current status of Invoice document
    **/
@@ -114,14 +114,14 @@ contract TradeReg {
   event LogDeposit(bytes32 indexed uid, uint amount);
   event LogPayment(bytes32 indexed uid, string status);
   event LogSetStatus(bytes32 indexed uid, bool status);
-  
+
   /**
-   * Set's owner permissions
+   * Sets owner permissions
    **/
   function TradeReg() {
     owner = msg.sender;
   }
-  
+
   /**
    * @param uid- Unique trade ID
    * @param tradeParties - Parties involved in trade
@@ -134,7 +134,7 @@ contract TradeReg {
     }
     LogTradeCreated(uid);
   }
-  
+
   /**
    * @param uid- Unique trade ID
    * Checks for sender upload permissions and then allows trade documents to be stored
@@ -148,7 +148,7 @@ contract TradeReg {
       LogUpload(uid, docType, trades[uid].docByType[docType].status);
     } else return;
   }
-  
+
   function isUploadAllowed(bytes32 role, bytes32 docType) internal returns(bool) {
     bool isAllowed = false;
     if ((role == "buyer" && (docType == "PurchaseOrder" || docType == "RFQ")) ||
@@ -158,7 +158,7 @@ contract TradeReg {
     }
     return isAllowed;
   }
-  
+
   /**
    * @param uid- Unique trade ID
    * Checks for sender upload permissions and then allows trade documents to be stored
@@ -169,7 +169,7 @@ contract TradeReg {
     trades[uid].loc.status = docStatus.REVIEW_PENDING;
     LogUpload(uid, "LetterOfCredit", trades[uid].loc.status);
   }
-  
+
   /**
    * @param uid- Unique trade ID
    * Checks for sender upload permissions and then allows trade documents to be stored
@@ -181,7 +181,7 @@ contract TradeReg {
     trades[uid].invoice.hash = _hash;
     LogUpload(uid, "Invoice", trades[uid].invoice.status);
   }
-  
+
   /**
    * @param uid- Unique trade ID
    * @param docType
@@ -194,7 +194,7 @@ contract TradeReg {
       reject(uid, sender, docType, extraData);
     }
   }
-  
+
   /**
    * @param uid- Unique trade ID
    * @param docType
@@ -212,11 +212,11 @@ contract TradeReg {
       LogApprove(sender, docType, now);
     }
   }
-  
+
   /**
    * @param uid - Unique trade ID
    * @param sender - Eth Address of the sender
-   * @param docType - 
+   * @param docType -
    *  Allows trade documents to be stored
    **/
   function reject(bytes32 uid, address sender, bytes32 docType, bytes extraData) internal {
@@ -226,10 +226,10 @@ contract TradeReg {
       LogReject(sender, docType);
     } else return;
   }
-  
+
   /**
    * @param role - Unique trade ID
-   * @param docType - 
+   * @param docType -
    * Checks for sender upload permissions
    **/
   function isReviewAllowed(bytes32 role, bytes32 docType) internal returns(bool) {
@@ -242,24 +242,24 @@ contract TradeReg {
     }
     return isAllowed;
   }
-  
+
   /**
    * @param uid- Unique trade ID
-   * @param docName - 
+   * @param docName -
    **/
   function getLatestDoc(bytes32 uid, bytes32 docName) returns(bytes) {
     uint latestDocIndex = trades[uid].docByType[docName].version - 1;
     LogGetDoc(uid, trades[uid].docByType[docName].versiondir[latestDocIndex]);
   }
-  
+
   /**
    * @param uid- Unique trade ID
-   * @param docName - 
+   * @param docName -
    **/
   function getDoc(bytes32 uid, bytes32 docName, uint version) returns(bytes) {
     return trades[uid].docByType[docName].versiondir[version - 1];
   }
-  
+
   /**
    * @param uid- Unique trade ID
    * Pay amount to seller from contract on guaranteed date
@@ -271,7 +271,7 @@ contract TradeReg {
     }
     LogPayment(uid, "False");
   }
-  
+
   /**
    * @param uid- Unique trade ID
    **/
@@ -279,7 +279,7 @@ contract TradeReg {
       trades[uid].ethAddressByRole["insurer"].transfer(trades[uid].insuranceAmount);
       LogPayment(uid, "True");
   }
-  
+
   /**
    * @param uid- Unique trade ID
    **/
@@ -287,14 +287,14 @@ contract TradeReg {
       trades[uid].reqstatustoInsurer;
       LogSetStatus(uid, status);
   }
-  
+
   /**
    * @param uid- Unique trade ID
    **/
   function setStatusForRTO(bytes32 uid, bool status){
       trades[uid].reqstatustoRTO;
   }
-  
+
   /**
    * @param uid- Unique trade ID
    * Deposit Ether to the contract
