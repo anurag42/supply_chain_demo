@@ -841,6 +841,14 @@ switch("<%= status %>".split(' ')[0]){
 
 
 switch("<%= status %>"){
+  case "KYC Not Uploaded":
+  if("<%= senderpage %>" == "Buyer"){
+    $(".kyc_row .uploadbtn").css("cssText","opacity:1 !important");
+		$(".kyc_row .uploadbtn").prop('disabled', false);
+		$(".pendingstatus, .kyc_row .tradetxt").html('Upload KYC');
+  }
+  else $(".kyc_row .tradetxt").html('<%= buyer_id %>  to Upload KYC');
+  break;
   case "KYC Approved":
   case "RFQ Not Uploaded":
   if("<%= senderpage %>" == "Buyer"){
