@@ -146,19 +146,20 @@
             <h1 class="loginh1">Please choose trade type</h1>
             <!-- SIGNUP FORM -->
             <form action="/profile" method="post" enctype = "multipart/form-data" >
+              <input type="hidden" id="role" value="<%=role%>"/>
                 <div class="form-group">
                     <label>Trade with?(Select any one):</label><br/><br/>
-                    <div class="rdbx">
+                    <div id="1" style="display:none" class="rdbx">
                         <input type="radio" name="role" value="PARTSSUPPLIERTOOEM" id="PARTSSUPPLIERTOOEM" />
                         <label for="PARTSSUPPLIERTOOEM"><span class="fa fa-handshake-o rimg"></span></label>
                         <p class="rcont">Parts Supplier<br/>To OEM</p>
                     </div>
-                    <div class="rdbx">
+                    <div id="2" style="display:none" class="rdbx">
                         <input type="radio" name="role" value="OEMTODEALER" id="OEMTODEALER" />
                         <label for="OEMTODEALER"><span class="fa fa-handshake-o rimg"></span></label>
                         <p class="rcont">OEM To<br/>Dealer</p>
                     </div>
-                    <div class="rdbx">
+                    <div id="3" style="display:none" class="rdbx">
                         <input type="radio" name="role" value="DEALERTOCUSTOMER" id="DEALERTOCUSTOMER" />
                         <label for="DEALERTOCUSTOMER"><span class="fa fa-handshake-o rimg"></span></label>
                         <p class="rcont">Dealer To<br/>Customer</p>
@@ -177,5 +178,17 @@
     </div>
 </body>
 <script>
+  if(document.getElementById("role").value=="Shipper"){
+    document.getElementById("1").style.display="inline-block";
+    document.getElementById("2").style.display="inline-block";
+  }
+  else if(document.getElementById("role").value=="Manufacturer"){
+    document.getElementById("1").style.display="inline-block";
+    document.getElementById("2").style.display="inline-block";
+  }
+  else if(document.getElementById("role").value=="Dealer"){
+    document.getElementById("2").style.display="inline-block";
+    document.getElementById("3").style.display="inline-block";
+  }
 </script>
 </html>

@@ -112,6 +112,7 @@ module.exports = {
             'req': req
           }));
         }
+        break;
       case 'Dealer':
         if (req.body.role == 'OEMTODEALER') {
           Trade.find({
@@ -208,7 +209,9 @@ function onFindUserProfile(err, user) {
       break;
     case "Shipper":
       req.session.user = user;
-      res.render('roleselection.ejs');
+      res.render('roleselection.ejs', {
+        'role': "Shipper"
+      });
       //res.redirect('/roleselection');
       break;
     case "Supplier":
@@ -222,12 +225,16 @@ function onFindUserProfile(err, user) {
       break;
     case "Manufacturer":
       req.session.user = user;
-      res.render('roleselection.ejs');
+      res.render('roleselection.ejs', {
+        'role': "Manufacturer"
+      });
       //res.redirect('/roleselection');
       break;
     case "Dealer":
       req.session.user = user;
-      res.render('roleselection.ejs');
+      res.render('roleselection.ejs', {
+        'role': "Dealer"
+      });
       //res.redirect('/roleselection');
       break;
   }
