@@ -659,7 +659,7 @@ function onFileUpload(err, hash) {
   } else if (req.body.senderpage == "quotation") {
     update = {
       $set: {
-        'doc.0.hash': hash[0].hash,
+        'doc.1.hash': hash[0].hash,
         'status': "Quotation Uploaded; Ethereum Txn Pending;"
       }
     };
@@ -672,7 +672,7 @@ function onFileUpload(err, hash) {
     console.log("Storing", hash[0].hash);
     update = {
       $set: {
-        'doc.1.hash': hash[0].hash,
+        'doc.2.hash': hash[0].hash,
         'status': "Purchase Order Uploaded; Ethereum Txn Pending;"
       }
     }
@@ -685,7 +685,7 @@ function onFileUpload(err, hash) {
   } else if (req.body.senderpage == "invoice") {
     update = {
       $set: {
-        'doc.2.hash': hash[0].hash,
+        'doc.3.hash': hash[0].hash,
         'status': "Invoice Uploaded; Ethereum Txn Pending;"
       }
     }
@@ -698,7 +698,7 @@ function onFileUpload(err, hash) {
   } else if (req.body.senderpage == "bol") {
     update = {
       $set: {
-        'doc.3.hash': hash[0].hash,
+        'doc.4.hash': hash[0].hash,
         'status': "Bill Of Lading Uploaded; Ethereum Txn Pending;"
       }
     }
