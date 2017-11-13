@@ -159,6 +159,12 @@ function onFindTradeDocDownload(err, trade) {
   res = this.res;
   console.log(trade.doc[0].doctype);
   switch (req.body.docname) {
+    case "KYC":
+      customerdb.getCustomerfromID(trade.customer_id, onFindCustomer).bind({
+        'req': req,
+        'res': res
+      });
+      break;
     case "RequestForQuotation":
       docHash = trade.doc[0].hash;
       break;
@@ -228,6 +234,13 @@ function redirectOnLOCDeploy(err, user) {
 
 function onCreateNewUserCallback() {
   completedDocs = 0;
+}
+
+function onFindCustomer(err, customer) {
+  if (err)
+    throw err;
+
+
 }
 
 function checkIfRegistryDeployed(registryAddress) {

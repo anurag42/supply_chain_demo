@@ -179,7 +179,7 @@ module.exports = {
   getresumetrade: function(req, res) {
     var customerID = req.query.customerid;
     var senderpage = req.query.senderpage;
-    tradedb.findTradeByCustomerID(customerID, onFindTradeResume.bind({
+    getCustomerfromID(customerID, onFindCustomer.bind({
       'req': req,
       'res': res,
       'senderpage': senderpage
@@ -209,6 +209,19 @@ module.exports = {
     }));
   }
 };
+
+function onFindCustomer(err, customer) {
+  if (err)
+    throw (err);
+  req = this.req;
+  res = this.res;
+  senderpage = this.senderpage;
+  tradedb.findTradeByCustomerID(customerID, onFindTradeResume.bind({
+    'req': req,
+    'res': res,
+    'senderpage': senderpage
+  }));
+}
 
 function onTriggerTrade(err) {
   if (err)

@@ -21,6 +21,11 @@ module.exports = {
       'aadhar': aadhar,
       'mobile': mobile
     }, callback);
+  },
+  getCustomerfromID: function(id, callback) {
+    Customer.findOne({
+      '_id': id
+    }, callback);
   }
 
 };
