@@ -14,6 +14,7 @@ var Scheduler = require('mongo-scheduler');
 var scheduler = new Scheduler("mongodb://localhost/db_name", {
   doNotFire: false
 });
+var customerdb = require('../customer/db');
 
 var manufacturerHash, dealerHash, supplierHash, bankHash, shipperHash, insurerHash, tradeID, tradeLibAddress, tradeRegistryAddress;
 var userHash, gasUsage;
@@ -200,11 +201,13 @@ module.exports = {
   // for redirect from customer login page
   getresumetrade: function(req, res) {
     var customerID = req.query.customerid;
+    console.log(customerID);
     var senderpage = req.query.senderpage;
-    getCustomerfromID(customerID, onFindCustomer.bind({
+    customerdb.getCustomerfromID(customerID, onFindCustomer.bind({
       'req': req,
       'res': res,
-      'senderpage': senderpage
+      'senderpage': senderpage,
+      'customerID': customerID
     }));
   },
 
@@ -238,6 +241,7 @@ function onFindCustomer(err, customer) {
   req = this.req;
   res = this.res;
   senderpage = this.senderpage;
+  customerID = this.customerID;
   req.session.userAddress = customer.ethereumAddress;
   tradedb.findTradeByCustomerID(customerID, onFindTradeResume.bind({
     'req': req,
@@ -489,6 +493,11 @@ function onFindTradeApprove(err, trade) {
   });*/
 
   switch (req.body.approvaltype) {
+    case "K":
+      update = {
+        status: "KYC Approved"
+      };
+      break;
     case "R":
       update = {
         status: "Request For Quotation Approved; Ethereum Txn Pending;"
@@ -585,6 +594,17 @@ function onFindTradeReject(err, trade) {
   });
 
   switch (req.body.approvaltype) {
+    case "K":
+      update = {
+        status: "KYC Rejected"
+      };
+      break;
+    case "R":
+      update = {
+        status: "Request For Quotation Rejected; Ethereum Txn Pending;"
+      };
+      reject(req, res, trade.trade_id, req.body.userAddress, 'Quotation', req.body.reason);
+      break;
     case "Q":
       update = {
         status: "Quotation Rejected; Ethereum Txn Pending;"
@@ -664,7 +684,6 @@ function redirectOnUpdation() {
   var req = this.req;
   var res = this.res;
   req.session.tradesession = this.tradeID;
-  req.session.sender = req.body.senderpage;
   res.redirect('/tradesession');
 }
 

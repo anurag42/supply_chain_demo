@@ -20,7 +20,7 @@ var ipfs = require('./ipfs');
 var Registry = require('../registry/model.js');
 var registrydb = require('../registry/db.js');
 var config = require('../config.js');
-
+var customerdb = require('../customer/db');
 //Fixed
 var registryFunctions = require('../contracts/registry/registry.js');
 var tradeFunctions = require('../contracts/trade/tradeRegistry.js');

@@ -23,6 +23,7 @@ module.exports = {
     }, callback);
   },
   getCustomerfromID: function(id, callback) {
+    console.log(id);
     Customer.findOne({
       '_id': id
     }, callback);
