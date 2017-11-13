@@ -720,6 +720,11 @@ switch("<%= status %>".split(' ')[0]){
 	}
   else{
     $(".quotation_row").addClass("trading");
+    $(".quotation_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+    $(".quotation_row .tradeleft").css("cssText","opacity:1 !important");
+    $(".quotation_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+    $(".quotation_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
+    $(".quotation_row .status").html("IN PROGRESS");
   }
 	break;
 	case "Quotation":
@@ -740,6 +745,11 @@ switch("<%= status %>".split(' ')[0]){
   }
   else{
     $(".purchase_row").addClass("trading");
+    $(".purchase_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+    $(".purchase_row .tradeleft").css("cssText","opacity:1 !important");
+    $(".purchase_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+    $(".purchase_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
+    $(".purchase_row .status").html("IN PROGRESS");
   }
 	break;
 	case "Purchase":
@@ -763,6 +773,12 @@ switch("<%= status %>".split(' ')[0]){
   }
   else{
     $(".invoice_row").addClass("trading");
+    $(".invoice_row").addClass("trading");
+    $(".invoice_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+    $(".invoice_row .tradeleft").css("cssText","opacity:1 !important");
+    $(".invoice_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+    $(".invoice_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
+    $(".invoice_row .status").html("IN PROGRESS");
   }
 	break;
 	case "Invoice":
@@ -789,6 +805,10 @@ switch("<%= status %>".split(' ')[0]){
   }
   else{
     $(".payment_row").addClass("trading");
+    $(".payment_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+  $(".payment_row .tradeleft").css("cssText","opacity:1 !important");
+  $(".payment_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+  $(".payment_row .status").html("IN PROGRESS");
   }
 	break;
 	case "Payment":
