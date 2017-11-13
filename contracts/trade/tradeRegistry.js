@@ -13,6 +13,7 @@ var tradeLibContract = web3.eth.contract(tradeLibABI);
 var tradeContract = web3.eth.contract(tradeRegistryABI);
 var tradeLibAddress = config.tradeLibAddress;
 var tradeRegistryAddress = config.tradeAddress;
+var eventScheduler = require('../../events/events.js');
 web3.setProvider(new web3.providers.HttpProvider(config.web3Provider));
 
 module.exports = {
@@ -197,7 +198,8 @@ function hasApproved(tradeInstance, userAddress, callback) {
       return hadError(e, res);
     }
     console.log('Document Approval recorded on Blockchain');
-    callback();
+    console.log(log.args.time);
+    callback(log.args.time.c[0]);
   });
 }
 
@@ -221,7 +223,6 @@ function hasUploaded(tradeInstance, txnID, tradeID, callback) {
       return hadError(e, res);
     }
     console.log('Document Upload succcessful on Blockchain');
-    console.log(log.args.hash);
     callback(tradeID, txnID, log.args.docName);
   });
 }
@@ -237,11 +238,13 @@ function hasLocUploaded(tradeInstance, tradeID, callback) {
   });
 }
 
-function updateTradeStatus() {
+function updateTradeStatus(time) {
   var req = this.req;
   var res = this.res;
   var status;
-  tradedb.findTradeByTradeID(req.body.trade_id, req, res, updateTradeStatusCallback);
+  tradedb.findTradeByTradeID(req.body.trade_id, req, res, updateTradeStatusCallback.bind({
+    'time': time
+  }));
 }
 
 function updateLOCTradeStatusOnDocUpload() {
@@ -291,11 +294,13 @@ function updateLOCTradeStatusOnDocUploadCallback(err, trade) {
 }
 
 function updateTradeStatusCallback(err, trade) {
-  console.log("In Updating");
+  var status;
+  console.log("In Updating", trade.status);
   if (trade.status == "Invoice Approved By Seller Bank; Ethereum Txn Pending;") status = "Invoice Approved";
   else if (trade.status == "Invoice Rejected By Seller Bank; Ethereum Txn Pending;") status = "Invoice Rejected";
   else status = trade.status.split(';')[0];
-  if (status == "Letter Of Credit Uploaded") eventScheduler.paymentScheduler(log.args.time.c[0], trade_id);
+  if (status == "Letter Of Credit Approved") eventScheduler.paymentScheduler(this.time, trade.paymentinfo.No_of_days, trade.trade_id);
+  console.log("In Updating", status);
   var query = {
     trade_id: req.body.trade_id
   };

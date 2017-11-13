@@ -466,7 +466,6 @@ function onFindTradeApprove(err, trade) {
       approve(req, res, trade.trade_id, req.body.userAddress, 'PurchaseOrder');
       break;
     case "I":
-    case "I":
       if (trade.type == "PARTSSUPPLIERTOOEM") {
         update = {
           status: "Invoice Approved by Buyer; Ethereum Txn Pending;"
@@ -476,7 +475,8 @@ function onFindTradeApprove(err, trade) {
           status: "Invoice Approved By Seller Bank; Ethereum Txn Pending;"
         };
       }
-      approve(req, res, trade.contract_id, req.body.userAddress, 'Invoice');
+      console.log("case", update);
+      approve(req, res, trade.trade_id, req.body.userAddress, 'Invoice');
       break;
     case "IA":
       update = {
@@ -669,6 +669,7 @@ function onFileUpload(err, hash) {
       'hash': hash
     }));
   } else if (req.body.senderpage == "po") {
+    console.log("Storing", hash[0].hash);
     update = {
       $set: {
         'doc.1.hash': hash[0].hash,
@@ -698,7 +699,7 @@ function onFileUpload(err, hash) {
     update = {
       $set: {
         'doc.3.hash': hash[0].hash,
-        'status': "Bill Of Lading Order Uploaded; Ethereum Txn Pending;"
+        'status': "Bill Of Lading Uploaded; Ethereum Txn Pending;"
       }
     }
     tradedb.updateTrade(query, update);

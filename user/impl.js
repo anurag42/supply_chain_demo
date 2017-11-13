@@ -94,6 +94,7 @@ module.exports = {
         }
         break;
       case 'Manufacturer':
+        console.log("case", req.body.role);
         if (req.body.role == 'PARTSSUPPLIERTOOEM') {
           Trade.find({
             'type': 'PARTSSUPPLIERTOOEM'
@@ -104,7 +105,7 @@ module.exports = {
           }));
         } else if (req.body.role == 'OEMTODEALER') {
           Trade.find({
-            'type': 'PARTSSUPPLIERTOOEM'
+            'type': 'OEMTODEALER'
           }, getListofTrades2.bind({
             'user': user,
             'res': res,
@@ -207,7 +208,8 @@ function onFindUserProfile(err, user) {
       break;
     case "Shipper":
       req.session.user = user;
-      res.redirect('/roleselection');
+      res.render('roleselection.ejs');
+      //res.redirect('/roleselection');
       break;
     case "Supplier":
       Trade.find({
@@ -220,12 +222,13 @@ function onFindUserProfile(err, user) {
       break;
     case "Manufacturer":
       req.session.user = user;
-      res.redirect('/roleselection');
+      res.render('roleselection.ejs');
+      //res.redirect('/roleselection');
       break;
     case "Dealer":
       req.session.user = user;
-      res.redirect('/roleselection');
-
+      res.render('roleselection.ejs');
+      //res.redirect('/roleselection');
       break;
   }
 }
@@ -285,7 +288,7 @@ function getListofTrades2(err, tradeList) {
   res = this.res;
   user = this.user;
   if (tradeList.length > 0) {
-    var tradeIdArr = getArrFromTradeObject(tradeList, '_id');
+    tradeIdArr = getArrFromTradeObject(tradeList, '_id');
     dealerIdList = getArrFromTradeObject(tradeList, 'dealer_id');
     manufacturerIdList = getArrFromTradeObject(tradeList, 'manufacturer_id');
     statusList = getArrFromTradeObject(tradeList, 'status');
@@ -295,6 +298,9 @@ function getListofTrades2(err, tradeList) {
     manufacturerIdList = [];
     statusList = [];
   }
+  console.log(tradeIdArr);
+  console.log('------------');
+  console.log(manufacturerIdList);
   console.log(manufacturerIdList);
   console.log(dealerIdList[0]);
   res.render('profile2.ejs', {
@@ -353,8 +359,9 @@ function ifUserFound(err, user) {
   if (err)
     throw err;
   else if (user) {
-    req.session.message = "User Already Exists!!!"
-    res.redirect('/signup');
+    res.render('signup.ejs', {
+      'message': "User Already Exists!"
+    });
   } else {
     file.fileupload(req, res, onKYCUpload.bind({
       'req': req,
@@ -379,7 +386,7 @@ function onCreateNewUserCallback(err, user) {
   req = this.req;
   res = this.res;
   hash = this.hash;
-  registryFunctions.submitKYC(req, res, registryAddress, "656979695441", user.ethereumAddress, hash[0].hash, redirectOnUpload.bind({
+  registryFunctions.submitKYC(req, res, registryAddress, "", user.ethereumAddress, hash[0].hash, redirectOnUpload.bind({
     'req': req,
     'res': res,
     'user': user
