@@ -876,7 +876,7 @@ switch("<%= status %>"){
 	else $(".pendingstatus, .kyc_row .tradetxt").html('<%= buyer_id %>  to Approve');
 	break;
   case "KYC Approved":
-  case "RFQ Not Uploaded":
+  case "Request For Quotation Not Uploaded":
   if("<%= senderpage %>" == "Buyer"){
     $(".request_row .uploadbtn").css("cssText","opacity:1 !important");
 		$(".request_row .uploadbtn").prop('disabled', false);
@@ -900,6 +900,7 @@ switch("<%= status %>"){
 		$(".quotation_row .uploadbtn").css("cssText","opacity:1 !important");
 		$(".quotation_row .uploadbtn").prop('disabled', false);
 		$(".pendingstatus, .quotation_row .tradetxt").html('Upload Quotation');
+
 	}
 	else $(".quotation_row .tradetxt").html('<%= seller_id %>  to Upload Quotation');
 	break;
