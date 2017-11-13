@@ -40,6 +40,7 @@ registryAddress = config.registryAddress;
 
 module.exports = {
   fileupload: function(req, res, callback) {
+    console.log("Hello", req.files);
     fs.readFile(req.files[0].path, function(err, data) {
       ipfs.upload(data, callback);
     });

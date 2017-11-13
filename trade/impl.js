@@ -187,6 +187,7 @@ module.exports = {
   },
 
   uploadDoc: function(req, res) {
+    console.log(req.files);
     file.fileupload(req, res, onFileUpload.bind({
       'req': req,
       'res': res,
@@ -639,6 +640,13 @@ function onFileUpload(err, hash) {
     trade_id: id
   };
   var update;
+  if (req.body.senderpage == "kyc") {
+    var update = {
+      $set: {
+        'status': "KYC Uploaded; Ethereum Txn Pending;"
+      }
+    }
+  }
   if (req.body.senderpage == "rfq") {
     var update = {
       $set: {
