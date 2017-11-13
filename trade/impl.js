@@ -159,36 +159,22 @@ module.exports = {
 
     function updateTradeStatus() {
       console.log("Before Saving", req.body.tradeID);
-      var query = {
-        trade_id: req.body.tradeID
-      };
-      tradedb.findTradeByTradeID(req.body.tradeID, req, res
-        /*,
-                updateStatusByType({
-                       'req': req,
-                       'res': res
-                     })*/
-      );
-      if (req.body.tradetype == "DEALERTOCUSTOMER") {
-        var update = {
-          status: "KYC Not Uploaded"
-        };
-      } else {
-        var update = {
-          status: "RFQ Not Uploaded"
-        };
-      }
-      tradedb.updateTrade(query, update);
-      res.send();
+      tradedb.findTradeByTradeID(req.body.tradeID, req, res, updateStatusByType);
     }
 
-    /*function updateStatusByType(err, trade) {
+    function updateStatusByType(err, trade) {
       var type = trade.type;
-      var status = "RFQ Not Uploaded";
-      if (type == 'DEALERTOCUSTOMER') {
-        status: "RFQ Not Uploaded";
+      if (type == "DEALERTOCUSTOMER") {
+        if (trade.status == "Ethereum Transaction Pending!!! Check after 2 mins!!") {
+          trade.status = "KYC Not Uploaded"
+        } else {
+          trade.status = "RFQ Not Uploaded"
+        }
+      } else {
+        trade.status = "RFQ Not Uploaded";
       }
-    }*/
+      res.send();
+    }
   },
 
   resumetrade: function(req, res) {

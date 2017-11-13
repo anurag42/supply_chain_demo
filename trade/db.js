@@ -103,7 +103,7 @@ function onFindCustomer(err, customer) {
   newTrade.customer_id = customer._id;
   newTrade.status = "Ethereum Transaction Pending!!! Check after 2 mins!!!";
   if (customer.kychash) {
-    newTrade.status = "RFQ Not Uploaded";
+    newTrade.status = "Ethereum Transaction Pending!!! Check after 2 mins!!";
   }
   newTrade.save(callback);
 }
