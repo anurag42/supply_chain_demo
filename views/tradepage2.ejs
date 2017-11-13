@@ -892,7 +892,7 @@ switch("<%= status %>"){
 		$(".request_row .acceptbtn, .request_row .rejectbtn").css("cssText","opacity:1 !important");
 		$(".request_row .acceptbtn, .request_row .rejectbtn").prop('disabled', false);
 	}
-	else $(".pendingstatus, .request_row .tradetxt").html('<%= buyer_id %>  to Approve');
+	else $(".pendingstatus, .request_row .tradetxt").html('<%= seller_id %>  to Approve');
 	break;
 	case "Request For Quotation Approved":
 	case "Quotation Not Uploaded":
@@ -903,6 +903,12 @@ switch("<%= status %>"){
 
 	}
 	else $(".quotation_row .tradetxt").html('<%= seller_id %>  to Upload Quotation');
+	break;
+	case "Request For Quotation Approved; Ethereum Txn Pending;":
+	$(".request_row .aprbtngif").show();
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").css("cssText","opacity:1 !important");
+	$(".request_row .dnldsvbtn, .request_row .dnldbcbtn").prop('disabled', false);
+	$(".pendingstatus, .request_row .tradetxt").html('Quotation Approved, Updating on Blockchain');
 	break;
 	case "Quotation Rejected; Ethereum Txn Pending;":
 	$(".quotation_row .rejbtngif").show();
