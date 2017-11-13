@@ -168,10 +168,10 @@ module.exports = {
         if (trade.status == "Ethereum Transaction Pending!!! Check after 2 mins!!") {
           trade.status = "KYC Not Uploaded"
         } else {
-          trade.status = "RFQ Not Uploaded"
+          trade.status = "Request For Quotation Not Uploaded"
         }
       } else {
-        trade.status = "RFQ Not Uploaded";
+        trade.status = "Request For Quotation Not Uploaded";
       }
       res.send();
     }
