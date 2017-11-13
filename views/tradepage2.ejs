@@ -470,12 +470,12 @@
 					<div id="uplhide">
 						<form id="uploadInvoiceForm" action = "/uploadDoc" method = "POST" enctype = "multipart/form-data">
 							<div class="form-group">
-								<input type="hidden" id="docName" name="senderpage">
+								<input type="hidden" id="docName1" name="senderpage">
                 <input type="hidden" name="userAddress" value=<%= userAddress %>>
 								<p id="uperror" style="display:none;color:red;">Please Select File</p>
 								<input type="file" class="form-control" id="docfile" name="file" required><br/>
-								<input type="text" class="form-control" id="paymentamount" placeholder="credit amount" required><br/>
-								<input type="number" class="form-control" id="days" placeholder="credit days" required>
+								<input type="text" class="form-control" id="paymentamount" name="creditAmount" placeholder="credit Amount" required><br/>
+								<input type="number" class="form-control" id="days" name="timePeriod" placeholder="credit days" required>
 								<input type="hidden" name="id" value=<%= id %>>
 								<input type="hidden" id="hash" name="sha256hash">
 							</div>
@@ -666,6 +666,7 @@ function setTitle(title){
 
 function fillName(name){
     $("#docName").val(name);
+    $("#docName1").val(name);
 }
 
 function dwnldForm(name){

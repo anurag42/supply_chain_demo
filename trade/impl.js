@@ -488,6 +488,7 @@ function onFindTradeApprove(err, trade) {
       update = {
         status: "Request For Quotation Approved; Ethereum Txn Pending;"
       };
+      approve(req, res, trade.trade_id, req.body.userAddress, 'RFQ');
       break;
     case "Q":
       update = {
@@ -589,7 +590,7 @@ function onFindTradeReject(err, trade) {
       update = {
         status: "Request For Quotation Rejected; Ethereum Txn Pending;"
       };
-      reject(req, res, trade.trade_id, req.body.userAddress, 'Quotation', req.body.reason);
+      reject(req, res, trade.trade_id, req.body.userAddress, 'RFQ', req.body.reason);
       break;
     case "Q":
       update = {
@@ -734,6 +735,7 @@ function onFileUpload(err, hash) {
       'hash': hash
     }));
   } else if (req.body.senderpage == "invoice") {
+    console.log("In");
     update = {
       $set: {
         'doc.3.hash': hash[0].hash,
@@ -806,7 +808,8 @@ function onFindTradeInvoiceUpdate(err, trade) {
   req = this.req;
   res = this.res;
   hash = this.hash;
-  uploadDoc(req, res, req.body.id, req.body.userAddress, 'Invoice', hash[0].hash);
+  if (trade.type == "DEALERTOCUSTOMER") tradeFunctions.uploadInvoice(req, res, trade.trade_id, req.body.creditAmount, req.body.timePeriod, str2bytearr(hash[0].hash));
+  else uploadDoc(req, res, req.body.id, req.body.userAddress, 'Invoice', hash[0].hash);
 }
 
 function onFindTradeBOLUpdate(err, trade) {

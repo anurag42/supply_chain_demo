@@ -145,6 +145,28 @@ module.exports = {
     });
   },
 
+  uploadInvoice: function(req, res, tradeID, creditAmount, timePeriod, hash) {
+    console.log(tradeID, creditAmount, timePeriod, hash);
+    var tradeInstance = tradeContract.at(tradeRegistryAddress);
+    gasUsage = (tradeInstance.uploadInvoice.estimateGas(tradeID, creditAmount, timePeriod, hash) < config.gasUsage) ? tradeInstance.uploadInvoice.estimateGas(tradeID, creditAmount, timePeriod, hash) : config.gasUsage;
+    var params = {
+      gas: gasUsage,
+      gasPrice: config.gasPrice,
+      from: config.ethAddress
+    };
+    tradeInstance.uploadInvoice.sendTransaction(tradeID, creditAmount, timePeriod, hash, params, function(err, result) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      hasInvoiceUploaded(tradeInstance, tradeID, updateInvoiceTradeStatusOnDocUpload.bind({
+        'req': req,
+        'res': res,
+        'tradeID': tradeID
+      }));
+    });
+  },
+
   uploadLoc: function(req, res, tradeID, creditAmount, timePeriod) {
     var tradeInstance = tradeContract.at(tradeRegistryAddress);
     gasUsage = (tradeInstance.uploadLoc.estimateGas(tradeID, creditAmount, timePeriod) < config.gasUsage) ? tradeInstance.uploadLoc.estimateGas(tradeID, creditAmount, timePeriod) : config.gasUsage;
@@ -234,6 +256,17 @@ function hasLocUploaded(tradeInstance, tradeID, callback) {
   });
 }
 
+function hasInvoiceUploaded(tradeInstance, tradeID, callback) {
+  console.log("watching");
+  tradeInstance.LogUpload().watch(function(e, log) {
+    if (e) {
+      return hadError(e, res);
+    }
+    console.log('Invoice Param setup succcessful on Blockchain');
+    callback();
+  });
+}
+
 function updateTradeStatus(time) {
   var req = this.req;
   var res = this.res;
@@ -248,6 +281,17 @@ function updateLOCTradeStatusOnDocUpload() {
   var res = this.res;
   var status;
   tradedb.findTradeByTradeID(this.tradeID, req, res, updateLOCTradeStatusOnDocUploadCallback.bind({
+    'req': req,
+    'res': res,
+    'tradeID': this.tradeID
+  }));
+}
+
+function updateInvoiceTradeStatusOnDocUpload() {
+  var req = this.req;
+  var res = this.res;
+  var status;
+  tradedb.findTradeByTradeID(this.tradeID, req, res, updateInvoiceTradeStatusOnDocUploadCallback.bind({
     'req': req,
     'res': res,
     'tradeID': this.tradeID
@@ -285,6 +329,25 @@ function updateLOCTradeStatusOnDocUploadCallback(err, trade) {
     'status': status,
     'paymentinfo.No_of_days': req.body.timePeriod,
     'paymentinfo.Credit_Amount': req.body.creditAmount
+  };
+  tradedb.updateTrade(query, update);
+}
+
+function updateInvoiceTradeStatusOnDocUploadCallback(err, trade) {
+  var req = this.req;
+  var res = this.res;
+  status = trade.status.split(';')[0];
+  console.log(status);
+  var query = {
+    trade_id: this.tradeID
+  };
+  var update = {
+    $set: {
+      'doc.1.hash': hash[0].hash,
+      'status': status,
+      'paymentinfo.No_of_days': req.body.timePeriod,
+      'paymentinfo.Credit_Amount': req.body.creditAmount
+    }
   };
   tradedb.updateTrade(query, update);
 }
