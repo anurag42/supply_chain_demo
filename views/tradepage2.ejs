@@ -639,6 +639,12 @@ switch("<%= status %>".split(' ')[0]){
 	}
   else{
     $(".request_row").addClass("trading");
+    $(".request_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+    $(".request_row .tradeleft").css("cssText","opacity:1 !important");
+    $(".request_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+    $(".request_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
+    $(".request_row .status").html("IN PROGRESS");
+    $(".kyc_row .status").html("COMPLETED");
   }
 	break;
 	case "Request":
@@ -661,6 +667,7 @@ switch("<%= status %>".split(' ')[0]){
     $(".quotation_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
     $(".quotation_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
     $(".quotation_row .status").html("IN PROGRESS");
+    $(".kyc_row .status, .request_row .status").html("COMPLETED");
   }
 	break;
 	case "Quotation":
@@ -686,6 +693,7 @@ switch("<%= status %>".split(' ')[0]){
     $(".purchase_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
     $(".purchase_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
     $(".purchase_row .status").html("IN PROGRESS");
+    $(".kyc_row .status, .request_row .status, .quotation_row .status").html("COMPLETED");
   }
 	break;
 	case "Purchase":
@@ -715,6 +723,7 @@ switch("<%= status %>".split(' ')[0]){
     $(".invoice_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
     $(".invoice_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
     $(".invoice_row .status").html("IN PROGRESS");
+    $(".kyc_row .status, .request_row .status, .quotation_row .status, .purchase_row .status").html("COMPLETED");
   }
 	break;
 	case "Invoice":
@@ -745,6 +754,7 @@ switch("<%= status %>".split(' ')[0]){
   $(".payment_row .tradeleft").css("cssText","opacity:1 !important");
   $(".payment_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
   $(".payment_row .status").html("IN PROGRESS");
+  $(".kyc_row .status, .request_row .status, .quotation_row .status, .purchase_row .status, .invoice_row .status, .agreement_row .status, .bill_row .status").html("COMPLETED");
   }
 	break;
 	case "Payment":
