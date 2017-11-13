@@ -50,7 +50,7 @@
         }
         .loginbtn{
 
-            float:right;
+            //float:right;
             color:black;
             padding:5px 10px;
             border-radius:3px;
@@ -76,10 +76,10 @@
             display: inline-block;
             content: "\f058";
             font-size:30px;
-            margin-left: -40px;
+            margin-left: -25px;
             position: relative;
             top: -23px;
-            right: -15px;
+            right: -5px;
             color:orange;
 
         }
@@ -119,7 +119,7 @@
             text-align:center;
             font-size:10px;
             line-height:12px;
-            margin-top: -25px;
+            margin-top: -35px;
             margin-bottom:20px;
             cursor:pointer;
         }
@@ -127,7 +127,7 @@
 
             font-size:35px;
             text-align:center;
-            padding-top:12px;
+            padding-top:8px;
             color:#6666666;
 
         }
@@ -141,27 +141,27 @@
 </head>
 <body>
     <div class="container">
-        <div class="col-sm-4 col-sm-offset-4">
+        <div class="col-sm-4 col-sm-offset-4 text-center">
             <img src="/images/zeonlab_logo.png" class="zlogo">
             <h1 class="loginh1">Please choose trade type</h1>
             <!-- SIGNUP FORM -->
             <form action="/profile" method="post" enctype = "multipart/form-data" >
                 <div class="form-group">
-                    <label>Trade with?(Select any one):</label><br>
+                    <label>Trade with?(Select any one):</label><br/><br/>
                     <div class="rdbx">
                         <input type="radio" name="role" value="PARTSSUPPLIERTOOEM" id="PARTSSUPPLIERTOOEM" />
                         <label for="PARTSSUPPLIERTOOEM"><span class="fa fa-handshake-o rimg"></span></label>
-                        <p class="rcont">PARTSSUPPLIERTOOEM</p>
+                        <p class="rcont">Parts Supplier<br/>To OEM</p>
                     </div>
                     <div class="rdbx">
                         <input type="radio" name="role" value="OEMTODEALER" id="OEMTODEALER" />
                         <label for="OEMTODEALER"><span class="fa fa-handshake-o rimg"></span></label>
-                        <p class="rcont">OEMTODEALER</p>
+                        <p class="rcont">OEM To<br/>Dealer</p>
                     </div>
                     <div class="rdbx">
                         <input type="radio" name="role" value="DEALERTOCUSTOMER" id="DEALERTOCUSTOMER" />
                         <label for="DEALERTOCUSTOMER"><span class="fa fa-handshake-o rimg"></span></label>
-                        <p class="rcont">DEALERTOCUSTOMER</p>
+                        <p class="rcont">Dealer To<br/>Customer</p>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-warning btn-lg loginbtn">Proceed</button>
