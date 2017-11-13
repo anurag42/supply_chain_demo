@@ -704,6 +704,9 @@ switch("<%= status %>".split(' ')[0]){
     $(".kyc_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
     $(".kyc_row .status").html("IN PROGRESS");
 	}
+  else{
+    $(".request_row").addClass("trading");
+  }
 	break;
 	case "Request":
 	$(".kyc_row .tradetxt").html('KYC Approved');
