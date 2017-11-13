@@ -473,8 +473,9 @@
 								<input type="hidden" id="docName" name="senderpage">
                 <input type="hidden" name="userAddress" value=<%= userAddress %>>
 								<p id="uperror" style="display:none;color:red;">Please Select File</p>
-								<input type="file" class="form-control" id="docfile" name="file" required>
-								<input type="text" class="form-control" id="paymentamount" required>
+								<input type="file" class="form-control" id="docfile" name="file" required><br/>
+								<input type="text" class="form-control" id="paymentamount" placeholder="credit amount" required>
+								<input type="number" class="form-control" id="days" placeholder="credit days" required>
 								<input type="hidden" name="id" value=<%= id %>>
 								<input type="hidden" id="hash" name="sha256hash">
 							</div>
