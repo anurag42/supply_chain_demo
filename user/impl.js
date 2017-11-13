@@ -237,6 +237,16 @@ function onFindUserProfile(err, user) {
       });
       //res.redirect('/roleselection');
       break;
+    case "Insurer":
+      req.session.user = user;
+      Trade.find({
+        'insurer_id': user.username
+      }, getListofTrades3.bind({
+        'user': user,
+        'res': res,
+        'req': req
+      }));
+      break;
   }
 }
 
@@ -333,12 +343,14 @@ function getListofTrades3(err, tradeList) {
   user = this.user;
   if (tradeList.length > 0) {
     var tradeIdArr = getArrFromTradeObject(tradeList, '_id');
+    insurerIdList = getArrFromTradeObject(tradeList, 'insurer_id');
     dealerIdList = getArrFromTradeObject(tradeList, 'dealer_id');
     customerIdList = getArrFromTradeObject(tradeList, 'customer_id');
     statusList = getArrFromTradeObject(tradeList, 'status');
   } else {
     tradeIdArr = ['No Trades Yet'];
     dealerIdList = [];
+    insurerIdList = [];
     customerIdList = [];
     statusList = [];
   }

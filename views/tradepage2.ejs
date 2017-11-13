@@ -271,22 +271,26 @@
                             <div class="col-sm-10 traderight">
                                 <div class="col-sm-6">
                                     <p class="tradedate"></p>
-                                    <p class="tradehead">Request RC Book</p>
-                                    <p class="tradetxt">Shipper yet to Upload Bill Of Lading</p>
+                                    <p class="tradehead">Send Purchase Information</p>
+                                    <p class="tradetxt">Dealer to Send Purchase Information</p>
                                 </div>
                                 <div class="col-sm-6 tradeoptions">
                                     <div class="downloadbtn">
-                                        <button class="tradebtn uploadbtn">Send To RTO
+                                      <form action="/sendtoRTO" method="POST">
+                                        <button class="tradebtn uploadbtn" id="rto">Send To RTO
                                             <i class="fa fa-upload" aria-hidden="true"></i>
                                         </button>
-                                        <button class="tradebtn uploadbtn">Send Sale Details To Insurer
+                                      </form>
+                                        <form action="/sendtoInsurer" method="POST">
+                                        <button class="tradebtn uploadbtn" id="insurer">Send Sale Details To Insurer
                                             <i class="fa fa-upload" aria-hidden="true"></i>
                                         </button>
+                                      </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row insquo_row tradeitem">
+                        <div class="row tradeitem insquo_row">
                             <div class="col-sm-2 tradeleft text-center">
                                 <img src="/images/quo_icon.png">
                                 <p class="status">IN PROGRESS</p>
@@ -295,37 +299,48 @@
                                 <div class="col-sm-6">
                                     <p class="tradedate"></p>
                                     <p class="tradehead">Insurance Quotation</p>
-                                    <p class="tradetxt">Payment Scheduled</p>
+                                    <p class="tradetxt">Received Insurance Quotation from Insurer</p>
                                 </div>
                                 <div class="col-sm-6 tradeoptions">
-                                    <% if(senderpage == 'Buyer' || senderpage == "Bank") {%><div class="optionbtn">
-                                        <button class="tradebtn acceptbtn" onclick="fillForm('B')" form="approval_form">Accept
+                                    <% if(senderpage == 'Insurer') {%> <button class="tradebtn uploadbtn" data-toggle="modal" data-target="#uploadmodal" onclick="fillName('quotation'); setTitle('Quotation')">Upload Insurance Quotation
+                                        <i class="fa fa-upload" aria-hidden="true"></i>
+                                    </button><br/><%}%>
+                                    <% if(senderpage == 'Buyer') {%><div class="optionbtn">
+                                        <button class="tradebtn acceptbtn" onclick="fillForm('Q')" form="approval_form">Accept
                                             <i class="fa fa-check" aria-hidden="true"></i>
                                         </button>
-                                        <button class="tradebtn rejectbtn" onclick="fillForm('B')" data-toggle="modal" data-target="#rejectmodal">Reject
+                                        <button class="tradebtn rejectbtn" onclick="fillForm('Q')" data-toggle="modal" data-target="#rejectmodal">Reject
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                         </button>
                                     </div><%}%>
+                                    <div class="downloadbtn">
+                                        <button class="tradebtn dnldbcbtn" onclick="dwnldForm('Quotation')" data-toggle="modal" data-target="#bcdnldmodal" form="dwnld_form2">Download
+                                            <i class="fa fa-link" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tradebtn dnldsvbtn" onclick="dwnldForm('Quotation')" form="dwnld_form">Download
+                                            <i class="fa fa-server" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row insquo_row tradeitem">
+                        <div class="row payment2_row tradeitem">
                             <div class="col-sm-2 tradeleft text-center">
-                                <img src="/images/quo_icon.png">
+                                <img src="/images/pay_icon.png">
                                 <p class="status">IN PROGRESS</p>
                             </div>
                             <div class="col-sm-10 traderight">
                                 <div class="col-sm-6">
                                     <p class="tradedate"></p>
-                                    <p class="tradehead">Insurance Document</p>
+                                    <p class="tradehead">Payment</p>
                                     <p class="tradetxt">Payment Scheduled</p>
                                 </div>
                                 <div class="col-sm-6 tradeoptions">
-                                    <div class="downloadbtn">
-                                        <button class="tradebtn uploadbtn" onclick="dwnldForm('BillOfLading')" form="dwnld_form2" data-toggle="modal" data-target="#bcdnldmodal">Download
-                                            <i class="fa fa-download" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
+                                  <form action="/paytoinsurer" method="POST">
+                                  <button class="tradebtn uploadbtn">Pay to <%= insurer_id%>
+                                      <i class="fa fa-money" aria-hidden="true"></i>
+                                  </button>
+                                </form>
                                 </div>
                             </div>
                         </div>
@@ -714,7 +729,6 @@ switch("<%= status %>".split(' ')[0]){
   }
   else{
     $(".invoice_row").addClass("trading");
-    $(".invoice_row").addClass("trading");
     $(".invoice_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
     $(".invoice_row .tradeleft").css("cssText","opacity:1 !important");
     $(".invoice_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
@@ -755,13 +769,13 @@ switch("<%= status %>".split(' ')[0]){
   }
 	break;
 	case "Payment":
+  case "Info":
 	$(".kyc_row .tradetxt").html('KYC Approved');
 	$(".request_row .tradetxt").html('RFQ Approved');
 	$(".quotation_row .tradetxt").html('Quotation Approved');
 	$(".purchase_row .tradetxt").html('Purchase Order Approved');
 	$(".invoice_row .tradetxt").html('Invoice Approved');
 	$(".agreement_row .tradetxt").html('Financial Agreement Approved');
-	$(".bill_row .tradetxt").html('Bill Of Lading Approved');
 	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").css("cssText","opacity:1 !important");
 	$(".quotation_row .dnldsvbtn, .quotation_row .dnldbcbtn").prop('disabled', false);
 	$(".purchase_row .dnldsvbtn, .purchase_row .dnldbcbtn").css("cssText","opacity:1 !important");
@@ -770,11 +784,33 @@ switch("<%= status %>".split(' ')[0]){
 	$(".invoice_row .dnldsvbtn, .invoice_row .dnldbcbtn").prop('disabled', false);
 	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").css("cssText","opacity:1 !important");
 	$(".agreement_row .viewbtn2, .agreement_row .viewbtn1").prop('disabled', false);
-  $(".payment_row").addClass("trading");
-  $(".payment_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
-  $(".payment_row .tradeleft").css("cssText","opacity:1 !important");
-  $(".payment_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
-  $(".payment_row .status").html("IN PROGRESS");
+  $(".rc_row").addClass("trading");
+  $(".rc_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+  $(".rc_row .tradeleft").css("cssText","opacity:1 !important");
+  $(".rc_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+  $(".rc_row .status").html("IN PROGRESS");
+  $(".rc_row .uploadbtn").css("cssText","opacity:1 !important");
+  if("<%= status %>" =="Payment Received By Dealer")
+    $(".rc_row #insurer").prop('disabled', true);
+  else if("<%= status %>" =="Info Sent to RTO"){
+    $(".rc_row #insurer").prop('disabled', false);
+    $(".rc_row #rto").prop('disabled', true);
+  }
+  else{
+    $(".insquo_row").addClass("trading");
+    $(".rc_row").removeClass("trading");
+    $(".rc_row .tradeleft").css("cssText","opacity:0.2 !important");
+    $(".rc_row").css("cssText","border: 1px solid rgba(13, 92, 198, 0.2);");
+    $(".rc_row .traderight .tradebtn").css("cssText","background-image: rgba(13, 92, 198, 0.2);");
+    $(".rc_row .traderight").css("cssText","background-image: rgba(13, 92, 198, 0.2);");
+    $(".insquo_row").css("cssText","border: 1px solid rgba(13, 92, 198, 1);");
+    $(".insquo_row .tradeleft").css("cssText","opacity:1 !important");
+    $(".insquo_row .traderight").css("cssText","background-image: url(/images/tradeopbg.jpg);");
+    $(".insquo_row .tradebtn").css("cssText","opacity:1; border: 2px solid white;");
+    $(".insquo_row .status").html("IN PROGRESS");
+    $(".kyc_row .status, .request_row .status, .quotation_row .status, .purchase_row .status").html("COMPLETED");
+  }
+
   $(".kyc_row .status, .request_row .status, .quotation_row .status, .purchase_row .status, .invoice_row .status, .agreement_row .status, .bill_row .status").html("COMPLETED");
 	break;
 }
@@ -1024,18 +1060,21 @@ switch("<%= status %>"){
 	else $(".pendingstatus, .agreement_row .tradetxt").html('Financing Bank yet to Upload Agreement');
 	break;
 
-  case "Payment Scheduled":
+  case "Payment Received By Dealer":
+  case "Info Sent to RTO":
   $('.payment_row .tradeleft').css("cssText","opacity:1 !important");
-  $(".pendingstatus, .payment_row .tradetxt").html('Payment Scheduled');
+  $(".pendingstatus, .payment_row .tradetxt").html('Payment Received');
+  $(".rc_row").addClass("trading");
+  $(".payment_row").removeClass("trading");
   break;
-	case "Payment Successful":
-	$('.payment_row .tradeleft').css("cssText","opacity:1 !important");
-	$(".pendingstatus, .payment_row .tradetxt").html('Payment Successful');
-	break;
-	case "Payment Declined":
-	$('.payment_row .tradeleft').css("cssText","opacity:1 !important");
-	$(".pendingstatus, .payment_row .tradetxt").html('Payment Declined');
-	break;
+  case "Info Sent to Insurer":
+  case "Insurance Quotation Uploaded":
+  console.log("<%= senderpage %>" == "Insurer");
+  if("<%= senderpage %>" == "Insurer"){
+    $(".insquo_row .uploadbtn").prop('disabled', false);
+  }
+  break;
+
 }
 </script>
 
